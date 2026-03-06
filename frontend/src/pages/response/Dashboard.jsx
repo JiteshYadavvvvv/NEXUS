@@ -4,25 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
-const GDGHeader = () => (
-  <div className="bg-white">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <img src="/clublogos/google-developers.svg" alt="GDG Logo" className="w-8 h-8 object-contain" />
-        <span className="text-lg font-medium text-gray-800">Google Developers Group</span>
-      </div>
-      <button className="bg-[#4285F4] hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors">
-        + Add Student
-      </button>
-    </div>
-    <div className="flex h-[3px] w-7xl mx-auto px-4">
-      <div className="flex-1 bg-[#4285F4]" />
-      <div className="flex-1 bg-[#EA4335]" />
-      <div className="flex-1 bg-[#FABB05]" />
-      <div className="flex-1 bg-[#34A853]" />
-    </div>
-  </div>
-);
+
 
 const Dashboard = () => {
   const [forms, setForms] = useState([]);
@@ -142,8 +124,7 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <GDGHeader />
+    <div>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
         {/* Form selector + search */}

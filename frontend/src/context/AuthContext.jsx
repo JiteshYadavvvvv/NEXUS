@@ -13,7 +13,7 @@ console.log("AuthContext: Backend API URL set to:", API);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
-
+  
   const checkAuth = async () => {
     try {
       const res = await axios.get(`${API}/api/auth/get-user-info`, {

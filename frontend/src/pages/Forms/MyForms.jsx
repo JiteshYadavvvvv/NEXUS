@@ -39,7 +39,6 @@ export default function MyForms() {
     const [editingForm, setEditingForm] = useState(null); // null = new form, object = editing
     const [deletingId, setDeletingId] = useState(null);
 
-    // Remove dark class — keeps cursor and UI in light mode (same as DashboardLayout)
     useEffect(() => {
         document.documentElement.classList.remove('dark');
         document.body.classList.add('no-custom-cursor');
@@ -131,15 +130,7 @@ export default function MyForms() {
     const isFormOpen = showCreate || editingForm !== null;
 
     return (
-        <div
-            className="min-h-screen bg-gray-50 font-sans"
-            style={{
-                backgroundImage: "url('/back.svg')",
-                backgroundSize: 'cover',
-                backgroundAttachment: 'fixed',
-                backgroundPosition: 'center',
-            }}
-        >
+        <div className="font-sans">
             <div className="max-w-5xl mx-auto px-4 py-10 md:px-8 space-y-8">
 
                 {/* Page header */}
