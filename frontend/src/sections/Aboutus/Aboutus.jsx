@@ -36,13 +36,13 @@ const AboutUs = () => {
 
           <div className="text-content">
             <div>
-              <h2 className="sync-title">SYNC AIT</h2>
+              <h2 className="sync-title">NEXUS</h2>
               <div className="color-lines">
                 <div className="color-line-sky" />
                 <div className="color-line-blue" />
               </div>
               <p className="sync-description">
-                <b>System for Networked Clubs (SYNC) AIT Pune </b> is a central hub for all college clubs.
+                <b>AIT NEXUS </b> is a central hub for all college clubs.
                 Our Platform unifies various student organizations under one roof.
                 We aim to foster collaboration, streamline event management, and enhance communication among club members and the wider student body.
               </p>

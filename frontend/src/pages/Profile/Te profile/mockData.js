@@ -59,7 +59,7 @@ export const tasksData = [
 ];
 
 export const messagesData = [
-  { id: 'msg1', clubId: 'c1', senderId: 'm1', senderName: 'Peush Yadav', receiverId: null, content: 'Hey everyone, the new designs are live on Figma.', timestamp: '2026-02-01T10:30:00Z', avatar: '' },
+  { id: 'msg1', clubId: 'c1', senderId: 'm1', senderName: 'Peush Yadav', receiverId: null, content: 'Hey everyone, our website is live on https://sync-ait.vercel.app', timestamp: '2026-02-01T10:30:00Z', avatar: '' },
   { id: 'msg2', clubId: 'c1', senderId: 'te-1', senderName: 'Nishant Singh', receiverId: null, content: 'Great work Sajal! I will review them shortly.', timestamp: '2026-02-01T10:35:00Z', avatar: 'https://github.com/shadcn.png' },
   { id: 'msg3', clubId: 'c2', senderId: 'm2', senderName: 'APS_X', receiverId: null, content: 'Do we have a meeting today?', timestamp: '2026-02-01T11:00:00Z', avatar: '' },
   { id: 'msg4', clubId: 'c3', senderId: 'm1', senderName: 'Peush Yadav', receiverId: 'te-1', content: 'Can we discuss the hero animation logic?', timestamp: '2026-02-01T14:20:00Z', avatar: '' },

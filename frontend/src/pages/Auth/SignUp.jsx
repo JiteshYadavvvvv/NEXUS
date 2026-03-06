@@ -7,10 +7,9 @@ import { toast } from "react-toastify";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
 
 const YEARS = [
-  { label: "FE", sublabel: "First Year", color: "from-violet-500 to-indigo-500" },
-  { label: "SE", sublabel: "Second Year", color: "from-indigo-500 to-blue-500" },
-  { label: "TE", sublabel: "Third Year", color: "from-blue-500 to-cyan-500" },
-  { label: "BE", sublabel: "Final Year", color: "from-cyan-500 to-teal-500" },
+  { label: "FE", sublabel: "First Year" },
+  { label: "SE", sublabel: "Second Year" },
+  { label: "TE", sublabel: "Third Year" },
 ];
 
 // ─── Google Profile Setup Step ───────────────────────────────────
@@ -46,7 +45,7 @@ const GoogleProfileSetup = ({ onSubmit, loading }) => {
           placeholder="John Doe"
           value={setupName}
           onChange={(e) => setSetupName(e.target.value)}
-          className="w-full mt-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 dark:bg-slate-800 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition disabled:opacity-50"
+          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
         />
       </div>
 
@@ -66,7 +65,7 @@ const GoogleProfileSetup = ({ onSubmit, loading }) => {
           placeholder="e.g. jdoe42"
           value={callSign}
           onChange={(e) => setCallSign(e.target.value)}
-          className="w-full mt-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 dark:bg-slate-800 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition disabled:opacity-50"
+          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
         />
         <p className="text-[11px] text-slate-500 mt-1 text-right">{callSign.length}/10</p>
       </div>
@@ -76,28 +75,23 @@ const GoogleProfileSetup = ({ onSubmit, loading }) => {
         <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
           Academic Year
         </label>
-        <div className="grid grid-cols-4 gap-2">
-          {YEARS.map(({ label, color }) => (
+        <div className="grid grid-cols-3 gap-2">
+          {YEARS.map(({ label }) => (
             <button
               key={label}
               type="button"
               disabled={loading}
               onClick={() => setSelectedYear(label)}
               className={`
-                relative rounded-xl p-0.5
-                bg-gradient-to-br ${color}
+                relative rounded-xl border p-2
                 transition-all duration-150
-                ${selectedYear === label ? "scale-[1.04] shadow-lg" : "opacity-50 hover:opacity-80"}
+                ${selectedYear === label 
+                  ? "border-white bg-white/10 text-white shadow-sm" 
+                  : "border-white/10 bg-transparent text-gray-400 hover:border-white/20 hover:text-gray-200"}
                 disabled:pointer-events-none
               `}
             >
-              <div className={`
-                rounded-[10px] py-2 text-center text-sm font-semibold
-                transition-colors duration-150
-                ${selectedYear === label
-                  ? "bg-slate-800 text-white"
-                  : "bg-slate-900 text-slate-300 group-hover:bg-slate-800"}
-              `}>
+              <div className="text-center text-sm font-medium">
                 {label}
               </div>
             </button>
@@ -111,7 +105,7 @@ const GoogleProfileSetup = ({ onSubmit, loading }) => {
       <button
         type="submit"
         disabled={loading || !setupName.trim() || !callSign.trim() || !selectedYear}
-        className="w-full mt-2 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-600 text-white text-sm font-medium shadow-lg shadow-indigo-500/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:pointer-events-none"
+        className="w-full mt-4 py-3 rounded-xl bg-[#D4AF37]/90 hover:bg-[#D4AF37] text-slate-950 text-sm font-semibold shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all transform hover:-translate-y-0.5 disabled:bg-white/5 disabled:text-gray-500 disabled:shadow-none disabled:transform-none disabled:pointer-events-none border border-[#D4AF37]/20 disabled:border-transparent"
       >
         {loading ? "Saving..." : "Finish Setup"}
       </button>
@@ -208,7 +202,9 @@ const SignUp = () => {
         backgroundSize: "cover",
       }}
     >
-      <div className="w-full max-w-md bg-transparent md:backdrop-blur-xl border border-slate-700/70 rounded-2xl shadow-2xl px-8 py-10 relative">
+      <div className="w-full max-w-md bg-black/40 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl px-8 py-10 relative overflow-hidden">
+        {/* Subtle top glow inside the card */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-linear-to-r from-transparent via-white/30 to-transparent"></div>
         {/* Back button — hidden on year-picker so user cannot bypass it */}
         {step === "form" && (
           <Button
@@ -253,7 +249,7 @@ const SignUp = () => {
                   id="name"
                   type="text"
                   required
-                  className="w-full mt-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 dark:bg-slate-800 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                  className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -272,7 +268,7 @@ const SignUp = () => {
                   id="email"
                   type="email"
                   required
-                  className="w-full mt-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 dark:bg-slate-800 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                  className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
                   placeholder="you@college.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -291,7 +287,7 @@ const SignUp = () => {
                   id="password"
                   type="password"
                   required
-                  className="w-full mt-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 dark:bg-slate-800 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                  className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -309,7 +305,7 @@ const SignUp = () => {
                 <select
                   id="year"
                   required
-                  className="w-full mt-1 px-3 py-2 rounded-xl bg-slate-100 border border-slate-300 dark:bg-slate-800 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                  className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all [&>option]:text-black"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
                 >
@@ -319,14 +315,13 @@ const SignUp = () => {
                   <option value="FE">FE</option>
                   <option value="SE">SE</option>
                   <option value="TE">TE</option>
-                  <option value="BE">BE</option>
                 </select>
               </div>
 
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full mt-2 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-600 text-sm font-medium shadow-lg shadow-indigo-500/30 transition-transform transform hover:-translate-y-0.5 text-white"
+                className="w-full mt-4 py-3 rounded-xl bg-white hover:bg-gray-100 text-black text-sm font-semibold shadow-lg shadow-white/10 transition-transform transform hover:-translate-y-0.5"
               >
                 Sign Up
               </button>
@@ -352,7 +347,7 @@ const SignUp = () => {
                 Already have an account?{" "}
                 <button
                   onClick={() => navigate("/login")}
-                  className="text-indigo-500 hover:text-indigo-400 font-medium transition"
+                  className="text-white hover:text-gray-300 font-medium transition"
                 >
                   Login
                 </button>

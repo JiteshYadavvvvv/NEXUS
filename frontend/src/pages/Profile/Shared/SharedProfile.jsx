@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
+import { Mail, Phone, Award, MessageCircle, Send, Edit2, Check, X, Camera, Save, Copy } from 'lucide-react';
 import { useProfile } from './ProfileContext';
-import { Mail, Phone, Award, MessageCircle, Send, Edit2, Check, X, Camera, Save } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 const SharedProfile = () => {
     const { profile } = useProfile();
     const { user, updateUserInfo } = useAuth();
-    const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'success' | 'error'
+    const [saveStatus, setSaveStatus] = useState(null);
+    const [copied, setCopied] = useState(false);
+
     const [saveError, setSaveError] = useState('');
     
     const [isEditing, setIsEditing] = useState(false);
@@ -22,7 +24,7 @@ const SharedProfile = () => {
             bio: user?.bio || '',
             year: user?.year || '',
             callSign: user?.callSign || '',
-            bannerText: profile?.bannerText || 'SYNC',
+            bannerText: profile?.bannerText || 'NEXUS',
             avatar: profile?.avatar || '/clubprofiles/ns.png',
             phone: profile?.phone || '',
             email: user?.email || '',
@@ -40,6 +42,7 @@ const SharedProfile = () => {
             bio: editForm.bio,
             year: editForm.year,
             callSign: editForm.callSign,
+            number: editForm.phone,
         });
         if (result.success) {
             setSaveStatus('success');
@@ -168,8 +171,8 @@ const SharedProfile = () => {
                                         maxLength={10}
                                         className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
                                         value={editForm.callSign}
-                                        onChange={e => setEditForm({...editForm, callSign: e.target.value})}
-                                        placeholder="e.g. SYNC"
+                                        onChange={e => setEditForm({...editForm, callSign: e.target.value.replace(/\s/g, '')})}
+                                        placeholder="e.g. NEXUS"
                                     />
                                     <p className="text-xs text-gray-400 text-right">{(editForm.callSign || '').length}/10 — shown as your profile banner</p>
                                 </div>
@@ -209,8 +212,20 @@ const SharedProfile = () => {
             </div>
 
             <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden">
-                <div className="h-24 md:h-28 bg-gray-900 text-white flex items-center justify-center font-black text-4xl md:text-6xl lg:text-8xl uppercase px-4 text-center">
-                    {user.callSign || 'SYNC'}
+                <div className="relative h-24 md:h-28 bg-gray-900 text-white flex items-center justify-center font-black text-4xl md:text-6xl lg:text-8xl px-4 text-center">
+                    {user.callSign || 'NEXUS'}
+                    <button
+                        onClick={() => {
+                            navigator.clipboard.writeText(user.callSign || 'NEXUS');
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2000);
+                        }}
+                        title="Copy callsign"
+                        className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-medium rounded-lg transition-colors backdrop-blur-sm"
+                    >
+                        {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                        {copied ? 'Copied!' : 'Copy'}
+                    </button>
                 </div>
                 
                 <div className="px-8 pb-8">

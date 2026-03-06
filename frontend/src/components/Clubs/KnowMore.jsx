@@ -7,9 +7,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { CiFacebook } from "react-icons/ci";
-import { FaInstagram } from "react-icons/fa";
-import { FaGlobe } from "react-icons/fa";
+import { CiFacebook } from 'react-icons/ci';
+import { FaInstagram, FaGlobe } from 'react-icons/fa';
 
 export default function KnowMore({
   open = false,

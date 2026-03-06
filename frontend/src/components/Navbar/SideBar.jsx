@@ -91,13 +91,14 @@ export default function SideBar({ open, onClose, onOpenLogin }) {
                       onClick={onClose}
                       className={({ isActive }) =>
                         cn(
-                          "flex items-center px-4 py-3 rounded-xl text-[15px] font-medium transition-all duration-200",
+                          "flex items-center gap-2 px-4 py-3 rounded-xl text-[15px] font-medium transition-all duration-200",
                           isActive
                             ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 font-semibold shadow-sm"
                             : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100/80 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-50"
                         )
                       }
                     >
+                      {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
                       {item.name}
                     </NavLink>
                   )}
@@ -146,7 +147,7 @@ export default function SideBar({ open, onClose, onOpenLogin }) {
             </Button>
 
             <p className="text-[11px] text-center text-zinc-400 dark:text-zinc-600 font-medium mt-4">
-              © {new Date().getFullYear()} SYNC-AIT. All rights reserved.
+              © {new Date().getFullYear()} NEXUS. All rights reserved.
             </p>
           </div>
         </div>

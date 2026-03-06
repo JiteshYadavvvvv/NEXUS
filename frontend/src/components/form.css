@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Foldit:wght@100..900&family=Jersey+10&family=Oi&family=Rubik+Distressed&family=Rubik+Glitch+Pop&family=Rubik+Storm&family=Tiny5&display=swap');
+
 .application-page {
   min-height: 100vh;
   width: 100%;
@@ -24,7 +26,8 @@
 .form-title {
   text-align: center;
   color: #0f62fe;
-  font-size: 28px;
+  font-size: 98px;
+  font-family: 'Black Ops One', sans-serif;
   font-weight: 800;
   margin-bottom: 18px;
 }

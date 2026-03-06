@@ -1,231 +1,82 @@
-# SYNC
-# System for Networked Clubs
-# AIT Pune Club Management
+<div align="center">
+<h1 align="center">⛓️‍💥 NEXUS ⛓️‍💥</h1>
+### The Ultimate Club Management Ecosystem for AIT Pune
 
-A modern, full-stack **Club Management Portal** for  
-**Army Institute of Technology (AIT), Pune**, built using **React + Vite**, **Node.js + Express**, and optional **Three.js** for interactive visuals.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Frontend](https://img.shields.io/badge/React-18-blue.svg?style=flat&logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF.svg?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-This platform manages and showcases technical clubs such as:
-- OSS Club (Open Source Software Club)
-- GDG AIT Pune (Google Developer Group)
-- CP Club (Competitive Programming Club)
+[Explore the Platform](#-getting-started) • [Ecosystem](#-ecosystem) • [Feature Set](#-features)
 
----
-
-## 🔗 Demo & Links
-
-* **Live**: `https://your-deployment-url.example` (replace after deploy)
-* **Design/Preview**: `/docs/screens/`
-* **API Docs**: `/api/docs` (Swagger / Redoc)
+</div>
 
 ---
 
-## 🧭 Table of Contents
+## 🔒 Overview
 
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Monorepo Layout](#-monorepo-layout)
-- [Quick Start](#-quick-start)
-- [Configuration](#-configuration)
-- [Available Scripts](#-available-scripts)
-- [API](#-api)
-- [3D / Three.js](#-3d--threejs)
-- [Testing & Quality](#-testing--quality)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [Roadmap](#-roadmap)
-- [License](#-license)
+**NEXUS** is not just another dashboard—it's the absolute central nervous system for all student organizations at the Army Institute of Technology, Pune. Built for speed, scale, and modern aesthetics, it unifies the fragmented club ecosystem into a single, seamless, high-performance platform.
 
----
+## ✨ Ecosystem
 
-## ✨ Features
+The NEXUS infrastructure is split into discrete, highly-optimized components to ensure maximum velocity and maintainability:
 
-- ⚡️ **Fast React Frontend** (Vite + React 18 + TailwindCSS)
-- 🧰 **Express REST API**
-- 🏫 **Multiple Club Management**
-  - Club overview pages
-  - Activity & events listing (year-wise)
-- 🗓️ **Events & Activities Module**
-- 👥 **Mentors & Core Team Sections**
-- 🎨 **Optional Three.js animated hero**
-- 📱 **Fully Responsive UI**
-- 🧪 **Testing Ready**
-- 🚀 **Deploy-ready for Vercel, Render, Fly.io**
+| Module | Description | Repository |
+|-----------|-------------|------------|
+| **NEXUS Frontend** | The core visual application for end-users, built with React + Vite. | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Jitesh-Yadav01/NEXUS) |
+| **NEXUS Backend API** | Robust, scalable Express.js REST API powering the entire system. | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MyTricks-code/sync-backend-api) |
 
----
+## 🚀 Getting Started
 
-## 🧱 Tech Stack 
+Initialize the frontend environment to experience NEXUS locally.
 
-| Layer | Technology |
-|-----:|------------|
-| Frontend | React 18, Vite, TypeScript, TailwindCSS |
-| 3D | Three.js, @react-three/fiber, @react-three/drei |
-| Backend | Node.js 20, Express.js 4 |
-| Database (optional) | PostgreSQL (Prisma) / MongoDB (Mongoose) |
-| Docs | Swagger (OpenAPI), Markdown |
-| Tooling | pnpm, Dotenv, ESLint, Prettier |
-
----
-
-## 🗂 Monorepo Layout
-
-ait-club-management/
-├─ apps/
-│ ├─ web/ # React + Vite frontend
-│ └─ api/ # Node + Express backend
-├─ packages/
-│ ├─ ui/ # Shared UI components (optional)
-│ └─ config/ # Shared configs
-├─ docs/ # Screenshots & documentation
-├─ docker/ # Docker setup
-└─ .github/ # CI workflows
-
-yaml
-Copy code
-
----
-
-## 🚀 Quick Start
-
-### Local (pnpm)
-
-> Prerequisites: Node.js ≥ 20, pnpm ≥ 9
+First, clone and install dependencies:
 
 ```bash
-git clone https://github.com/your-org/ait-club-management.git
-cd ait-club-management
-pnpm install
-cp apps/api/.env.example apps/api/.env
-cp apps/web/.env.example apps/web/.env
-pnpm dev
-Open:
+git clone https://github.com/Jitesh-Yadav01/NEXUS.git
+cd NEXUS/frontend
+npm install
+```
 
-Frontend → http://localhost:5173
+Configure your environment variables:
 
-Backend → http://localhost:4000
-
-⚙️ Configuration
-Backend .env
-ini
-Copy code
-PORT=4000
-NODE_ENV=development
-CORS_ORIGIN=http://localhost:5173
-JWT_SECRET=replace_me
-Frontend .env
-ini
-Copy code
+```ini
+# Create a .env file in the frontend/ root directory
 VITE_API_URL=http://localhost:4000
-VITE_ENABLE_3D=true
-📅 Clubs & Activities (Sample – 2023-24)
-OSS Club
-INNERVE
+```
 
-Open Source Workshops
+Ignite the development server:
 
-Git & GitHub Bootcamp
+```bash
+npm run dev
+```
 
-Web Development Sessions
+> **Note**: For the full experience, ensure the [Backend API](https://github.com/MyTricks-code/sync-backend-api) is also running simultaneously.
 
-GDG AIT Pune
-Frontend Jams
+## 🛠️ Features
 
-Google Cloud Workshop
+- ⚡️ **Hyper-Responsive Design**: Instantly adapts from ultra-wide monitors to the absolute smallest mobile devices without breaking a sweat.
+- � **Sleek, Dark Aesthetics**: A beautiful, meticulously crafted dark-mode-first UI that feels premium and immersive.
+- 👥 **Contextual Role Access**: Intelligently renders distinct dashboards depending on whether the user is a Core Member, Tech Executive, or regular attendee.
+- 🗓️ **Infinite Event Tracking**: Never miss a beat. Track past activities, upcoming hackathons, and exclusive technical sessions.
+- 🏫 **Unified Club Hub**: Deep integrations and dedicated spaces for OSS, GDG AIT Pune, CP Club, and more.
 
-Android Development Session
+## 🧱 Architecture Layout
 
-Tech Talks
+```text
+NEXUS/
+└── frontend/
+    ├── src/
+    │   ├── assets/       # Visual media & theme assets
+    │   ├── components/   # Reusable UI primitives
+    │   ├── pages/        # High-level route views
+    │   ├── sections/     # Complex page layouts
+    │   └── context/      # Global state (Auth, Theme)
+    └── public/           # Raw static assets
+```
 
-CP Club
-CODEFT 4.0
+---
 
-CRACK 5.1
-
-CRACK 5.2
-
-KICKSTARTER
-
-🧰 Available Scripts
-bash
-Copy code
-pnpm dev
-pnpm build
-pnpm lint
-pnpm test
-pnpm format
-🔌 API
-Base URL:
-
-arduino
-Copy code
-http://localhost:4000
-Example:
-
-
-GET /health
-200 OK
-http
-Copy code
-GET /api/events
-GET /api/clubs
-🌀 3D / Three.js
-Optional animated hero background
-
-Enabled via: VITE_ENABLE_3D=true
-
-Lazy-loaded for performance
-
-Can be disabled without breaking UI
-
-🧪 Testing & Quality
-Frontend: Vitest + React Testing Library
-
-Backend: Jest + Supertest
-
-Linting: ESLint
-
-Formatting: Prettier
-
-☁️ Deployment
-Frontend: Vercel / Netlify
-
-Backend: Render / Railway / Fly.io
-
-Build:
-
-bash
-Copy code
-pnpm build
-🤝 Contributing
-Fork repository
-
-Create feature branch
-
-Commit with:
-
-feat:
-
-fix:
-
-docs:
-
-Open Pull Request
-
-🗺 Roadmap
- Admin dashboard
-
- Club-wise role management
-
- Event registrations
-
- Google OAuth login
-
- CMS integration
-
- Accessibility improvements
-
-📜 License
-MIT © AIT Pune Club Management Project
-
-Built with React, Vite, Node.js, Tailwind CSS, and strong developer discipline.
-
+<div align="center">
+  <sub>Forged with ❤️ by GDG AIT Pune.</sub>
+</div>

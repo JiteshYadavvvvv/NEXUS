@@ -8,6 +8,7 @@ export default function SharedTasks() {
     const [isEditing, setIsEditing] = useState(false);
     const [currentTaskId, setCurrentTaskId] = useState(null);
     const [newTask, setNewTask] = useState({ title: '', description: '', assignedTo: '', deadline: '', priority: 'Medium' });
+    const [submissionLink, setSubmissionLink] = useState({});
 
     const assignableMembers = role === 'TE' 
         ? members 
@@ -50,16 +51,18 @@ export default function SharedTasks() {
                     <h2 className="text-2xl font-bold tracking-tight text-gray-900">Active Tasks</h2>
                     <p className="text-gray-500">Track project progress.</p>
                 </div>
-                <button
-                    onClick={() => {
-                        setShowAddForm(!showAddForm);
-                        setIsEditing(false);
-                        setNewTask({ title: '', description: '', assignedTo: '', deadline: '', priority: 'Medium' });
-                    }}
-                    className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
-                >
-                    <Plus className="h-4 w-4" /> {showAddForm && !isEditing ? 'Close' : 'New Task'}
-                </button>
+                {role !== 'FE' && (
+                    <button
+                        onClick={() => {
+                            setShowAddForm(!showAddForm);
+                            setIsEditing(false);
+                            setNewTask({ title: '', description: '', assignedTo: '', deadline: '', priority: 'Medium' });
+                        }}
+                        className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
+                    >
+                        <Plus className="h-4 w-4" /> {showAddForm && !isEditing ? 'Close' : 'New Task'}
+                    </button>
+                )}
             </div>
 
             {showAddForm && (
@@ -149,12 +152,16 @@ export default function SharedTasks() {
                                     <div className="flex justify-between items-start mb-2">
                                         <h4 className="font-medium text-sm text-gray-900">{task.title}</h4>
                                         <div className="flex gap-1">
-                                            <button onClick={() => openEditModal(task)} className="text-gray-400 hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <Pencil className="h-3.5 w-3.5" />
-                                            </button>
-                                            <button onClick={() => deleteTask(task.id)} className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <Trash2 className="h-3.5 w-3.5" />
-                                            </button>
+                                            {role !== 'FE' && (
+                                                <>
+                                                    <button onClick={() => openEditModal(task)} className="text-gray-400 hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <Pencil className="h-3.5 w-3.5" />
+                                                    </button>
+                                                    <button onClick={() => deleteTask(task.id)} className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <Trash2 className="h-3.5 w-3.5" />
+                                                    </button>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
 
@@ -176,13 +183,26 @@ export default function SharedTasks() {
                                         <div className="flex items-center gap-1 text-xs text-gray-400">
                                             <Calendar className="h-3 w-3" /> {new Date(task.deadline).toLocaleDateString()}
                                         </div>
-                                        {status !== 'Completed' && (
-                                            <button
-                                                onClick={() => updateTaskStatus(task.id, 'Completed')}
-                                                className="text-xs text-green-600 hover:text-green-700 font-medium"
-                                            >
-                                                Complete
-                                            </button>
+                                        {status !== 'Completed' ? (
+                                            <div className="flex gap-2 w-full mt-2">
+                                                <input 
+                                                    type="url" 
+                                                    placeholder="Submission Link" 
+                                                    className="flex-1 min-w-0 text-xs px-2 py-1 rounded border border-gray-200 outline-none focus:border-blue-500"
+                                                    value={submissionLink[task.id] || ''}
+                                                    onChange={(e) => setSubmissionLink(prev => ({...prev, [task.id]: e.target.value}))}
+                                                />
+                                                <button
+                                                    onClick={() => updateTaskStatus(task.id, 'Completed')}
+                                                    className="text-[10px] bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition-colors whitespace-nowrap"
+                                                >
+                                                    Submit Task
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <span className="text-xs text-green-600 font-medium flex items-center gap-1">
+                                                <CheckCircle2 className="h-3.5 w-3.5" /> Done
+                                            </span>
                                         )}
                                     </div>
                                 </div>

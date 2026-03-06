@@ -22,6 +22,11 @@ export default function MainContent(){
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
+    document.body.classList.add('no-custom-cursor');
+    return () => document.body.classList.remove('no-custom-cursor');
+  }, []);
+
+  useEffect(() => {
     let cancelled = false
     const controller = new AbortController()
 
@@ -73,7 +78,7 @@ export default function MainContent(){
         <div className="flex items-center gap-2 mb-[-45px] mt-10">
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 px-4 md:px-8 py-2 md:py-3 ml-3 md:ml-40 text-sm md:text-lg font-bold text-gray-700 hover:text-black transition-colors bg-blue-400 rounded-full"
+            className="flex items-center gap-2 px-4 md:px-8 py-2 md:py-3 ml-3 md:ml-40 text-lg font-bold bg-blue-600 hover:bg-blue-500 text-white border-0 shadow-[0_0_30px_-10px_rgba(37,99,235,0.6)] transition-all hover:scale-105 active:scale-95 duration-300 rounded-full"
           >
             <ArrowLeft className="h-4 w-4" /> Home
           </button>

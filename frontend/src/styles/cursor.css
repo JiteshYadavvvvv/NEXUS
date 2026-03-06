@@ -22,3 +22,17 @@ html.dark {
   border-color: var(--cursor-color) !important;
   border-style: solid;
 }
+
+/* Hide custom cursor on pages that opt out (e.g. profile dashboards) */
+body.no-custom-cursor,
+body.no-custom-cursor * {
+  cursor: auto !important;
+}
+
+body.no-custom-cursor .target-cursor-dot,
+body.no-custom-cursor .target-cursor-corner,
+body.no-custom-cursor [class*="target-cursor"] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

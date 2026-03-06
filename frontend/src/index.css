@@ -1,6 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=BBH+Sans+Bartle&family=BBH+Sans+Hegarty&family=Boldonse&family=Science+Gothic:wght@100..900&family=Stack+Sans+Notch:wght@200..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Jersey+20&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Oi&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Foldit:wght@100..900&family=Jersey+10&family=Oi&family=Rubik+Distressed&family=Rubik+Glitch+Pop&family=Rubik+Storm&family=Tiny5&display=swap');
+
+.foldit-regular {
+  font-family: "Foldit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
 
 .oi-regular {
   font-family: "Jersey 20";

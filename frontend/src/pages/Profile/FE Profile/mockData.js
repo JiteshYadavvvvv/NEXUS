@@ -1,10 +1,10 @@
 export const profileData = {
   id: 'se-1',
-  name: 'APS_X',
-  email: 'aryanpratapsingh_240114@aitpune.edu.in',
+  name: 'ROMEO',
+  email: 'romeo_240114@aitpune.edu.in',
   phone: '+91 97172 09328',
   gender: 'Male',
-  role: 'Future Secretary',
+  role: 'Mediator',
   domains: ['Full Stack', 'Cloud Computing', 'AI/ML'],
   connectedClubs: ['Google Developer Groups (GDG)', 'Open Source Software (OSS)', 'Entrepreneurship Cell (E-Cell)'],
   avatar: '/clubprofiles/aps.png',

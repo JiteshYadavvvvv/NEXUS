@@ -66,8 +66,8 @@ export function Navbar({ onOpenLogin, onOpenSidebar, isSidebarOpen }) {
     return (
         <>
             <PillNav
-                logo="/synclogo.svg"
-                logoAlt="SYNC-AIT Logo"
+                logo="/clublogos/google-developers.svg"
+                logoAlt="NEXUS Logo"
                 items={navItems}
                 activeHref={location.pathname}
                 className="md:mx-auto"
