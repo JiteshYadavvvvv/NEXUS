@@ -20,11 +20,10 @@ const ClubSelectDropdown = ({ clubs, selectedClub, onSelect }) => {
 
   const filteredClubs = clubs.filter(
     (club) =>
-      club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      club.abbr.toLowerCase().includes(searchQuery.toLowerCase())
+      club.name && club.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const selectedClubDetails = clubs.find((c) => c.abbr === selectedClub);
+  const selectedClubDetails = clubs.find((c) => c.name === selectedClub);
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
@@ -42,7 +41,7 @@ const ClubSelectDropdown = ({ clubs, selectedClub, onSelect }) => {
         {selectedClubDetails ? (
           <div className="flex items-center gap-3">
             <img
-              src={selectedClubDetails.img || "/clublogos/default.svg"}
+              src={selectedClubDetails.logo || "/clublogos/default.svg"}
               alt={`${selectedClubDetails.name} logo`}
               className="w-6 h-6 object-contain shrink-0"
               onError={(e) => {
@@ -82,13 +81,13 @@ const ClubSelectDropdown = ({ clubs, selectedClub, onSelect }) => {
           <ul className="max-h-[300px] overflow-y-auto py-2 p-1 custom-scrollbar">
             {filteredClubs.length > 0 ? (
               filteredClubs.map((club) => {
-                const isSelected = selectedClub === club.abbr;
+                const isSelected = selectedClub === club.name;
                 return (
-                  <li key={club.abbr}>
+                  <li key={club.name}>
                     <button
                       type="button"
                       onClick={() => {
-                        onSelect(club.abbr);
+                        onSelect(club.name);
                         setIsOpen(false);
                         setSearchQuery("");
                       }}
@@ -100,14 +99,16 @@ const ClubSelectDropdown = ({ clubs, selectedClub, onSelect }) => {
                       )}
                     >
                       <div className="flex items-center gap-3">
-                        <img
-                          src={club.img || "/clublogos/default.svg"}
-                          alt={`${club.name} logo`}
-                          className="w-6 h-6 object-contain shrink-0"
-                          onError={(e) => {
-                            e.target.src = "/clublogos/google-developers.svg";
-                          }}
-                        />
+                        {club.logo && (
+                          <img
+                            src={club.logo}
+                            alt={`${club.name} logo`}
+                            className="w-6 h-6 object-contain shrink-0"
+                            onError={(e) => {
+                              e.target.src = "/clublogos/google-developers.svg";
+                            }}
+                          />
+                        )}
                         <span className="text-sm font-medium">{club.name}</span>
                       </div>
                       {isSelected && <CheckCircle2 className="h-4 w-4 text-white shrink-0" />}

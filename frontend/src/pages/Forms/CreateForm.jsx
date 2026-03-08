@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, ChevronDown, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -21,6 +21,8 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
 
     const [title, setTitle] = useState(initialData?.title || '');
     const [desc, setDesc] = useState(initialData?.desc || '');
+    const [clubs, setClubs] = useState([]);
+    const [clubName, setClubName] = useState("");
     const [year, setYear] = useState(initialData?.year || '');
     const [isPublic, setIsPublic] = useState(initialData?.isPublic ?? false);
     const [fields, setFields] = useState(
@@ -33,6 +35,32 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
     const [deleteStatus, setDeleteStatus] = useState(null); // null | 'deleting' | 'done'
     const [viewers, setViewers] = useState(initialData?.viewers || []);
     const [newViewer, setNewViewer] = useState('');
+
+    useEffect(() => {
+        fetch(`${API}/api/organisation/get-clubs`,{
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                setClubs(data.clubs);
+                
+                // Set default club if one is stored in localStorage
+                try {
+                    const saved = localStorage.getItem("enteredClub");
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        if (parsed && parsed.name) {
+                            setClubName(parsed.name);
+                        }
+                    }
+                } catch (e) {
+                    console.error("Failed to parse enteredClub", e);
+                }
+            }
+        })
+        .catch(err => console.error("Failed to fetch clubs:", err));
+    }, []);
 
     /* ── delete ── */
     const handleDelete = async () => {
@@ -80,6 +108,10 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
 
     /* ── submit ── */
     const handleSubmit = async () => {
+        if(!clubName){
+            alert("Please select a club");
+            return;
+        }
         if (!title.trim()) { setErrorMsg('Form title is required.'); return; }
         setStatus('saving');
         setErrorMsg('');
@@ -87,27 +119,18 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
             const body = {
                 title: title.trim(),
                 desc: desc.trim(),
+                clubName,
                 isPublic,
                 public: isPublic,
                 year,
                 viewers,
+                orgId: "CSI",
                 fields: fields.map(({ input, type, required, options }) => {
                     const f = { input, type, required };
                     if (type === 'select') f.options = options;
                     return f;
                 }),
             };
-
-            try {
-                const saved = localStorage.getItem("enteredClub");
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    const activeClubId = parsed.id || parsed.abbr;
-                    if (activeClubId) body.orgId = activeClubId;
-                }
-            } catch (e) {
-                console.error("Failed to append orgId", e);
-            }
 
             const url = isEdit
                 ? `${API}/api/forms/edit-form`
@@ -198,6 +221,17 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
             {/* Basic Info */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-5">
                 <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Form Details</h3>
+
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Club <span className="text-red-500">*</span></label>
+                    <input
+                        type="text"
+                        value={clubName}
+                        readOnly
+                        placeholder="Loading club..."
+                        className="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-gray-600 focus:outline-none cursor-not-allowed text-sm font-medium"
+                    />
+                </div>
 
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Form Title <span className="text-red-500">*</span></label>

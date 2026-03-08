@@ -8,9 +8,14 @@ export default function ClubList({ onApply }) {
   useEffect(() => {
     async function fetchClubs() {
       try {
-        const res = await fetch('/api/clubs.json')
+        const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+        const res = await fetch(`${API}/api/organisation/get-clubs`, {
+          credentials: "include"
+        })
         const data = await res.json()
-        setClubs(data)
+        if (data.success) {
+          setClubs(data.clubs)
+        }
       } catch (err) {
         console.error('Error fetching clubs:', err)
       }
@@ -23,11 +28,11 @@ export default function ClubList({ onApply }) {
       <div className="cards">
         {clubs.map(club => (
           <ClubCard
-            key={club.abbr}
-            abbr={club.abbr}
+            key={club.name}
+            abbr={club.abbr || club.name}
             name={club.name}
             fullForm={club.fullForm}
-            img={club.img}
+            img={club.logo || club.img}
             desc={club.desc}
             focusAreas={club.focusAreas}
             media={club.media}

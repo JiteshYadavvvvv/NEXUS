@@ -11,9 +11,16 @@ const AuthSelection = () => {
   const [showClubSelect, setShowClubSelect] = useState(false);
 
   useEffect(() => {
-    fetch("/api/clubs.json")
+    const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+    fetch(`${API}/api/organisation/get-clubs`, {
+      credentials: "include"
+    })
       .then((res) => res.json())
-      .then((data) => setClubs(data))
+      .then((data) => {
+        if (data.success) {
+          setClubs(data.clubs || []);
+        }
+      })
       .catch((err) => console.error("Failed to load clubs", err));
   }, []);
 
@@ -28,7 +35,7 @@ const AuthSelection = () => {
   const handleClubSubmit = (e) => {
     e.preventDefault();
     if (selectedClub) {
-      const clubDetails = clubs.find((c) => c.abbr === selectedClub);
+      const clubDetails = clubs.find((c) => c.name === selectedClub);
       navigate("/login", { 
         state: { 
           role: "Organisation", 

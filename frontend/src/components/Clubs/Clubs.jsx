@@ -32,12 +32,18 @@ export default function MainContent(){
     async function fetchClubs() {
       setLoading(true)
       try {
-        const res = await fetch('/api/clubs.json', { signal: controller.signal })
+        const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+        const res = await fetch(`${API}/api/organisation/get-clubs`, { 
+          signal: controller.signal,
+          credentials: "include"
+        })
         if (!res.ok) {
           throw new Error(`Failed to fetch clubs: ${res.status}`)
         }
         const data = await res.json()
-        if (!cancelled) setClubs(Array.isArray(data) ? data : [])
+        if (!cancelled && data.success) {
+          setClubs(Array.isArray(data.clubs) ? data.clubs : [])
+        }
       } catch (err) {
         if (err.name === 'AbortError') return
         console.error('Error fetching clubs:', err)
@@ -85,7 +91,7 @@ export default function MainContent(){
         <h2 className='text-center text-2xl md:text-4xl font-bold pt-2 md:pt-0'>Explore <span className="text-red-600">Clubs.</span></h2>
         <div className="cards">
           {clubs.map(c => (
-            <ClubCard key={c.abbr} {...c} onApply={handleApply} />
+            <ClubCard key={c.name} {...c} img={c.logo || c.img} abbr={c.abbr || c.name} onApply={handleApply} />
           ))}
         </div>
       </section>

@@ -42,6 +42,13 @@ export default function SharedDashboardLayout({ children }) {
         { id: 'profile', label: 'Profile', icon: Users },
     ];
 
+    const getVisibleTabs = () => {
+        if (role === 'Applicant') {
+            return tabs.filter(t => t.id === 'messages');
+        }
+        return tabs.filter(t => t.id !== 'profile');
+    };
+
     const renderContent = () => {
         switch (activeTab) {
             case 'overview': return <SharedOverview />;
@@ -125,7 +132,7 @@ export default function SharedDashboardLayout({ children }) {
 
 
                     <nav className="flex-1 space-y-2">
-                        {tabs.filter(t => t.id !== 'profile').map(tab => (
+                        {getVisibleTabs().map(tab => (
                             <button
                                 key={tab.id}
                                 onClick={() => {
@@ -256,7 +263,7 @@ export default function SharedDashboardLayout({ children }) {
 
                 <div className="flex-1 overflow-y-auto p-4 md:p-8">
                     <div className="max-w-6xl mx-auto w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
-                        {children ?? renderContent()}
+                        {children ?? (role === 'Applicant' && !['messages', 'forms', 'profile'].includes(activeTab) ? <SharedMessages /> : renderContent())}
                     </div>
                 </div>
             </main>
