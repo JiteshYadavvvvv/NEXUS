@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Plus, ArrowLeft, Trash2, Pencil, Globe, Lock, Calendar, Loader2 } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
+import { FileText, Plus, ArrowLeft, Trash2, Pencil, Globe, Lock, Loader2 } from 'lucide-react';
+
 import { useNavigate } from 'react-router-dom';
 import CreateForm from './CreateForm';
+import { toast } from 'react-toastify';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
 export default function MyForms() {
-    const { user, authLoading } = useAuth();
     const navigate = useNavigate();
 
 
@@ -32,7 +32,7 @@ export default function MyForms() {
         setFormsLoading(true);
         setFetchError('');
         try {
-            const res = await fetch(`${API}/api/forms/get-user-forms`, {
+            const res = await fetch(`${API}/api/forms/get-club-forms`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -62,8 +62,8 @@ export default function MyForms() {
     };
 
     useEffect(() => {
-        if (!authLoading && user) fetchForms();
-    }, [authLoading, user]);
+        fetchForms();
+    }, []);
 
     // Delete form
     const handleDelete = async (e, formId) => {
@@ -79,9 +79,13 @@ export default function MyForms() {
             const json = await res.json();
             if (json.success) {
                 setForms(prev => prev.filter(f => f._id !== formId));
+                toast.success('Form deleted successfully!');
+            } else {
+                toast.error(json.message || 'Failed to delete form.');
             }
         } catch (err) {
             console.error('Delete failed:', err);
+            toast.error(err.message || 'Network error while deleting.');
         } finally {
             setDeletingId(null);
         }
@@ -94,28 +98,6 @@ export default function MyForms() {
         fetchForms();
     };
 
-    // Auth guard
-    if (authLoading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center bg-gray-50">
-                <div className="flex flex-col items-center gap-3">
-                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600" />
-                    <p className="text-sm text-gray-500">Checking authorization...</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (!user || user.year?.toLowerCase() !== 'admin') {
-        return (
-            <div className="flex min-h-screen items-center justify-center bg-gray-50">
-                <div className="bg-white p-8 rounded-xl shadow-sm border text-center">
-                    <h2 className="text-xl font-bold text-red-600 mb-2">Not Authorized</h2>
-                    <p className="text-gray-600">Only Admin Panel members can manage forms.</p>
-                </div>
-            </div>
-        );
-    }
 
     const isFormOpen = showCreate || editingForm !== null;
 
@@ -224,12 +206,6 @@ export default function MyForms() {
                                 )}
 
                                 <div className="mt-auto flex items-center gap-2 flex-wrap">
-                                    {form.year && (
-                                        <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium">
-                                            <Calendar className="h-3 w-3" />
-                                            {form.year}
-                                        </span>
-                                    )}
                                     <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium ${form.isPublic ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
                                         {form.isPublic ? <Globe className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
                                         {form.isPublic ? 'Public' : 'Private'}

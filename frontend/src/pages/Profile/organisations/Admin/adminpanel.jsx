@@ -25,6 +25,7 @@ const AdminPanel = () => {
         : [];
 
     const initialData = {
+        pannel : "AD",
         profile: { clubs },
         members: [],
         tasks: [],

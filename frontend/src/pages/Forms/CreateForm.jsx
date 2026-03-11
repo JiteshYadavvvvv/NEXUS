@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Plus, Trash2, ChevronDown, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from 'react-toastify';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
-const FIELD_TYPES = ['text', 'email', 'textarea', 'select'];
-const YEAR_OPTIONS = ['2024-25', '2025-26', '2026-27', '2027-28'];
+const FIELD_TYPES = ['text', 'email', 'number', 'textarea', 'select'];
 
 const emptyField = () => ({
     id: crypto.randomUUID(),
@@ -21,9 +21,6 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
 
     const [title, setTitle] = useState(initialData?.title || '');
     const [desc, setDesc] = useState(initialData?.desc || '');
-    const [clubs, setClubs] = useState([]);
-    const [clubName, setClubName] = useState("");
-    const [year, setYear] = useState(initialData?.year || '');
     const [isPublic, setIsPublic] = useState(initialData?.isPublic ?? false);
     const [fields, setFields] = useState(
         initialData?.fields?.length
@@ -32,35 +29,7 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
     );
     const [status, setStatus] = useState(null);
     const [errorMsg, setErrorMsg] = useState('');
-    const [deleteStatus, setDeleteStatus] = useState(null); // null | 'deleting' | 'done'
-    const [viewers, setViewers] = useState(initialData?.viewers || []);
-    const [newViewer, setNewViewer] = useState('');
-
-    useEffect(() => {
-        fetch(`${API}/api/organisation/get-clubs`,{
-            credentials: "include"
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success){
-                setClubs(data.clubs);
-                
-                // Set default club if one is stored in localStorage
-                try {
-                    const saved = localStorage.getItem("enteredClub");
-                    if (saved) {
-                        const parsed = JSON.parse(saved);
-                        if (parsed && parsed.name) {
-                            setClubName(parsed.name);
-                        }
-                    }
-                } catch (e) {
-                    console.error("Failed to parse enteredClub", e);
-                }
-            }
-        })
-        .catch(err => console.error("Failed to fetch clubs:", err));
-    }, []);
+    const [deleteStatus, setDeleteStatus] = useState(null);
 
     /* ── delete ── */
     const handleDelete = async () => {
@@ -76,14 +45,19 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
             const json = await res.json();
             if (json.success) {
                 setDeleteStatus('done');
+                toast.success('Form deleted successfully!');
                 setTimeout(() => onSuccess?.(), 800);
             } else {
                 setDeleteStatus(null);
-                setErrorMsg(json.message || 'Failed to delete form.');
+                const msg = json.message || 'Failed to delete form.';
+                setErrorMsg(msg);
+                toast.error(msg);
             }
         } catch (err) {
             setDeleteStatus(null);
-            setErrorMsg(err.message || 'Network error.');
+            const msg = err.message || 'Network error.';
+            setErrorMsg(msg);
+            toast.error(msg);
         }
     };
 
@@ -108,23 +82,15 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
 
     /* ── submit ── */
     const handleSubmit = async () => {
-        if(!clubName){
-            alert("Please select a club");
-            return;
-        }
         if (!title.trim()) { setErrorMsg('Form title is required.'); return; }
+        if (!desc.trim()) { setErrorMsg('Form description is required.'); return; }
         setStatus('saving');
         setErrorMsg('');
         try {
             const body = {
                 title: title.trim(),
                 desc: desc.trim(),
-                clubName,
                 isPublic,
-                public: isPublic,
-                year,
-                viewers,
-                orgId: "CSI",
                 fields: fields.map(({ input, type, required, options }) => {
                     const f = { input, type, required };
                     if (type === 'select') f.options = options;
@@ -147,14 +113,19 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
             const json = await res.json();
             if (json.success) {
                 setStatus('success');
+                toast.success(isEdit ? 'Form updated successfully!' : 'Form created successfully!');
                 setTimeout(() => onSuccess?.(), 1200);
             } else {
                 setStatus('error');
-                setErrorMsg(json.message || (isEdit ? 'Failed to update form.' : 'Failed to create form.'));
+                const msg = json.message || (isEdit ? 'Failed to update form.' : 'Failed to create form.');
+                setErrorMsg(msg);
+                toast.error(msg);
             }
         } catch (err) {
             setStatus('error');
-            setErrorMsg(err.message || 'Network error.');
+            const msg = err.message || 'Network error.';
+            setErrorMsg(msg);
+            toast.error(msg);
         }
     };
 
@@ -163,7 +134,9 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
 
             {/* Header */}
             <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-900">Create Form</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                    {isEdit ? 'Edit Form' : 'Create Form'}
+                </h2>
                 <div className="flex items-center gap-4">
                     {/* Public toggle */}
                     <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -223,17 +196,6 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
                 <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Form Details</h3>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Club <span className="text-red-500">*</span></label>
-                    <input
-                        type="text"
-                        value={clubName}
-                        readOnly
-                        placeholder="Loading club..."
-                        className="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-gray-600 focus:outline-none cursor-not-allowed text-sm font-medium"
-                    />
-                </div>
-
-                <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Form Title <span className="text-red-500">*</span></label>
                     <input
                         type="text"
@@ -245,7 +207,7 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Form Description</label>
+                    <label className="text-sm font-medium text-gray-700">Form Description <span className="text-red-500">*</span></label>
                     <textarea
                         rows={3}
                         value={desc}
@@ -253,21 +215,6 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
                         placeholder="Brief description of what this form is for…"
                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors resize-y text-sm"
                     />
-                </div>
-
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Academic Year</label>
-                    <div className="relative">
-                        <select
-                            value={year}
-                            onChange={e => setYear(e.target.value)}
-                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors text-sm appearance-none"
-                        >
-                            <option value="">Select academic year</option>
-                            {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}</option>)}
-                        </select>
-                        <ChevronDown className="absolute right-3 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
-                    </div>
                 </div>
             </div>
 
@@ -289,7 +236,6 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
                                 )}
                             </div>
 
-                            {/* Label */}
                             <input
                                 type="text"
                                 placeholder="Field label / question"
@@ -298,7 +244,6 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
                                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-sm"
                             />
 
-                            {/* Type + Required row */}
                             <div className="flex items-center gap-3">
                                 <div className="relative flex-1">
                                     <select
@@ -329,7 +274,6 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
                                 </label>
                             </div>
 
-                            {/* Select options */}
                             {field.type === 'select' && (
                                 <div className="space-y-2 pl-2 border-l-2 border-blue-100">
                                     {field.options.map((opt, oi) => (
@@ -362,7 +306,6 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
                     ))}
                 </div>
 
-                {/* Add Field — bottom right */}
                 <div className="flex justify-end">
                     <button
                         onClick={() => setFields(prev => [...prev, emptyField()])}
@@ -371,51 +314,6 @@ export default function CreateForm({ onSuccess, onCancel, initialData }) {
                         <Plus className="h-4 w-4" /> Add Field
                     </button>
                 </div>
-            </div>
-
-            {/* Viewers */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Viewers</h3>
-                <p className="text-xs text-gray-500">Add callSigns of users who can view this form.</p>
-
-                <div className="flex items-center gap-2">
-                    <input
-                        type="text"
-                        placeholder="Enter callSign…"
-                        value={newViewer}
-                        onChange={e => setNewViewer(e.target.value.replace(/\s/g, ''))}
-                        onKeyDown={e => {
-                            if (e.key === 'Enter' && newViewer.trim()) {
-                                setViewers(prev => prev.includes(newViewer.trim()) ? prev : [...prev, newViewer.trim()]);
-                                setNewViewer('');
-                            }
-                        }}
-                        className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors text-sm"
-                    />
-                    <button
-                        onClick={() => {
-                            if (!newViewer.trim()) return;
-                            setViewers(prev => prev.includes(newViewer.trim()) ? prev : [...prev, newViewer.trim()]);
-                            setNewViewer('');
-                        }}
-                        className="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                        Add
-                    </button>
-                </div>
-
-                {viewers.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                        {viewers.map(v => (
-                            <span key={v} className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full">
-                                {v}
-                                <button onClick={() => setViewers(prev => prev.filter(x => x !== v))} className="text-blue-400 hover:text-red-500 transition-colors">
-                                    <X className="h-3 w-3" />
-                                </button>
-                            </span>
-                        ))}
-                    </div>
-                )}
             </div>
         </div>
     );
