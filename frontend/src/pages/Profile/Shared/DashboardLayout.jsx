@@ -89,7 +89,7 @@ export default function SharedDashboardLayout({ children }) {
         );
     }
 
-    if (!user) {
+    if (!user && role !== 'Admin') {
          return (
             <div className="flex min-h-screen items-center justify-center bg-gray-50">
                 <div className="bg-white p-8 rounded-xl shadow-sm border text-center">
