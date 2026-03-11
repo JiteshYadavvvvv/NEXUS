@@ -90,12 +90,13 @@ export default function SharedDashboardLayout({ children }) {
     }
 
     if (!user && role !== 'Admin') {
-         return (
+    if (!user) {
+        return (
             <div className="flex min-h-screen items-center justify-center bg-gray-50">
                 <div className="bg-white p-8 rounded-xl shadow-sm border text-center">
                     <h2 className="text-xl font-bold text-red-600 mb-2">Authentication Required</h2>
                     <p className="text-gray-600 mb-4">You need to log in to access this page.</p>
-                     <button
+                    <button
                         onClick={() => navigate('/login')}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                     >
