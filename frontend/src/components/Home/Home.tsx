@@ -11,6 +11,7 @@ import { FeatureGrid } from './FeatureGrid';
 
 export default function Home() {
   return (
+    <>
     <section className="relative px-6 pt-32 pb-32 md:pt-48 md:pb-40 text-center overflow-hidden max-w-[100vw]">
         <div className="absolute inset-0 -z-10 h-full w-full bg-transparent">
              <Beams
@@ -43,7 +44,7 @@ export default function Home() {
             respectReducedMotion={true}
             loop={false}
             loopDelay={0}
-            className="text-6xl md:text-8xl lg:text-9xl leading-[1.1] font-bold text-white oi-regular" onShuffleComplete={undefined} colorFrom={undefined} colorTo={undefined}            />
+            className="text-5xl md:text-7xl lg:text-8xl leading-[1.1] font-bold text-white oi-regular" onShuffleComplete={undefined} colorFrom={undefined} colorTo={undefined}            />
         </div>
         
         <div className="flex flex-col items-center gap-2">
@@ -51,7 +52,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mx-auto max-w-4xl text-2xl mt-[-12px] text-muted-foreground md:text-2xl font-light leading-relaxed"
+              className="mx-auto max-w-3xl text-xl mt-[-8px] text-muted-foreground md:text-xl font-light leading-relaxed"
           >
             <TextType 
               text={["where every club finds home", "where every student community connects"]}
@@ -72,16 +73,16 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex flex-row items-center justify-center gap-0 mt-5"
           >
-            <Button variant="default" asChild size="lg" className="h-14 rounded-full px-10 text-lg bg-blue-600 hover:bg-blue-500 text-white border-0 shadow-[0_0_30px_-10px_rgba(37,99,235,0.6)] transition-all hover:scale-105 active:scale-95 duration-300 group">
+            <Button variant="default" asChild size="lg" className="h-12 rounded-full px-8 text-base bg-blue-600 hover:bg-blue-500 text-white border-0 shadow-[0_0_30px_-10px_rgba(37,99,235,0.6)] transition-all hover:scale-105 active:scale-95 duration-300 group">
               <Link to="/clubs">
-                Explore Clubs <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                Explore Clubs <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
             
-             <Button variant="outline" asChild size="lg" className="h-14 rounded-full bg-transparent hover:bg-white/10 border border-white/10 text-white ml-2" style={{ width: '200px' }}>
+             <Button variant="outline" asChild size="lg" className="h-12 rounded-full bg-transparent hover:bg-white/10 border border-white/10 text-white ml-2" style={{ width: '180px' }}>
                   <a href="https://github.com/Jitesh-Yadav01/SYNC-AIT" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 transition-colors">
-                      <Github className="h-5 w-5 shrink-0" />
-                      <span className="text-lg font-large">Star on GitHub</span>
+                      <Github className="h-4 w-4 shrink-0" />
+                      <span className="text-base font-medium">Star on GitHub</span>
                   </a>
              </Button>
           </motion.div>
@@ -103,8 +104,8 @@ export default function Home() {
         </motion.div>
 
       </div>
-      
-      <FeatureGrid />
     </section>
+    <FeatureGrid />
+    </>
   );
 }

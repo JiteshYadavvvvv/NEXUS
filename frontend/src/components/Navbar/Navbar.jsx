@@ -39,7 +39,7 @@ export function Navbar({ onOpenLogin, onOpenSidebar, isSidebarOpen }) {
 
     return (
         <nav className="fixed top-0 left-0 w-full z-50 transition-all font-mono duration-300 bg-black/40 dark:bg-[#0d1117]/60 backdrop-blur-md border-b border-white/10 dark:border-white/5">
-            <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 max-w-[1400px]">
+            <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 max-w-[1200px]">
                 <div className="flex items-center justify-between h-[72px]">
 
                     {/* Left Section: Logo + Navigation Links */}
