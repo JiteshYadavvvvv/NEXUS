@@ -11,8 +11,10 @@ const ApplicantCard = ({ applicant, index, isSelected, onClick }) => {
     pending: 'border-transparent bg-slate-100 text-slate-800'
   };
 
-  const nameKey = answers ? Object.keys(answers).find(k => k.toLowerCase().includes('name')) : null;
-  const name = nameKey ? answers[nameKey] : 'Applicant';
+  // Prefer the registered user's name, fall back to form answer key containing 'name'
+  const name = applicant?.userId?.name
+    || (answers && Object.keys(answers).find(k => k.toLowerCase().includes('name')) ? answers[Object.keys(answers).find(k => k.toLowerCase().includes('name'))] : null)
+    || 'Applicant';
 
   const initials = name !== 'Applicant'
     ? name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()

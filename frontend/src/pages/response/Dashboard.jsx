@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [selectedFormId, setSelectedFormId] = useState("");
   const [responses, setResponses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
   const [loadingForms, setLoadingForms] = useState(true);
   const [loadingResponses, setLoadingResponses] = useState(false);
   const [selectedResponseId, setSelectedResponseId] = useState(null);
@@ -94,11 +95,35 @@ const Dashboard = () => {
         const data = await res.json();
         if (data.success) {
            toast.success(data.message || `Decision updated to ${newDecision}`);
+           
+           // If accepted, add them straight to the Team Members
+           if (newDecision === 'accepted') {
+             const applicant = responses.find(r => r._id === responseId);
+             const name = getDisplayName(applicant);
+             const email = applicant?.userId?.email;
+             
+             if (name && email) {
+                try {
+                  const addRes = await fetch(`${API}/api/admin/add-member`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ name, memberEmail: email })
+                  });
+                  const addData = await addRes.json();
+                  if (!addData.success) {
+                    toast.warning(`Notice: ${addData.message || 'Could not auto-add to Team'}`);
+                  }
+                } catch(err) {
+                  console.error("Auto-add error:", err);
+                }
+             }
+           }
+
            if (newDecision === 'rejected') {
               setResponses(prev => prev.filter(r => r._id !== responseId));
               setSelectedResponseId(prevId => prevId === responseId ? null : prevId);
            } else {
-              // Optimistically update
               setResponses(prev => prev.map(r => r._id === responseId ? { ...r, decision: newDecision } : r));
            }
         } else {
@@ -126,22 +151,44 @@ const Dashboard = () => {
     return val !== undefined && val !== '' && val !== null ? String(val) : '-';
   };
 
-  const getDisplayName = (answers) => {
-    if (!answers) return 'Unknown';
-    const nameKey = Object.keys(answers).find(k => k.toLowerCase().includes('name'));
-    return nameKey ? answers[nameKey] : 'Unknown';
+  const getDisplayName = (response) => {
+    // Prefer the registered user's name (populated from userId by backend)
+    if (response?.userId?.name) return response.userId.name;
+    // Fallback: look for a form answer key containing 'name'
+    const answers = response?.answers || response || {};
+    if (typeof answers === 'object') {
+      const nameKey = Object.keys(answers).find(k => k.toLowerCase().includes('name'));
+      if (nameKey) return answers[nameKey];
+    }
+    return 'Unknown';
   };
 
-  const getInitials = (answers) => {
-    const name = getDisplayName(answers);
+  const getInitials = (response) => {
+    const name = getDisplayName(response);
     return name !== 'Unknown'
       ? name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
       : '?';
   };
 
   const filteredResponses = responses.filter(r => {
+    // Status Filter
+    if (filterStatus !== 'all') {
+      const currentDecision = r.decision || 'pending';
+      if (filterStatus !== currentDecision) return false;
+    }
+
+    // Search Filter
     if (!searchTerm.trim()) return true;
     const q = searchTerm.toLowerCase();
+    
+    // Check if the applicant's real name matches the search query
+    const applicantName = getDisplayName(r).toLowerCase();
+    if (applicantName.includes(q)) return true;
+    
+    // Check if the applicant's email (if populated) matches the search query
+    if (r.userId?.email && r.userId.email.toLowerCase().includes(q)) return true;
+
+    // Finally check if any form answers match the search query
     const answers = r.answers || {};
     return Object.values(answers).some(v => String(v).toLowerCase().includes(q));
   });
@@ -207,16 +254,30 @@ const Dashboard = () => {
               </div>
               <div className="flex items-center gap-3 w-full sm:w-auto">
                  {forms.length > 0 && (
-                    <div className="relative w-full sm:w-56">
-                      <Search className="absolute left-2.5 top-2 h-4 w-4 text-slate-500" />
-                      <input
-                        type="text"
-                        placeholder="Search applicants..."
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                        className="flex h-8 w-full rounded border border-slate-200 bg-transparent px-3 py-1 pl-8 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950"
-                      />
-                    </div>
+                    <>
+                      <select
+                        value={filterStatus}
+                        onChange={e => setFilterStatus(e.target.value)}
+                        className="h-8 w-full sm:w-36 rounded border border-slate-200 bg-white px-2 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950"
+                      >
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="reviewLater">Hold</option>
+                        <option value="rejected">Rejected</option>
+                      </select>
+                      
+                      <div className="relative w-full sm:w-56">
+                        <Search className="absolute left-2.5 top-2 h-4 w-4 text-slate-500" />
+                        <input
+                          type="text"
+                          placeholder="Search applicants..."
+                          value={searchTerm}
+                          onChange={e => setSearchTerm(e.target.value)}
+                          className="flex h-8 w-full rounded border border-slate-200 bg-transparent px-3 py-1 pl-8 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950"
+                        />
+                      </div>
+                    </>
                  )}
               </div>
           </div>
@@ -255,10 +316,10 @@ const Dashboard = () => {
                          <div className="pb-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start gap-4">
                             <div className="flex gap-4 items-center">
                                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-slate-100 border border-slate-200 text-lg font-semibold text-slate-900 shadow-sm">
-                                  {getInitials(answers)}
+                                  {getInitials(selectedApplicant)}
                                </div>
                                <div>
-                                  <h2 className="text-xl font-bold tracking-tight">{getDisplayName(answers)}</h2>
+                                  <h2 className="text-xl font-bold tracking-tight">{getDisplayName(selectedApplicant)}</h2>
                                   <div className="flex items-center gap-3 text-xs text-muted-foreground text-slate-500 mt-1">
                                      <span>{getAnswerValue(answers, 'Email')}</span>
                                      <span className="text-slate-300">•</span>

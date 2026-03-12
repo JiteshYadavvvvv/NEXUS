@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-const DecisionButtons = ({ responseId, currentDecision, onDecisionUpdated }) => {
+const DecisionButtons = ({ responseId, currentDecision, applicantName, applicantEmail, onDecisionUpdated }) => {
   const [loadingDecision, setLoadingDecision] = useState(null);
   const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
@@ -19,6 +19,26 @@ const DecisionButtons = ({ responseId, currentDecision, onDecisionUpdated }) => 
       const data = await res.json();
       if (data.success) {
         toast.success(`Decision updated to ${decision}`);
+        
+        // If the decision is "accepted", also add them to the team members list
+        if (decision === 'accepted' && applicantName && applicantEmail) {
+          try {
+            const addRes = await fetch(`${API}/api/admin/add-member`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ name: applicantName, memberEmail: applicantEmail })
+            });
+            const addData = await addRes.json();
+            if (!addData.success) {
+              toast.warning(`Warning: ${addData.message || 'Could not auto-add to Team Members'}`);
+            }
+          } catch(err) {
+            console.error("Auto-add error:", err);
+            toast.warning(`Warning: Network error auto-adding to members`);
+          }
+        }
+        
         onDecisionUpdated(decision);
       } else {
         toast.error(data.message || 'Error updating decision');

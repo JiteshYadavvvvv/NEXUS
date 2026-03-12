@@ -3,7 +3,7 @@ import { useProfile } from './ProfileContext';
 import { Plus, Trash2, Search, Pencil } from 'lucide-react';
 
 export default function SharedMembers() {
-    const { members, addMember, removeMember, editMember, role } = useProfile();
+    const { members, addMember, removeMember, editMember, role, debugMsg } = useProfile();
     const [searchTerm, setSearchTerm] = useState('');
     const [showAddForm, setShowAddForm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -13,14 +13,13 @@ export default function SharedMembers() {
     const canManageMembers = role === 'Admin' || role === 'Member';
 
     const filteredMembers = members.filter(m =>
-        m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        m.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        m.domain.toLowerCase().includes(searchTerm.toLowerCase())
+        m.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (newMember.name && newMember.email && newMember.domain) {
+        if (newMember.name && newMember.email) {
             if (isEditing) {
                 editMember({ ...newMember, id: currentMemberId });
                 setIsEditing(false);
@@ -87,21 +86,6 @@ export default function SharedMembers() {
                             onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
                             required
                         />
-                        <select
-                            className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={newMember.role}
-                            onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
-                        >
-                            <option value="Applicant">Applicant</option>
-                            {role === 'Admin' && <option value="Member">Member</option>}
-                        </select>
-                        <input
-                            className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Domain (e.g. Frontend)"
-                            value={newMember.domain}
-                            onChange={(e) => setNewMember({ ...newMember, domain: e.target.value })}
-                            required
-                        />
                     </div>
                     <div className="flex justify-end gap-2">
                         <button
@@ -135,53 +119,57 @@ export default function SharedMembers() {
                         />
                     </div>
                 </div>
-                <div className="divide-y divide-gray-100">
-                    {filteredMembers.map((member) => (
-                        <div key={member.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 hover:bg-gray-50 transition-colors gap-3">
-                            <div className="flex items-center gap-4">
-                                <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-medium border border-blue-100 shrink-0">
-                                    {member.name.charAt(0)}
-                                </div>
-                                <div className="min-w-0">
-                                    <p className="font-medium text-gray-900 truncate">{member.name}</p>
-                                    <p className="text-sm text-gray-500 truncate">{member.email}</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-2 flex-wrap pl-14 sm:pl-0">
-                                <span className="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">{member.role}</span>
-                                <span className="px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">{member.domain}</span>
-                                <span className={`px-2 py-0.5 rounded text-xs font-medium border ${member.status === 'Active'
-                                        ? 'bg-green-50 text-green-700 border-green-200'
-                                        : 'bg-gray-50 text-gray-500 border-gray-200'
-                                    }`}>
-                                    {member.status}
-                                </span>
-                                {canManageMembers && (
-                                    <>
-                                        <button
-                                            onClick={() => openEditModal(member)}
-                                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-                                            disabled={role === 'Member' && member.role !== 'Applicant'}
-                                            title={role === 'Member' && member.role !== 'Applicant' ? 'You can only edit Applicant members' : 'Edit Member'}
-                                        >
-                                            <Pencil className={`h-4 w-4 ${role === 'Member' && member.role !== 'Applicant' ? 'opacity-50 cursor-not-allowed' : ''}`} />
-                                        </button>
-                                        <button
-                                            onClick={() => removeMember(member.id)}
-                                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                                            disabled={role === 'Member' && member.role !== 'Applicant'}
-                                            title={role === 'Member' && member.role !== 'Applicant' ? 'You can only remove Applicant members' : 'Remove Member'}
-                                        >
-                                            <Trash2 className={`h-4 w-4 ${role === 'Member' && member.role !== 'Applicant' ? 'opacity-50 cursor-not-allowed' : ''}`} />
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                    {filteredMembers.length === 0 && (
-                        <div className="p-8 text-center text-gray-500">No members found.</div>
-                    )}
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm text-gray-500">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th scope="col" className="px-6 py-3 font-semibold">Name</th>
+                                <th scope="col" className="px-6 py-3 font-semibold">Role</th>
+                                <th scope="col" className="px-6 py-3 font-semibold">Email</th>
+                                {canManageMembers && <th scope="col" className="px-6 py-3 text-right font-semibold">Actions</th>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredMembers.map((member) => (
+                                <tr key={member.id} className="bg-white border-b hover:bg-gray-50 transition-colors">
+                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-medium border border-blue-100 shrink-0">
+                                                {member.name?.charAt(0) || '?'}
+                                            </div>
+                                            {member.name}
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <span className="px-2 py-1 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                                            {member.role || 'N/A'}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 text-gray-500">
+                                        {member.email}
+                                    </td>
+                                    {canManageMembers && (
+                                        <td className="px-6 py-4 text-right">
+                                            <button
+                                                onClick={() => removeMember(member)}
+                                                className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors inline-flex items-center gap-1.5 border border-red-100"
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                                Remove
+                                            </button>
+                                        </td>
+                                    )}
+                                </tr>
+                            ))}
+                            {filteredMembers.length === 0 && (
+                                <tr>
+                                    <td colSpan={canManageMembers ? 4 : 3} className="px-6 py-12 text-center text-gray-500 bg-gray-50/50">
+                                        No members found.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

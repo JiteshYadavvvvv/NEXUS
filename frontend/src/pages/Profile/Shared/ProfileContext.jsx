@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-// import { useView } from '../../../context/ViewContext';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
 const ProfileContext = createContext();
 
@@ -25,18 +28,45 @@ export const ProfileProvider = ({ children, initialData, role }) => {
 
     const clubTasks = tasks.filter(t => t.clubId === activeClub?.id);
     const clubMembers = members.filter(m => {
-        if (!m.clubId || !activeClub?.id) return false;
-        const clubs = m.clubId.split(',').map(c => c.trim());
-        return clubs.includes(activeClub.id);
+        return true;
     });
     const clubMessages = messages.filter(m => m.clubId === activeClub?.id);
 
     const switchClub = (clubId) => {
-        const club = profile.clubs.find(c => c.id === clubId);
+        const club = profile.clubs?.find(c => c.id === clubId);
         if (club) {
             setActiveClub(club);
         }
     };
+
+    // Fetch members from API
+    useEffect(() => {
+        const fetchMembers = async () => {
+            if (role !== 'Admin' || !activeClub) return;
+            try {
+                const res = await axios.get(`${API}/api/admin/get-club-members`, 
+                    { withCredentials: true }
+                );
+
+                if (res.data.success) {
+                    // Map API user objects to context member format
+                    const apiMembers = res.data.data.map(u => ({
+                        id: u._id,
+                        name: u.name,
+                        email: u.email,
+                        role: u.role || 'Member',
+                        domain: 'Technical', // Default or fetch if available
+                        status: 'Active',
+                        clubId: activeClub.id
+                    }));
+                    setMembers(apiMembers);
+                }
+            } catch (err) {
+                console.error("Failed to load members:", err);
+            }
+        };
+        fetchMembers();
+    }, [activeClub, role]);
 
     const unreadMessagesCount = 0;
     const unreadNotificationsCount = notifications.filter(n => !n.isRead).length;
@@ -82,14 +112,44 @@ export const ProfileProvider = ({ children, initialData, role }) => {
         setMessages([...messages, newMsg]);
     };
 
-    const addMember = (member) => {
-        const newMember = { ...member, id: `m${Date.now()}` };
-        setMembers([...members, newMember]);
-        addNotification({ title: 'Member Added', message: `${member.name} added to the team.`, type: 'success' });
+    const addMember = async (member) => {
+        try {
+            const res = await axios.post(`${API}/api/admin/add-member`,
+                { name: member.name, memberEmail: member.email },
+                { withCredentials: true }
+            );
+            if (res.data.success) {
+                // If backend doesn't return the full populated user immediately, we append what we have
+                // but usually it's better to just refetch. For now, we trust local state append.
+                const newMember = { ...member, id: res.data.data?._id || `m${Date.now()}` };
+                setMembers([...members, newMember]);
+                addNotification({ title: 'Member Added', message: `${member.name} added to the team.`, type: 'success' });
+                toast.success('Member added successfully');
+            } else {
+                toast.error(res.data.message || 'Failed to add member');
+            }
+        } catch(err) {
+            console.error(err);
+            toast.error('Error adding member');
+        }
     };
 
-    const removeMember = (id) => {
-        setMembers(members.filter(m => m.id !== id));
+    const removeMember = async (member) => {
+        try {
+            const res = await axios.post(`${API}/api/admin/remove-member`, 
+                { name: member.name, memberEmail: member.email },
+                { withCredentials: true }
+            );
+            if (res.data.success) {
+                setMembers(members.filter(m => m.id !== member.id));
+                toast.success('Member removed successfully');
+            } else {
+                toast.error(res.data.message || 'Failed to remove member');
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error('Error removing member');
+        }
     };
 
     const editMember = (updatedMember) => {

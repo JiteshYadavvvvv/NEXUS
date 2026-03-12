@@ -6,8 +6,9 @@ import SharedMembers from './SharedMembers';
 import SharedTasks from './SharedTasks';
 import SharedMessages from './SharedMessages';
 import SharedProfile from './SharedProfile';
+import SharedMyClubs from './SharedMyClubs';
 import AvailableForms from './AvailableForms';
-import { LayoutDashboard, Users, CheckSquare, MessageSquare, LogOut, Menu, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Users, CheckSquare, MessageSquare, LogOut, Menu, FileText, ChevronLeft, ChevronRight, Building } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import axios from 'axios';
@@ -19,7 +20,7 @@ export default function SharedDashboardLayout({ children }) {
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile
     const isStandalonePage = Boolean(children);
-    const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(isStandalonePage);
+    const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
 
 
     React.useEffect(() => {
@@ -56,12 +57,16 @@ export default function SharedDashboardLayout({ children }) {
         { id: 'members', label: 'Team Members', icon: Users },
         { id: 'tasks', label: 'Tasks', icon: CheckSquare },
         { id: 'messages', label: 'Messages', icon: MessageSquare },
+        { id: 'my-clubs', label: 'My Clubs', icon: Building },
         { id: 'profile', label: 'Profile', icon: Users },
     ];
 
     const getVisibleTabs = () => {
         if (role === 'Applicant') {
-            return tabs.filter(t => t.id === 'messages');
+            return tabs.filter(t => t.id === 'messages' || t.id === 'my-clubs');
+        }
+        if (role === 'Admin') {
+            return tabs.filter(t => t.id !== 'profile' && t.id !== 'my-clubs');
         }
         return tabs.filter(t => t.id !== 'profile');
     };
@@ -74,6 +79,7 @@ export default function SharedDashboardLayout({ children }) {
             case 'messages': return <SharedMessages />;
             case 'profile': return <SharedProfile />;
             case 'forms': return <AvailableForms />;
+            case 'my-clubs': return <SharedMyClubs />;
             default: return <SharedOverview />;
         }
     };
@@ -301,7 +307,7 @@ export default function SharedDashboardLayout({ children }) {
 
                 <div className={`flex-1 overflow-y-auto ${!isStandalonePage ? 'p-4 md:p-8' : ''}`}>
                     <div className={`${!isStandalonePage ? 'max-w-6xl mx-auto w-full space-y-8 pb-12' : 'flex flex-col h-full'} animate-in fade-in slide-in-from-bottom-4 duration-500`}>
-                        {children ?? (role === 'Applicant' && !['messages', 'forms', 'profile'].includes(activeTab) ? <SharedMessages /> : renderContent())}
+                        {children ?? (role === 'Applicant' && !['messages', 'forms', 'profile', 'my-clubs'].includes(activeTab) ? <SharedMessages /> : renderContent())}
                     </div>
                 </div>
             </main>
