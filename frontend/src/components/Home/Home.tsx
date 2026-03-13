@@ -76,7 +76,7 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="flex flex-row items-center justify-center gap-0 mt-5"
           >
-            <Button variant="default" asChild size="lg" className="h-14 rounded-full px-10 text-lg bg-blue-600 hover:bg-blue-500 text-white border-0 shadow-[0_0_30px_-10_rgba(37,99,235,0.6)] transition-all hover:scale-105 active:scale-95 duration-300 group">
+            <Button variant="default" asChild size="lg" className="h-14 rounded-full px-10 text-lg bg-black font-mono border-1 border-gray-500 hover:bg-white hover:text-black text-white-500 shadow-[0_0_30px_-10_rgba(37,99,235,0.6)] transition-all hover:scale-105 active:scale-95 duration-300 group">
               <Link to="/clubs">
                 Explore Clubs <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
