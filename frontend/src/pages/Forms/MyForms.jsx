@@ -7,6 +7,20 @@ import { toast } from 'react-toastify';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
+const ONBOARDING_TEMPLATE = {
+    title: 'Onboarding Form',
+    desc: 'Template form for new members to fill out.',
+    isPublic: true,
+    fields: [
+        { input: 'Regn No', type: 'text', required: true, options: [] },
+        { input: 'Priority', type: 'priority', required: true, options: [] },
+        { input: 'Branch', type: 'text', required: true, options: [] },
+        { input: 'Describe Yourself in One word', type: 'text', required: true, options: [] },
+        { input: 'Why would you like to join us?', type: 'textarea', required: true, options: [] },
+        { input: 'What are your expectainons from us?', type: 'textarea', required: true, options: [] }
+    ]
+};
+
 export default function MyForms() {
     const navigate = useNavigate();
 
@@ -155,69 +169,104 @@ export default function MyForms() {
                         <p className="text-sm text-red-600 font-medium">{fetchError}</p>
                         <button onClick={fetchForms} className="text-sm text-blue-600 hover:underline">Retry</button>
                     </div>
-                ) : forms.length === 0 ? (
-                    /* Empty state */
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 py-24 flex flex-col items-center justify-center gap-5 animate-in fade-in duration-300">
-                        <div className="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center">
-                            <FileText className="h-8 w-8 text-gray-400" />
-                        </div>
-                        <div className="text-center space-y-1">
-                            <p className="text-lg font-semibold text-gray-800">No Forms Created</p>
-                            <p className="text-sm text-gray-500">Create your first form to get started.</p>
-                        </div>
-                        <button
-                            onClick={() => { setEditingForm(null); setShowCreate(true); }}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 shadow-sm transition-colors"
-                        >
-                            <Plus className="h-4 w-4" />
-                            Create Form
-                        </button>
-                    </div>
                 ) : (
-                    /* Forms flex grid */
-                    <div className="flex flex-wrap gap-5">
-                        {forms.map(form => (
-                            <div
-                                key={form._id}
-                                onClick={() => setEditingForm(form)}
-                                className="group relative bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-blue-100 transition-all duration-200 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
-                            >
-                                {/* Edit hint */}
-                                <div className="absolute top-3 right-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Pencil className="h-3.5 w-3.5 text-blue-400" />
-                                </div>
-
-                                {/* Delete button */}
-                                <button
-                                    onClick={(e) => handleDelete(e, form._id)}
-                                    disabled={deletingId === form._id}
-                                    className="absolute top-3 right-3 text-gray-300 hover:text-red-500 transition-colors disabled:opacity-40"
-                                    title="Delete form"
+                    <div className="space-y-10 animate-in fade-in duration-500">
+                        {/* Templates Section */}
+                        <div className="space-y-4">
+                            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                                <Plus className="h-5 w-5 text-blue-600" />
+                                Start from a Template
+                            </h2>
+                            <div className="flex flex-wrap gap-5">
+                                {/* Template Card */}
+                                <div
+                                    onClick={() => {
+                                        setEditingForm(ONBOARDING_TEMPLATE);
+                                        setShowCreate(true);
+                                    }}
+                                    className="group relative bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-blue-200 hover:bg-blue-50/30 transition-all duration-200 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
                                 >
-                                    {deletingId === form._id
-                                        ? <Loader2 className="h-4 w-4 animate-spin" />
-                                        : <Trash2 className="h-4 w-4" />}
-                                </button>
-
-                                {/* Form info */}
-                                <h3 className="font-semibold text-gray-900 truncate pr-8">{form.title}</h3>
-                                {form.desc && (
-                                    <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">{form.desc}</p>
-                                )}
-
-                                <div className="mt-auto flex items-center gap-2 flex-wrap">
-                                    <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium ${form.isPublic ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                                        {form.isPublic ? <Globe className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
-                                        {form.isPublic ? 'Public' : 'Private'}
-                                    </span>
-                                    <span className="text-xs text-gray-400 ml-auto">
-                                        {form.fields?.length || 0} field{form.fields?.length !== 1 ? 's' : ''}
-                                    </span>
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                                            <FileText className="h-5 w-5 text-blue-600" />
+                                        </div>
+                                        <h3 className="font-semibold text-gray-900">Onboarding Form</h3>
+                                    </div>
+                                    <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed mt-2">
+                                        Pre-configured template with standard onboarding questions.
+                                    </p>
+                                    <div className="mt-auto pt-4 flex items-center gap-2">
+                                         <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-md">Use Template</span>
+                                    </div>
                                 </div>
                             </div>
-                        ))}
+                        </div>
+
+                        {/* Recent Forms Section */}
+                        <div className="space-y-4">
+                            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                                <FileText className="h-5 w-5 text-gray-400" />
+                                Your Forms
+                            </h2>
+                            
+                            {forms.length === 0 ? (
+                                <div className="bg-white rounded-xl shadow-sm border border-gray-100 py-16 flex flex-col items-center justify-center gap-4">
+                                     <div className="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center">
+                                         <FileText className="h-6 w-6 text-gray-400" />
+                                     </div>
+                                     <div className="text-center space-y-1">
+                                         <p className="text-base font-semibold text-gray-800">No Forms Created</p>
+                                         <p className="text-sm text-gray-500">Create a new form or start from a template.</p>
+                                     </div>
+                                </div>
+                            ) : (
+                                <div className="flex flex-wrap gap-5">
+                                    {forms.map(form => (
+                                        <div
+                                            key={form._id}
+                                            onClick={() => setEditingForm(form)}
+                                            className="group relative bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-blue-100 transition-all duration-200 w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
+                                        >
+                                            {/* Edit hint */}
+                                            <div className="absolute top-3 right-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <Pencil className="h-3.5 w-3.5 text-blue-400" />
+                                            </div>
+
+                                            {/* Delete button */}
+                                            <button
+                                                onClick={(e) => handleDelete(e, form._id)}
+                                                disabled={deletingId === form._id}
+                                                className="absolute top-3 right-3 text-gray-300 hover:text-red-500 transition-colors disabled:opacity-40"
+                                                title="Delete form"
+                                            >
+                                                {deletingId === form._id
+                                                    ? <Loader2 className="h-4 w-4 animate-spin" />
+                                                    : <Trash2 className="h-4 w-4" />}
+                                            </button>
+
+                                            {/* Form info */}
+                                            <h3 className="font-semibold text-gray-900 truncate pr-8">{form.title}</h3>
+                                            {form.desc && (
+                                                <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">{form.desc}</p>
+                                            )}
+
+                                            <div className="mt-auto flex items-center gap-2 flex-wrap pt-2">
+                                                <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium ${form.isPublic ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
+                                                    {form.isPublic ? <Globe className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
+                                                    {form.isPublic ? 'Public' : 'Private'}
+                                                </span>
+                                                <span className="text-xs text-gray-400 ml-auto">
+                                                    {form.fields?.length || 0} field{form.fields?.length !== 1 ? 's' : ''}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
+
             </div>
         </div>
     );

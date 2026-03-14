@@ -269,7 +269,7 @@ const SignUp = () => {
               </div>
 
               {/* Email */}
-              <div className="space-y-1">
+              {/* <div className="space-y-1">
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-slate-900 dark:text-gray-200"
@@ -285,10 +285,10 @@ const SignUp = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-              </div>
+              </div> */}
 
               {/* Password */}
-              <div className="space-y-1">
+              {/* <div className="space-y-1">
                 <label
                   htmlFor="password"
                   className="block text-sm font-medium text-slate-900 dark:text-gray-200"
@@ -304,10 +304,10 @@ const SignUp = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </div>
+              </div> */}
 
               {/* Year dropdown */}
-              <div className="space-y-1">
+              {/* <div className="space-y-1">
                 <label
                   htmlFor="year"
                   className="block text-sm font-medium text-slate-900 dark:text-gray-200"
@@ -333,15 +333,15 @@ const SignUp = () => {
                     </>
                   )}
                 </select>
-              </div>
+              </div> */}
 
               {/* Submit */}
-              <button
+              {/* <button
                 type="submit"
                 className="w-full mt-4 py-3 rounded-xl bg-white hover:bg-gray-100 text-black text-sm font-semibold shadow-lg shadow-white/10 transition-transform transform hover:-translate-y-0.5"
               >
                 Sign Up
-              </button>
+              </button> */}
             </form>
 
             {/* Divider */}
