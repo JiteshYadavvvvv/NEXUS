@@ -77,7 +77,7 @@ export default function SharedOverview() {
     ];
 
     return (
-        <div style={{ fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace" }}>
+        <div className="max-w-5xl mx-auto" style={{ fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace" }}>
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-20 py-16">
 
                 <div className="flex-1 min-w-0">

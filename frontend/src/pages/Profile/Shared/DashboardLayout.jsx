@@ -121,10 +121,10 @@ export default function SharedDashboardLayout({ children }) {
             )}
 
             <aside className={cn(
-                "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out",
+                "fixed inset-y-0 left-0 z-50 w-68 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out",
                 (isSidebarOpen || !isDesktopCollapsed) ? "translate-x-0" : "-translate-x-full"
             )}>
-                <div className="flex flex-col h-full p-6">
+                <div className="flex flex-col h-full p-3">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-lg bg-gray-900 flex items-center justify-center shadow-sm">
@@ -279,7 +279,7 @@ export default function SharedDashboardLayout({ children }) {
 
                     <div className="pt-6 border-t border-gray-200 mt-auto space-y-4">
                         <div
-                            className="flex items-center gap-3 px-2 cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
+                            className="flex items-center gap-2 px-1 cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
                             onClick={() => {
                                 if (isStandalonePage) {
                                     navigate(`/profile/${role}`, { state: { activeTab: 'profile' } });
@@ -293,7 +293,7 @@ export default function SharedDashboardLayout({ children }) {
                             <div className="flex-1 min-w-0">
 
                                 <p className="text-sm font-medium truncate text-gray-900">{user?.name}</p>
-                                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                                <p className="text-xs text-gray-500 break-all">{user?.email}</p>
 
                             </div>
                         </div>
@@ -310,7 +310,7 @@ export default function SharedDashboardLayout({ children }) {
 
             <main className={cn(
                 "flex-1 flex flex-col min-w-0 bg-transparent relative transition-all duration-300",
-                !isDesktopCollapsed ? "md:ml-64" : "md:ml-0"
+                !isDesktopCollapsed ? "md:ml-68" : "md:ml-0"
             )}>
                 {/* Floating expand button when collapsed */}
                 {isDesktopCollapsed && (

@@ -108,7 +108,7 @@ export default function MyForms() {
 
     return (
         <div className="font-mono">
-            <div className="max-w-5xl mx-auto px-4 py-10 md:px-8 space-y-8">
+            <div className="max-w-6xl mx-auto px-4 py-10 md:px-8 space-y-8">
 
                 {/* Page header */}
                 <div className="flex items-center justify-between">
