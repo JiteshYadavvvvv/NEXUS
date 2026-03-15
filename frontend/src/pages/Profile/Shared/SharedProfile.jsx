@@ -23,10 +23,12 @@ const SharedProfile = () => {
             name: user?.name || '',
             bio: user?.bio || '',
             year: user?.year || '',
-            callSign: user?.callSign || '',
+            regnNo: user?.regnNo || '',
+            branch: user?.branch || '',
+            hobbies: user?.hobbies || '',
             bannerText: profile?.bannerText || 'NEXUS',
             avatar: profile?.avatar || '/clubprofiles/ns.png',
-            phone: profile?.phone || '',
+            number: user?.number || profile?.phone || '',
             email: user?.email || '',
         });
         setSaveStatus(null);
@@ -36,13 +38,14 @@ const SharedProfile = () => {
 
     const handleSave = async () => {
         setSaveStatus('saving');
-        setSaveError('');
         const result = await updateUserInfo({
             name: editForm.name,
             bio: editForm.bio,
             year: editForm.year,
-            callSign: editForm.callSign,
-            number: editForm.phone,
+            regnNo: editForm.regnNo,
+            branch: editForm.branch,
+            hobbies: editForm.hobbies,
+            number: editForm.number,
         });
         if (result.success) {
             setSaveStatus('success');
@@ -144,7 +147,41 @@ const SharedProfile = () => {
 
 
 
-                            <div className="space-y-2">
+                            <div className="grid sm:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700">Registration Number</label>
+                                    <input 
+                                        type="number" 
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        value={editForm.regnNo}
+                                        onChange={e => setEditForm({...editForm, regnNo: e.target.value})}
+                                        placeholder="e.g. 123456"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-700">Branch</label>
+                                    <input 
+                                        type="text" 
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                                        value={editForm.branch}
+                                        onChange={e => setEditForm({...editForm, branch: e.target.value})}
+                                        placeholder="e.g. Computer Science"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2 mt-4">
+                                <label className="text-sm font-medium text-gray-700">Hobbies</label>
+                                <input 
+                                    type="text" 
+                                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
+                                    value={editForm.hobbies}
+                                    onChange={e => setEditForm({...editForm, hobbies: e.target.value})}
+                                    placeholder="e.g. Reading, Gaming, Coding"
+                                />
+                            </div>
+
+                            <div className="space-y-2 mt-4">
                                 <label className="text-sm font-medium text-gray-700">Bio</label>
                                 <textarea 
                                     rows="4"
@@ -164,27 +201,25 @@ const SharedProfile = () => {
                             
                             <div className="grid sm:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-700">Call Sign</label>
+                                    <label className="text-sm font-medium text-gray-700">Email Address (Read-only)</label>
                                     <input 
-                                        type="text"
-                                        maxLength={10}
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
-                                        value={editForm.callSign}
-                                        onChange={e => setEditForm({...editForm, callSign: e.target.value.replace(/\s/g, '')})}
-                                        placeholder="e.g. NEXUS"
+                                        type="email"
+                                        disabled
+                                        className="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-gray-500 cursor-not-allowed"
+                                        value={user.email}
+                                        placeholder="your@email.com"
                                     />
-                                    <p className="text-xs text-gray-400 text-right">{(editForm.callSign || '').length}/10 — shown as your profile banner</p>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700">Phone Number</label>
                                     <div className="relative">
                                         <Phone className="absolute left-3.5 top-3 h-5 w-5 text-gray-400" />
                                         <input 
-                                            type="tel" 
-                                            className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors"
-                                            value={editForm.phone}
-                                            onChange={e => setEditForm({...editForm, phone: e.target.value})}
-                                            placeholder="+1 (555) 000-0000"
+                                            type="number" 
+                                            className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            value={editForm.number}
+                                            onChange={e => setEditForm({...editForm, number: e.target.value})}
+                                            placeholder="9876543210"
                                         />
                                     </div>
                                 </div>
@@ -241,25 +276,50 @@ const SharedProfile = () => {
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Contact Info</h3>
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-3 text-sm text-gray-600">
-                                    <Mail className="h-4 w-4 text-gray-400 shrink-0" />
-                                    {user.email}
+                        <div className="space-y-6">
+                            <div className="space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Contact Info</h3>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                                        <Mail className="h-4 w-4 text-gray-400 shrink-0" />
+                                        {user.email}
+                                    </div>
+                                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                                        <Phone className="h-4 w-4 text-gray-400 shrink-0" />
+                                        {user.number || profile.phone || 'N/A'}
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-3 text-sm text-gray-600">
-                                    <Phone className="h-4 w-4 text-gray-400 shrink-0" />
-                                    {profile.phone}
+                            </div>
+
+                            <div className="space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Academic Details</h3>
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                                        <span className="font-medium text-gray-800 w-24">Reg No:</span>
+                                        {user.regnNo || 'N/A'}
+                                    </div>
+                                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                                        <span className="font-medium text-gray-800 w-24">Branch:</span>
+                                        {user.branch || 'N/A'}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="space-y-4">
-                            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Bio</h3>
-                            <p className="text-sm text-gray-600 leading-relaxed">
-                                {user.bio || (user.role === 'Admin' ? `Administrator for ${user.year || profile.clubs?.[0]?.name || 'the organization'}.` : 'No bio available.')}
-                            </p>
+                        <div className="space-y-6">
+                            <div className="space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Bio</h3>
+                                <p className="text-sm text-gray-600 leading-relaxed">
+                                    {user.bio || (user.role === 'Admin' ? `Administrator for ${user.year || profile.clubs?.[0]?.name || 'the organization'}.` : 'No bio available.')}
+                                </p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Hobbies</h3>
+                                <p className="text-sm text-gray-600 leading-relaxed">
+                                    {user.hobbies || 'N/A'}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

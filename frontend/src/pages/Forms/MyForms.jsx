@@ -15,7 +15,8 @@ const ONBOARDING_TEMPLATE = {
         { input: 'Regn No', type: 'text', required: true, options: [] },
         { input: 'Priority', type: 'priority', required: true, options: [] },
         { input: 'Branch', type: 'text', required: true, options: [] },
-        { input: 'Describe Yourself in One word', type: 'text', required: true, options: [] },
+        { input: 'Hobbies', type: 'text', required: true, options: [] },
+        { input: 'Phone Number', type: 'number', required: true, options: [] },
         { input: 'Why would you like to join us?', type: 'textarea', required: true, options: [] },
         { input: 'What are your expectainons from us?', type: 'textarea', required: true, options: [] }
     ]

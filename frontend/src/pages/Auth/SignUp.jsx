@@ -15,8 +15,11 @@ const YEARS = [
 // ─── Google Profile Setup Step ───────────────────────────────────
 const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
   const [setupName, setSetupName] = useState("");
-  const [callSign, setCallSign] = useState("");
-  const [selectedYear, setSelectedYear] = useState(signupRole === "Applicant" ? "Applicant" : "");
+  const [bio, setBio] = useState("");
+  const [hobbies, setHobbies] = useState("");
+  const [number, setNumber] = useState("");
+  const [branch, setBranch] = useState("");
+  const [regnNo, setRegnNo] = useState("");
 
   let availableYears = [
     { label: "Applicant" },
@@ -29,8 +32,16 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!setupName.trim() || !callSign.trim() || !selectedYear) return;
-    onSubmit({ name: setupName.trim(), callSign: callSign.trim(), year: selectedYear });
+    if (!setupName.trim() || !regnNo) return;
+    onSubmit({ 
+      name: setupName.trim(), 
+      bio: bio.trim(),
+      hobbies: hobbies.trim(),
+      number: Number(number),
+      branch: branch.trim(),
+      regnNo: Number(regnNo),
+      year: "Applicant" 
+    });
   };
 
   return (
@@ -58,62 +69,88 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
         />
       </div>
 
-      {/* Call Sign */}
+      {/* Bio */}
       <div className="space-y-1">
         <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
-          Call Sign
-          <span className="ml-2 text-[11px] font-normal text-slate-500">
-            — This is your UID
-          </span>
+          Bio
         </label>
         <input
           type="text"
-          required
-          maxLength={10}
           disabled={loading}
-          placeholder="e.g. jdoe42"
-          value={callSign}
-          onChange={(e) => setCallSign(e.target.value)}
+          placeholder="Tell us about yourself..."
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
           className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
         />
-        <p className="text-[11px] text-slate-500 mt-1 text-right">{callSign.length}/10</p>
       </div>
 
-      {/* Year grid */}
-      <div className="space-y-2">
+      {/* Hobbies */}
+      <div className="space-y-1">
         <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
-          Academic Year
+          Hobbies
         </label>
-        <div className="grid grid-cols-3 gap-2">
-          {availableYears.map(({ label }) => (
-            <button
-              key={label}
-              type="button"
-              disabled={loading || signupRole === "Applicant"}
-              onClick={() => setSelectedYear(label)}
-              className={`
-                relative rounded-xl border p-2
-                transition-all duration-150
-                ${selectedYear === label 
-                  ? "border-white bg-white/10 text-white shadow-sm" 
-                  : "border-white/10 bg-transparent text-gray-400 hover:border-white/20 hover:text-gray-200"}
-                disabled:pointer-events-none
-              `}
-            >
-              <div className="text-center text-sm font-medium">
-                {label}
-              </div>
-            </button>
-          ))}
-        </div>
-        {!selectedYear && (
-          <p className="text-[11px] text-slate-500">Select your current year to continue.</p>
-        )}
+        <input
+          type="text"
+          disabled={loading}
+          placeholder="Reading, Coding, etc."
+          value={hobbies}
+          onChange={(e) => setHobbies(e.target.value)}
+          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
+        />
+      </div>
+
+      {/* Number */}
+      <div className="space-y-1">
+        <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
+          Phone Number
+        </label>
+        <input
+          type="number"
+          disabled={loading}
+          placeholder="e.g. 9876543210"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        />
+      </div>
+
+      {/* Branch */}
+      <div className="space-y-1">
+        <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
+          Branch
+        </label>
+        <input
+          type="text"
+          disabled={loading}
+          placeholder="e.g. CSE, IT, ENTC"
+          value={branch}
+          onChange={(e) => setBranch(e.target.value)}
+          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
+        />
+      </div>
+
+      {/* Registration Number */}
+      <div className="space-y-1">
+        <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
+          Registration Number
+          <span className="ml-2 text-[11px] font-normal text-slate-500">
+            — Required
+          </span>
+        </label>
+        <input
+          type="number"
+          required
+          disabled={loading}
+          placeholder="e.g. 12345"
+          value={regnNo}
+          onChange={(e) => setRegnNo(e.target.value)}
+          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        />
       </div>
 
       <button
         type="submit"
-        disabled={loading || !setupName.trim() || !callSign.trim() || !selectedYear}
+        disabled={loading || !setupName.trim() || !regnNo}
         className="w-full mt-4 py-3 rounded-xl bg-[#D4AF37]/90 hover:bg-[#D4AF37] text-slate-950 text-sm font-semibold shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all transform hover:-translate-y-0.5 disabled:bg-white/5 disabled:text-gray-500 disabled:shadow-none disabled:transform-none disabled:pointer-events-none border border-[#D4AF37]/20 disabled:border-transparent"
       >
         {loading ? "Saving..." : "Finish Setup"}
@@ -187,10 +224,10 @@ const SignUp = () => {
   };
 
   // ── Profile setup submit after Google signup ──
-  const handleProfileSetup = async ({ name, callSign, year }) => {
+  const handleProfileSetup = async ({ name, regnNo, bio, hobbies, number, branch, year }) => {
     setSaving(true);
     try {
-      const result = await updateUserInfo({ name, callSign, year });
+      const result = await updateUserInfo({ name, regnNo, bio, hobbies, number, branch, year });
       if (result.success) {
         toast.success(`Welcome aboard, ${name}! 🎉`);
         setTimeout(() => navigate(`/profile/${year}`), 1500);

@@ -43,7 +43,22 @@ export default function FillForm() {
       if (json.success && json.form) {
         setForm(json.form);
         const initial = {};
-        json.form.fields.forEach(f => { initial[f.input] = ''; });
+        json.form.fields.forEach(f => { 
+          let autofillValue = '';
+          const label = f.input.toLowerCase();
+          
+          if (label.includes('regn no') || label.includes('registration')) {
+            autofillValue = user?.regnNo || '';
+          } else if (label === 'branch') {
+            autofillValue = user?.branch || '';
+          } else if (label === 'hobbies') {
+            autofillValue = user?.hobbies || '';
+          } else if (label.includes('phone') || label.includes('number') || label.includes('mobile')) {
+            autofillValue = user?.number || '';
+          }
+
+          initial[f.input] = autofillValue; 
+        });
         setAnswers(initial);
       } else {
         setError('Form not found or unavailable.');
