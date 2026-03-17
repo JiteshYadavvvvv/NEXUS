@@ -137,11 +137,12 @@ export const AuthProvider = ({ children }) => {
   // Update User Info
   const updateUserInfo = async (data) => {
     try {
+      const isFormData = data instanceof FormData;
       const res = await fetch(`${API}/api/auth/update-user-info`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: isFormData ? undefined : { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(data),
+        body: isFormData ? data : JSON.stringify(data),
       });
       const json = await res.json();
       if (json.success) {

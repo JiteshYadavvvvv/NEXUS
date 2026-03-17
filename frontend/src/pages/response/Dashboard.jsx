@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useProfile } from '@/pages/Profile/Shared/ProfileContext';
@@ -8,6 +8,8 @@ import ApplicantCard from './review/ApplicantCard';
 import ReviewTable from './review/ReviewTable';
 import ReviewModal from './review/ReviewModal';
 import { toast } from 'react-toastify';
+import { ExternalLink, FileText, ImageIcon } from 'lucide-react';
+import { isImageUrl, isPdfUrl, isUploadUrl } from '@/lib/fileUpload';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 import { Search, Star, MessageSquare, Trophy, Plus } from 'lucide-react';
@@ -28,6 +30,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
   const [selectedResponseId, setSelectedResponseId] = useState(null);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [updatingDecision, setUpdatingDecision] = useState(false);
+   const [expandedFile, setExpandedFile] = useState(null);
    const isAdminView = viewerRole === 'admin';
    const responseBasePath = isAdminView ? '/admin/responses' : '/member/responses';
 
@@ -61,9 +64,205 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
       }
    }, [activeClub?.name, location.state, user?.club?.name, user?.clubs]);
 
-  useEffect(() => {
-      fetchForms(currentClubName);
-   }, [currentClubName, routeFormId]);
+   const getAnswerValue = useCallback((answers, fieldInput) => {
+      if (!answers || typeof answers !== 'object') return '-';
+      const directValue = answers[fieldInput];
+      const fallbackKey = Object.keys(answers).find((key) => key.toLowerCase() === fieldInput.toLowerCase());
+      const val = directValue ?? (fallbackKey ? answers[fallbackKey] : undefined);
+      return val !== undefined && val !== '' && val !== null ? String(val) : '-';
+   }, []);
+
+   const getDisplayName = useCallback((response) => {
+      if (response?.userId?.name) return response.userId.name;
+      const answers = response?.answers || response || {};
+      if (typeof answers === 'object') {
+         const nameKey = Object.keys(answers).find((k) => k.toLowerCase().includes('name'));
+         if (nameKey) return answers[nameKey];
+      }
+      return 'Unknown';
+   }, []);
+
+   const getInitials = useCallback((response) => {
+      const name = getDisplayName(response);
+      return name !== 'Unknown'
+         ? name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()
+         : '?';
+   }, [getDisplayName]);
+
+   const normalizeUploadedValue = useCallback((value) => {
+      const normalizeCloudinaryPdfUrl = (url, isPdfCandidate) => {
+         if (!url || !isPdfCandidate) {
+            return url;
+         }
+
+         if (/res\.cloudinary\.com/i.test(url) && /\/image\/upload\//i.test(url)) {
+            return url.replace('/image/upload/', '/raw/upload/');
+         }
+
+         return url;
+      };
+
+      let parsedValue = value;
+
+      if (typeof parsedValue === 'string') {
+         const trimmed = parsedValue.trim();
+         const directPdf = isPdfUrl(trimmed);
+         const directUrl = normalizeCloudinaryPdfUrl(trimmed, directPdf);
+
+         if (isUploadUrl(trimmed) || isUploadUrl(directUrl)) {
+            return {
+               url: directUrl,
+               type: directPdf ? 'pdf' : 'image',
+               name: directUrl.split('/').pop() || 'Uploaded file',
+               available: true,
+            };
+         }
+
+         if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+            try {
+               parsedValue = JSON.parse(trimmed);
+            } catch {
+               return null;
+            }
+         } else {
+            return null;
+         }
+      }
+
+      if (!parsedValue || typeof parsedValue !== 'object' || Array.isArray(parsedValue)) {
+         return null;
+      }
+
+      const normalizedUrl = [
+         parsedValue.url,
+         parsedValue.path,
+         parsedValue.secure_url,
+         parsedValue.src,
+      ].find((candidate) => typeof candidate === 'string' && candidate.trim().length > 0) || '';
+
+      const normalizedName = [
+         parsedValue.name,
+         parsedValue.originalname,
+         parsedValue.original_filename,
+         parsedValue.filename,
+      ].find((candidate) => typeof candidate === 'string' && candidate.trim().length > 0) || '';
+
+      const normalizedTypeHint = [
+         parsedValue.type,
+         parsedValue.mimeType,
+         parsedValue.mimetype,
+         parsedValue.format,
+         parsedValue.resource_type,
+      ].find((candidate) => typeof candidate === 'string' && candidate.trim().length > 0) || '';
+
+      const typeHint = normalizedTypeHint.toLowerCase();
+      const isPdfByHint = typeHint.includes('pdf');
+      const isImageByHint = typeHint.includes('image');
+
+      if (normalizedUrl) {
+         const resolvedPdf = isPdfByHint || isPdfUrl(normalizedUrl);
+         const normalizedFinalUrl = normalizeCloudinaryPdfUrl(normalizedUrl, resolvedPdf);
+         const inferredType = isPdfByHint || isPdfUrl(normalizedUrl)
+            ? 'pdf'
+            : (isImageByHint || isImageUrl(normalizedUrl) ? 'image' : 'file');
+
+         return {
+            url: normalizedFinalUrl,
+            type: inferredType,
+            name: normalizedName || normalizedFinalUrl.split('/').pop() || 'Uploaded file',
+            available: true,
+         };
+      }
+
+      if (normalizedName || isPdfByHint || isImageByHint) {
+         return {
+            url: '',
+            type: isPdfByHint ? 'pdf' : (isImageByHint ? 'image' : 'file'),
+            name: normalizedName || 'Uploaded file',
+            available: false,
+         };
+      }
+
+      return null;
+   }, []);
+
+   const getResponseAnswerGroups = useCallback((answers, displayPriority) => {
+      const entries = Object.entries(answers || {});
+
+      const uploadedAnswers = entries
+         .map(([key, value]) => [key, normalizeUploadedValue(value)])
+         .filter(([, value]) => Boolean(value));
+
+      const textAnswers = entries.filter(([, value]) => !normalizeUploadedValue(value));
+
+      if (displayPriority && !textAnswers.some(([key]) => key.toLowerCase().includes('priority'))) {
+         textAnswers.unshift(['Priority', displayPriority]);
+      }
+
+      return { textAnswers, uploadedAnswers };
+   }, [normalizeUploadedValue]);
+
+   const fetchForms = useCallback(async (clubName) => {
+      setLoadingForms(true);
+      try {
+         const params = isAdminView && clubName ? `?club=${encodeURIComponent(clubName)}` : '';
+         console.log('[fetchForms] viewerRole:', viewerRole, '| clubName:', clubName, '| params:', params);
+         const res = await fetch(`${API}/api/forms/get-club-forms${params}`, { credentials: 'include' });
+         const json = await res.json();
+         console.log('[fetchForms] response:', json);
+         if (json.success && Array.isArray(json.forms)) {
+            setForms(json.forms);
+            if (json.forms.length > 0) {
+               const nextFormId = json.forms.some((form) => form._id === routeFormId)
+                  ? routeFormId
+                  : json.forms[0]._id;
+               setSelectedFormId(nextFormId);
+            } else {
+               setSelectedFormId("");
+            }
+         } else {
+            setForms([]);
+            setSelectedFormId("");
+            if (!json.success) {
+               toast.error(json.message || 'Failed to load forms');
+            }
+         }
+      } catch (err) {
+         console.error('[fetchForms] network error:', err);
+         toast.error('Network error loading forms');
+      } finally {
+         setLoadingForms(false);
+      }
+   }, [isAdminView, routeFormId, viewerRole]);
+
+   const fetchResponses = useCallback(async (formId) => {
+      setLoadingResponses(true);
+      setResponses([]);
+      try {
+         const res = await fetch(`${API}/api/response/get-form-responses/${formId}`, { credentials: 'include' });
+         const json = await res.json();
+         if (json.success && Array.isArray(json.responses)) {
+            setResponses(json.responses);
+            if (json.responses.length > 0) {
+               setSelectedResponseId(json.responses[0]._id);
+            } else {
+               setSelectedResponseId(null);
+            }
+         } else {
+            setResponses([]);
+            setSelectedResponseId(null);
+         }
+      } catch (err) {
+         console.error(err);
+         toast.error('Failed to load responses');
+      } finally {
+         setLoadingResponses(false);
+      }
+   }, []);
+
+   useEffect(() => {
+         fetchForms(currentClubName);
+    }, [currentClubName, fetchForms]);
 
   useEffect(() => {
       if (!selectedFormId) {
@@ -79,8 +278,8 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
          });
       }
 
-      fetchResponses(selectedFormId);
-  }, [selectedFormId, activeClub, location.state, isEmbedded]);
+        fetchResponses(selectedFormId);
+     }, [selectedFormId, activeClub, location.state, isEmbedded, navigate, responseBasePath, routeFormId, fetchResponses]);
 
    useEffect(() => {
       if (!routeFormId || routeFormId === selectedFormId) {
@@ -88,66 +287,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
       }
 
       setSelectedFormId(routeFormId);
-   }, [routeFormId]);
-
-  const fetchForms = async (clubName) => {
-    setLoadingForms(true);
-    try {
-         const params = isAdminView && clubName ? `?club=${encodeURIComponent(clubName)}` : '';
-         console.log('[fetchForms] viewerRole:', viewerRole, '| clubName:', clubName, '| params:', params);
-         const res = await fetch(`${API}/api/forms/get-club-forms${params}`, { credentials: 'include' });
-      const json = await res.json();
-      console.log('[fetchForms] response:', json);
-      if (json.success && Array.isArray(json.forms)) {
-        setForms(json.forms);
-        if (json.forms.length > 0) {
-            const nextFormId = json.forms.some((form) => form._id === routeFormId)
-               ? routeFormId
-               : json.forms[0]._id;
-            setSelectedFormId(nextFormId);
-        } else {
-            setSelectedFormId("");
-        }
-      } else {
-        setForms([]);
-            setSelectedFormId("");
-        if (!json.success) {
-          toast.error(json.message || 'Failed to load forms');
-        }
-      }
-    } catch (err) {
-      console.error('[fetchForms] network error:', err);
-      toast.error('Network error loading forms');
-    } finally {
-      setLoadingForms(false);
-    }
-  };
-
-  const fetchResponses = async (formId) => {
-    setLoadingResponses(true);
-    setResponses([]);
-    try {
-      const res = await fetch(`${API}/api/response/get-form-responses/${formId}`, { credentials: 'include' });
-      const json = await res.json();
-      if (json.success && Array.isArray(json.responses)) {
-        setResponses(json.responses);
-        if (json.responses.length > 0) {
-           // Optionally auto-select first
-           setSelectedResponseId(json.responses[0]._id);
-        } else {
-           setSelectedResponseId(null);
-        }
-      } else {
-        setResponses([]);
-        setSelectedResponseId(null);
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error('Failed to load responses');
-    } finally {
-      setLoadingResponses(false);
-    }
-  };
+    }, [routeFormId, selectedFormId]);
 
   const handleUpdateDecision = async (responseId, newDecision) => {
          if (!isAdminView) {
@@ -215,31 +355,6 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
 
 
 
-  const getAnswerValue = (answers, fieldInput) => {
-    if (!answers || typeof answers !== 'object') return '-';
-    const val = answers[fieldInput];
-    return val !== undefined && val !== '' && val !== null ? String(val) : '-';
-  };
-
-  const getDisplayName = (response) => {
-    // Prefer the registered user's name (populated from userId by backend)
-    if (response?.userId?.name) return response.userId.name;
-    // Fallback: look for a form answer key containing 'name'
-    const answers = response?.answers || response || {};
-    if (typeof answers === 'object') {
-      const nameKey = Object.keys(answers).find(k => k.toLowerCase().includes('name'));
-      if (nameKey) return answers[nameKey];
-    }
-    return 'Unknown';
-  };
-
-  const getInitials = (response) => {
-    const name = getDisplayName(response);
-    return name !== 'Unknown'
-      ? name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
-      : '?';
-  };
-
   const filteredResponses = responses.filter(r => {
     // Status Filter
     if (filterStatus !== 'all') {
@@ -263,15 +378,17 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
     return Object.values(answers).some(v => String(v).toLowerCase().includes(q));
   });
 
-  return (
-    <div className="flex flex-col h-screen overflow-hidden bg-white text-slate-950 font-mono">
-      <DashboardHeader />
+   return (
+      <div className="flex h-screen flex-col overflow-hidden bg-white text-slate-950 font-mono">
+      <div className="sticky top-0 z-30 shrink-0 bg-white">
+         <DashboardHeader />
+      </div>
 
-      <main className="flex-1 flex overflow-hidden">
+         <main className="flex flex-1 min-h-0 overflow-hidden">
         
         {/* LEFT PANE - Applicant List - Shows only if forms exist and are loaded */}
         {!loadingResponses && forms.length > 0 && selectedForm && (
-          <div className="w-64 shrink-0 flex flex-col border-r border-slate-200 bg-slate-50/30 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+               <div className="w-64 shrink-0 overflow-y-auto border-r border-slate-200 bg-slate-50/30 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <div className="px-4 py-3 border-b border-slate-200 bg-slate-50/80 backdrop-blur sticky top-0 z-10 flex items-center justify-between">
               <h3 className="text-sm font-semibold tracking-tight text-slate-900">Applicants</h3>
               {filteredResponses.length > 0 && (
@@ -298,10 +415,10 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
         )}
 
         {/* RIGHT PANE - Main Details Workspace */}
-        <div className="flex-1 flex flex-col bg-white overflow-hidden relative">
+      <div className="relative flex min-w-0 flex-1 flex-col bg-white">
           
           {/* Top Action Bar */}
-          <div className="flex flex-col sm:flex-row justify-between items-center px-4 py-2 border-b border-slate-200 bg-white shrink-0 gap-3">
+          <div className="sticky top-0 z-20 flex shrink-0 flex-col items-center justify-between gap-3 border-b border-slate-200 bg-white/95 px-4 py-2 backdrop-blur sm:flex-row">
               <div className="flex items-center gap-3 w-full sm:w-auto">
                   <h2 className="text-base font-semibold tracking-tight text-slate-900 hidden md:block">
                     {selectedForm ? selectedForm.title : 'Responses'}
@@ -352,7 +469,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
               </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-white text-slate-950">
+          <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-white text-slate-950 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
              {loadingResponses ? (
                 <div className="flex h-full items-center justify-center">
                   <div className="flex flex-col items-center gap-3">
@@ -378,6 +495,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                    if (!selectedApplicant) return null;
 
                    const answers = selectedApplicant.answers || {};
+                   const averageScore = Number(selectedApplicant.averageScore || 0);
                    const currentDecision = selectedApplicant.decision || 'pending';
 
                    let displayPriority = selectedApplicant.priority;
@@ -386,8 +504,10 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                        if (pKey) displayPriority = answers[pKey];
                    }
 
+                   const { textAnswers, uploadedAnswers } = getResponseAnswerGroups(answers, displayPriority);
+
                    return (
-                      <div className="w-full h-full p-6 space-y-6 pb-8">
+                      <div className="w-full p-6 pb-8 space-y-6">
                          {/* Header Profile Area */}
                          <div className="pb-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start gap-4">
                             <div className="flex gap-4 items-center">
@@ -397,7 +517,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                                <div>
                                   <h2 className="text-xl font-bold tracking-tight">{getDisplayName(selectedApplicant)}</h2>
                                   <div className="flex items-center gap-3 text-xs text-muted-foreground text-slate-500 mt-1">
-                                     <span>{getAnswerValue(answers, 'Email')}</span>
+                                     <span>{selectedApplicant.userId?.email || getAnswerValue(answers, 'Email')}</span>
                                      <span className="text-slate-300">•</span>
                                      <span>{getAnswerValue(answers, 'Phone')}</span>
                                   </div>
@@ -460,7 +580,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                                <div className="flex flex-col space-y-1">
                                    <div className="text-xs font-semibold tracking-tight text-slate-900 uppercase">Avg Score</div>
                                    <div className="text-xl font-bold">
-                                      {(Math.round(selectedApplicant.averageScore * 10) / 10).toFixed(1) || '0.0'}
+                                      {(Math.round(averageScore * 10) / 10).toFixed(1)}
                                       <span className="text-sm text-slate-500 font-medium ml-1">/ 10</span>
                                    </div>
                                </div>
@@ -489,7 +609,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                          <div>
                             <h3 className="text-base font-semibold tracking-tight mb-3">Application Details</h3>                            
                              <div className="flex flex-wrap gap-6 rounded-lg border border-slate-200 bg-white shadow-sm p-6">
-                               {Object.entries(answers).map(([key, val]) => {
+                            {textAnswers.map(([key, val]) => {
                                   const isPriorityField = key.toLowerCase().includes('priority');
                                   let actualVal = val;
                                   if (isPriorityField && !val && displayPriority) {
@@ -508,6 +628,64 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                                })}
                             </div>
                          </div>
+
+                                     {uploadedAnswers.length > 0 && (
+                                        <div>
+                                           <h3 className="mb-3 text-base font-semibold tracking-tight">Uploaded Files</h3>
+                                           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                              {uploadedAnswers.map(([key, fileInfo]) => {
+                                                 const imageFile = fileInfo?.type === 'image';
+                                                 const pdfFile = fileInfo?.type === 'pdf';
+                                                 const hasUrl = Boolean(fileInfo?.url);
+                                                 const resolvedOpenUrl = hasUrl
+                                                    ? `${API}/api/response/open-upload?url=${encodeURIComponent(fileInfo.url)}`
+                                                    : '';
+
+                                                 return (
+                                                    <div key={key} className="w-full max-w-[200px] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                                                       {imageFile ? (
+                                                          <img src={fileInfo.url} alt={fileInfo.name} className="h-16 w-full object-cover" />
+                                                       ) : (
+                                                          <div className="flex h-16 items-center justify-center bg-slate-50 text-slate-500">
+                                                             <FileText className="h-10 w-10" />
+                                                          </div>
+                                                       )}
+                                                       <div className="space-y-2 p-4">
+                                                          <div className="flex items-center gap-2">
+                                                             {imageFile ? <ImageIcon className="h-4 w-4 text-slate-500" /> : <FileText className="h-4 w-4 text-slate-500" />}
+                                                             <p className="truncate text-sm font-medium text-slate-900">{fileInfo.name}</p>
+                                                          </div>
+                                                          {hasUrl ? (
+                                                             imageFile ? (
+                                                                <button
+                                                                   type="button"
+                                                                   onClick={() => setExpandedFile(fileInfo)}
+                                                                   className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+                                                                >
+                                                                   Open file
+                                                                   <ExternalLink className="h-3.5 w-3.5" />
+                                                                </button>
+                                                             ) : (
+                                                                <a
+                                                                   href={resolvedOpenUrl}
+                                                                   target="_blank"
+                                                                   rel="noreferrer"
+                                                                   className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+                                                                >
+                                                                   {pdfFile ? 'View PDF' : 'Open file'}
+                                                                   <ExternalLink className="h-3.5 w-3.5" />
+                                                                </a>
+                                                             )
+                                                          ) : (
+                                                             <p className="text-xs font-medium text-slate-500">File uploaded (preview unavailable for older record)</p>
+                                                          )}
+                                                       </div>
+                                                    </div>
+                                                 );
+                                              })}
+                                           </div>
+                                        </div>
+                                     )}
 
                          {/* Review Table Section */}
                          <div>
@@ -539,6 +717,29 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
           </div>
         </div>
       </main>
+
+         {expandedFile && (
+            <div
+               className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4"
+               onClick={() => setExpandedFile(null)}
+               role="presentation"
+            >
+               <div className="relative w-full max-w-6xl" onClick={(e) => e.stopPropagation()} role="presentation">
+                  <button
+                     type="button"
+                     onClick={() => setExpandedFile(null)}
+                     className="absolute right-2 top-2 z-10 rounded-md bg-black/60 px-3 py-1.5 text-sm font-medium text-white hover:bg-black/80"
+                  >
+                     Close
+                  </button>
+                  <img
+                     src={expandedFile.url}
+                     alt={expandedFile.name}
+                     className="max-h-[90vh] w-full rounded-lg bg-black object-contain"
+                  />
+               </div>
+            </div>
+         )}
     </div>
   );
 };

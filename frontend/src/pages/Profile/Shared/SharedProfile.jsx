@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Mail, Phone, Award, MessageCircle, Send, Edit2, Check, X, Camera, Save, Copy } from 'lucide-react';
 import { useProfile } from './ProfileContext';
 import { useAuth } from '@/context/AuthContext';
@@ -13,8 +13,17 @@ const SharedProfile = () => {
     
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState({});
+    const [avatarFile, setAvatarFile] = useState(null);
+    const [avatarPreviewUrl, setAvatarPreviewUrl] = useState('');
     const fileInputRef = useRef(null);
-    const coverInputRef = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            if (avatarPreviewUrl) {
+                URL.revokeObjectURL(avatarPreviewUrl);
+            }
+        };
+    }, [avatarPreviewUrl]);
 
     if (!profile) return <div>Loading Profile...</div>;
 
@@ -33,22 +42,36 @@ const SharedProfile = () => {
         });
         setSaveStatus(null);
         setSaveError('');
+        setAvatarFile(null);
+        if (avatarPreviewUrl) {
+            URL.revokeObjectURL(avatarPreviewUrl);
+        }
+        setAvatarPreviewUrl('');
         setIsEditing(true);
     };
 
     const handleSave = async () => {
         setSaveStatus('saving');
-        const result = await updateUserInfo({
-            name: editForm.name,
-            bio: editForm.bio,
-            year: editForm.year,
-            regnNo: editForm.regnNo,
-            branch: editForm.branch,
-            hobbies: editForm.hobbies,
-            number: editForm.number,
-        });
+        const formData = new FormData();
+        formData.append('name', editForm.name || '');
+        formData.append('bio', editForm.bio || '');
+        formData.append('year', editForm.year || '');
+        formData.append('regnNo', editForm.regnNo || '');
+        formData.append('branch', editForm.branch || '');
+        formData.append('hobbies', editForm.hobbies || '');
+        formData.append('number', editForm.number || '');
+        if (avatarFile) {
+            formData.append('avatar', avatarFile);
+        }
+
+        const result = await updateUserInfo(formData);
         if (result.success) {
             setSaveStatus('success');
+            setAvatarFile(null);
+            if (avatarPreviewUrl) {
+                URL.revokeObjectURL(avatarPreviewUrl);
+                setAvatarPreviewUrl('');
+            }
             setTimeout(() => setIsEditing(false), 800);
         } else {
             setSaveStatus('error');
@@ -59,7 +82,12 @@ const SharedProfile = () => {
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (avatarPreviewUrl) {
+                URL.revokeObjectURL(avatarPreviewUrl);
+            }
             const imageUrl = URL.createObjectURL(file);
+            setAvatarFile(file);
+            setAvatarPreviewUrl(imageUrl);
             setEditForm({ ...editForm, avatar: imageUrl });
         }
     };
