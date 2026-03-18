@@ -1,11 +1,10 @@
 import React from 'react';
-import { File, FileText, ImageIcon, Upload, X } from 'lucide-react';
+import { File, ImageIcon, Upload, X } from 'lucide-react';
 
 import { formatFileSize } from '@/lib/fileUpload';
 
 const kindIcon = {
   image: ImageIcon,
-  pdf: FileText,
   file: File,
 };
 
@@ -70,7 +69,7 @@ export default function FileUploadField({
                           <Icon className="h-6 w-6" />
                         </div>
                         <span className="text-xs font-medium uppercase tracking-[0.2em] text-gray-400">
-                          {item.kind === 'pdf' ? 'PDF' : 'File'}
+                          File
                         </span>
                       </div>
                     </div>

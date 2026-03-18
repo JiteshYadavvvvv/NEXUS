@@ -1,7 +1,8 @@
 const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg', 'avif'];
-const PDF_MIME_TYPE = 'application/pdf';
+const ALLOWED_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
+const ALLOWED_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'webp']);
 
-export const FILE_UPLOAD_ACCEPT = 'image/*,.pdf,application/pdf';
+export const FILE_UPLOAD_ACCEPT = '.jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp';
 
 const hasHttpProtocol = (value) => /^https?:\/\//i.test(value);
 const hasCloudinaryHost = (value) => /res\.cloudinary\.com/i.test(value);
@@ -22,7 +23,19 @@ export const getFileExtension = (value = '') => {
 
 export const isImageFile = (file) => Boolean(file?.type?.startsWith('image/'));
 
-export const isPdfFile = (file) => file?.type === PDF_MIME_TYPE;
+export const isAllowedUploadFile = (file) => {
+  if (!(file instanceof File)) {
+    return false;
+  }
+
+  const mime = String(file.type || '').toLowerCase();
+  if (ALLOWED_MIME_TYPES.has(mime)) {
+    return true;
+  }
+
+  const extension = getFileExtension(file.name || '');
+  return ALLOWED_EXTENSIONS.has(extension);
+};
 
 export const isImageUrl = (value = '') => {
   if (typeof value !== 'string' || !hasHttpProtocol(value)) {
@@ -33,20 +46,12 @@ export const isImageUrl = (value = '') => {
   return IMAGE_EXTENSIONS.includes(extension) || /\/image\/upload\//i.test(value);
 };
 
-export const isPdfUrl = (value = '') => {
-  if (typeof value !== 'string' || !hasHttpProtocol(value)) {
-    return false;
-  }
-
-  return getFileExtension(value) === 'pdf' || /\.pdf($|[?#])/i.test(value);
-};
-
 export const isUploadUrl = (value = '') => {
   if (typeof value !== 'string' || !hasHttpProtocol(value)) {
     return false;
   }
 
-  return isImageUrl(value) || isPdfUrl(value) || hasCloudinaryHost(value);
+  return isImageUrl(value) || hasCloudinaryHost(value);
 };
 
 export const formatFileSize = (size = 0) => {
@@ -82,7 +87,7 @@ export const createSelectedFiles = (fileList, fieldKey) => {
         file,
         name: file.name,
         size: file.size,
-        kind: image ? 'image' : isPdfFile(file) ? 'pdf' : 'file',
+        kind: image ? 'image' : 'file',
         previewUrl: image ? URL.createObjectURL(file) : '',
       };
     });

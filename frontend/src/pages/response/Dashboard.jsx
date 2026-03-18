@@ -8,8 +8,8 @@ import ApplicantCard from './review/ApplicantCard';
 import ReviewTable from './review/ReviewTable';
 import ReviewModal from './review/ReviewModal';
 import { toast } from 'react-toastify';
-import { ExternalLink, FileText, ImageIcon } from 'lucide-react';
-import { isImageUrl, isPdfUrl, isUploadUrl } from '@/lib/fileUpload';
+import { ExternalLink, ImageIcon } from 'lucide-react';
+import { isImageUrl, isUploadUrl } from '@/lib/fileUpload';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 import { Search, Star, MessageSquare, Trophy, Plus } from 'lucide-react';
@@ -90,30 +90,16 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
    }, [getDisplayName]);
 
    const normalizeUploadedValue = useCallback((value) => {
-      const normalizeCloudinaryPdfUrl = (url, isPdfCandidate) => {
-         if (!url || !isPdfCandidate) {
-            return url;
-         }
-
-         if (/res\.cloudinary\.com/i.test(url) && /\/image\/upload\//i.test(url)) {
-            return url.replace('/image/upload/', '/raw/upload/');
-         }
-
-         return url;
-      };
-
       let parsedValue = value;
 
       if (typeof parsedValue === 'string') {
          const trimmed = parsedValue.trim();
-         const directPdf = isPdfUrl(trimmed);
-         const directUrl = normalizeCloudinaryPdfUrl(trimmed, directPdf);
 
-         if (isUploadUrl(trimmed) || isUploadUrl(directUrl)) {
+         if (isUploadUrl(trimmed) && isImageUrl(trimmed)) {
             return {
-               url: directUrl,
-               type: directPdf ? 'pdf' : 'image',
-               name: directUrl.split('/').pop() || 'Uploaded file',
+               url: trimmed,
+               type: 'image',
+               name: trimmed.split('/').pop() || 'Uploaded image',
                available: true,
             };
          }
@@ -152,33 +138,25 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
          parsedValue.mimeType,
          parsedValue.mimetype,
          parsedValue.format,
-         parsedValue.resource_type,
       ].find((candidate) => typeof candidate === 'string' && candidate.trim().length > 0) || '';
 
       const typeHint = normalizedTypeHint.toLowerCase();
-      const isPdfByHint = typeHint.includes('pdf');
       const isImageByHint = typeHint.includes('image');
 
-      if (normalizedUrl) {
-         const resolvedPdf = isPdfByHint || isPdfUrl(normalizedUrl);
-         const normalizedFinalUrl = normalizeCloudinaryPdfUrl(normalizedUrl, resolvedPdf);
-         const inferredType = isPdfByHint || isPdfUrl(normalizedUrl)
-            ? 'pdf'
-            : (isImageByHint || isImageUrl(normalizedUrl) ? 'image' : 'file');
-
+      if (normalizedUrl && (isImageByHint || isImageUrl(normalizedUrl))) {
          return {
-            url: normalizedFinalUrl,
-            type: inferredType,
-            name: normalizedName || normalizedFinalUrl.split('/').pop() || 'Uploaded file',
+            url: normalizedUrl,
+            type: 'image',
+            name: normalizedName || normalizedUrl.split('/').pop() || 'Uploaded image',
             available: true,
          };
       }
 
-      if (normalizedName || isPdfByHint || isImageByHint) {
+      if (normalizedName && isImageByHint) {
          return {
             url: '',
-            type: isPdfByHint ? 'pdf' : (isImageByHint ? 'image' : 'file'),
-            name: normalizedName || 'Uploaded file',
+            type: 'image',
+            name: normalizedName || 'Uploaded image',
             available: false,
          };
       }
@@ -188,12 +166,16 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
 
    const getResponseAnswerGroups = useCallback((answers, displayPriority) => {
       const entries = Object.entries(answers || {});
+      const isPrimitiveValue = (entryValue) => {
+         const entryType = typeof entryValue;
+         return entryValue == null || entryType === 'string' || entryType === 'number' || entryType === 'boolean';
+      };
 
       const uploadedAnswers = entries
          .map(([key, value]) => [key, normalizeUploadedValue(value)])
          .filter(([, value]) => Boolean(value));
 
-      const textAnswers = entries.filter(([, value]) => !normalizeUploadedValue(value));
+      const textAnswers = entries.filter(([, value]) => !normalizeUploadedValue(value) && isPrimitiveValue(value));
 
       if (displayPriority && !textAnswers.some(([key]) => key.toLowerCase().includes('priority'))) {
          textAnswers.unshift(['Priority', displayPriority]);
@@ -635,49 +617,33 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                               {uploadedAnswers.map(([key, fileInfo]) => {
                                                  const imageFile = fileInfo?.type === 'image';
-                                                 const pdfFile = fileInfo?.type === 'pdf';
                                                  const hasUrl = Boolean(fileInfo?.url);
-                                                 const resolvedOpenUrl = hasUrl
-                                                    ? `${API}/api/response/open-upload?url=${encodeURIComponent(fileInfo.url)}`
-                                                    : '';
 
                                                  return (
                                                     <div key={key} className="w-full max-w-[200px] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-                                                       {imageFile ? (
+                                                       {imageFile && hasUrl ? (
                                                           <img src={fileInfo.url} alt={fileInfo.name} className="h-16 w-full object-cover" />
                                                        ) : (
                                                           <div className="flex h-16 items-center justify-center bg-slate-50 text-slate-500">
-                                                             <FileText className="h-10 w-10" />
+                                                             <ImageIcon className="h-10 w-10" />
                                                           </div>
                                                        )}
                                                        <div className="space-y-2 p-4">
                                                           <div className="flex items-center gap-2">
-                                                             {imageFile ? <ImageIcon className="h-4 w-4 text-slate-500" /> : <FileText className="h-4 w-4 text-slate-500" />}
+                                                             <ImageIcon className="h-4 w-4 text-slate-500" />
                                                              <p className="truncate text-sm font-medium text-slate-900">{fileInfo.name}</p>
                                                           </div>
                                                           {hasUrl ? (
-                                                             imageFile ? (
-                                                                <button
-                                                                   type="button"
-                                                                   onClick={() => setExpandedFile(fileInfo)}
-                                                                   className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
-                                                                >
-                                                                   Open file
-                                                                   <ExternalLink className="h-3.5 w-3.5" />
-                                                                </button>
-                                                             ) : (
-                                                                <a
-                                                                   href={resolvedOpenUrl}
-                                                                   target="_blank"
-                                                                   rel="noreferrer"
-                                                                   className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
-                                                                >
-                                                                   {pdfFile ? 'View PDF' : 'Open file'}
-                                                                   <ExternalLink className="h-3.5 w-3.5" />
-                                                                </a>
-                                                             )
+                                                             <button
+                                                                type="button"
+                                                                onClick={() => setExpandedFile(fileInfo)}
+                                                                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+                                                             >
+                                                                Open image
+                                                                <ExternalLink className="h-3.5 w-3.5" />
+                                                             </button>
                                                           ) : (
-                                                             <p className="text-xs font-medium text-slate-500">File uploaded (preview unavailable for older record)</p>
+                                                             <p className="text-xs font-medium text-slate-500">Image uploaded (preview unavailable for older record)</p>
                                                           )}
                                                        </div>
                                                     </div>

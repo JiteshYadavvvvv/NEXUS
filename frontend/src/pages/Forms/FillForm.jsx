@@ -4,7 +4,7 @@ import { CheckCircle2 } from 'lucide-react';
 
 import FileUploadField from '@/components/ui/FileUploadField';
 import { useAuth } from '@/context/AuthContext';
-import { createSelectedFiles, FILE_UPLOAD_ACCEPT, revokeSelectedFiles } from '@/lib/fileUpload';
+import { createSelectedFiles, FILE_UPLOAD_ACCEPT, isAllowedUploadFile, revokeSelectedFiles } from '@/lib/fileUpload';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
@@ -106,13 +106,27 @@ export default function FillForm() {
   };
 
   const handleFilesSelected = (fieldInput, selectedFiles) => {
-    const nextItems = createSelectedFiles(selectedFiles, fieldInput);
+    const validFiles = selectedFiles.filter((file) => isAllowedUploadFile(file));
+    const invalidCount = selectedFiles.length - validFiles.length;
+
+    if (invalidCount > 0) {
+      setError('Only JPG, JPEG, PNG and WEBP image files are allowed.');
+    }
+
+    const nextItems = createSelectedFiles(validFiles, fieldInput);
+
+    if (nextItems.length === 0) {
+      return;
+    }
 
     setFiles((prev) => ({
       ...prev,
       [fieldInput]: [...(prev[fieldInput] || []), ...nextItems],
     }));
-    setError('');
+
+    if (invalidCount === 0) {
+      setError('');
+    }
   };
 
   const handleRemoveFile = (fieldInput, fileId) => {
@@ -177,8 +191,11 @@ export default function FillForm() {
         formData.append('priority', String(priority));
       }
 
-      Object.values(files).flat().forEach((item) => {
-        formData.append('files', item.file);
+      Object.entries(files).forEach(([fieldInput, fieldFiles]) => {
+        fieldFiles.forEach((item) => {
+          formData.append('files', item.file);
+          formData.append('fileFieldKeys', fieldInput);
+        });
       });
 
       const res = await fetch(`${API}/api/response/submit-response`, {
@@ -186,7 +203,22 @@ export default function FillForm() {
         credentials: 'include',
         body: formData,
       });
-      const json = await res.json();
+      let json = null;
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        json = await res.json();
+      }
+
+      if (!res.ok) {
+        const fallbackMessage = json?.message || `Request failed with status ${res.status}`;
+        setError(fallbackMessage);
+        return;
+      }
+
+      if (!json) {
+        setError('Unexpected server response. Please try again.');
+        return;
+      }
 
       if (json.success) {
         Object.values(filesRef.current).forEach((fileGroup) => revokeSelectedFiles(fileGroup));
@@ -360,7 +392,7 @@ export default function FillForm() {
                     accept={FILE_UPLOAD_ACCEPT}
                     onFilesSelected={(selectedFiles) => handleFilesSelected(field.input, selectedFiles)}
                     onRemoveFile={(fileId) => handleRemoveFile(field.input, fileId)}
-                    helperText="Upload multiple files. Images show thumbnails and PDFs show document cards."
+                    helperText="Upload your file"
                   />
                 ) : (
                   <input
