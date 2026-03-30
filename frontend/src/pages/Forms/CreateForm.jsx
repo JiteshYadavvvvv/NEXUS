@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
-const FIELD_TYPES = ['text', 'email', 'number', 'textarea', 'select', 'priority'];
+const FIELD_TYPES = ['text', 'email', 'number', 'textarea', 'select', 'file', 'priority'];
 
 const emptyField = () => ({
     id: crypto.randomUUID(),
