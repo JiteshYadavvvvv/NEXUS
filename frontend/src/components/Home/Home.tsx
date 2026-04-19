@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Github } from "lucide-react";
 import { motion } from "framer-motion";
-import Shuffle from "./Shuffle";
+import ScrambledText from "./ScrambledText";
 import TextType from './TextType';
 import CurvedLoop from '@/components/ui/CurvedLoop';
 import Beams from './Beams';
@@ -33,21 +33,15 @@ export default function Home() {
 
 
         <div>
-          <Shuffle
-            text="Your campus just got smarter"
-            shuffleDirection="right"
-            duration={0.35}
-            animationMode="evenodd"
-            shuffleTimes={1}
-            ease="power3.out"
-            stagger={0.03}
-            threshold={0.1}
-            triggerOnce={true}
-            triggerOnHover={true}
-            respectReducedMotion={true}
-            loop={false}
-            loopDelay={0}
-            className="text-6xl md:text-8xl lg:text-9xl leading-[1.1] font-bold text-white oi-regular" onShuffleComplete={undefined} colorFrom={undefined} colorTo={undefined} />
+          <ScrambledText
+            radius={100}
+            duration={1.2}
+            speed={0.5}
+            scrambleChars=".:"
+            className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl leading-[1.1] font-bold text-white black-ops-one-regular whitespace-nowrap text-center mx-auto flex flex-col items-center justify-center w-full"
+          >
+            Your Campus<br />Just Got Smarter
+          </ScrambledText>
         </div>
 
         <div className="flex flex-col items-center gap-2">

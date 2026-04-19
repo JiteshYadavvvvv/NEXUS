@@ -16,7 +16,7 @@ export function Navbar({ onOpenSidebar, isSidebarOpen }) {
     const dashboardHref = isAdmin ? '/profile/Admin' : user?.year ? `/profile/${user.year}` : null;
 
     const navItems = React.useMemo(() => [
-        { label: 'Home', href: '/', isActive: () => isActive("/") && !location.hash },
+        { label: 'Home', href: '/', isReload: true, isActive: () => isActive("/") && !location.hash },
         { label: 'Events', href: '/events', isActive: () => isActive("/events") },
         { label: 'Clubs', href: '/clubs', isActive: () => isActive("/clubs") },
         { label: 'Developers', href: '/developers', isActive: () => isActive("/developers") },
@@ -30,14 +30,14 @@ export function Navbar({ onOpenSidebar, isSidebarOpen }) {
                     {/* Left Section: Logo + Navigation Links */}
                     <div className="flex items-center gap-6 lg:gap-10">
                         {/* Logo */}
-                        <Link to="/" className="flex items-center flex-shrink-0 group">
+                        <a href="/" className="flex items-center flex-shrink-0 group">
                             <img src="/nexus.svg" alt="NEXUS Logo" className="h-6 w-10 sm:w-16 object-contain group-hover:scale-110 group-hover:-translate-y-0.5 transition-all duration-300 ease-in-out rounded-full" />
-                        </Link>
+                        </a>
 
                         {/* Desktop Navigation Links */}
                         <div className="hidden md:flex items-center gap-4 lg:gap-6">
                             {navItems.map((item, idx) => (
-                                item.isHash ? (
+                                item.isHash || item.isReload ? (
                                     <a
                                         key={idx}
                                         href={item.href}

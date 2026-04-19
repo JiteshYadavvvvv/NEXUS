@@ -94,10 +94,10 @@ export default function EventCard({ event }) {
   return (
     <>
       <article className="group relative overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-1 flex flex-col border border-white/5 bg-white/2 h-full w-full">
-        <div className="relative z-10 flex flex-col h-full w-full p-5 md:p-6">
+        <div className="relative z-10 flex flex-col h-full w-full p-4 md:p-5">
           
           {/* stats */}
-          <div className="flex items-start justify-between gap-4 mb-5">
+          <div className="flex items-start justify-between gap-4 mb-3">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 shrink-0 p-2.5 opacity-60 group-hover:opacity-100 group-hover:bg-white/10 transition-all duration-300">
               <Sparkles className="w-full h-full text-zinc-400" />
             </div>
@@ -122,13 +122,13 @@ export default function EventCard({ event }) {
           </div>
 
           {/* desc */}
-          <div className="mb-6">
+          <div className="mb-4">
             <p className="text-sm leading-relaxed text-gray-500 group-hover:text-gray-400 transition-colors transition-all duration-300">
-              {!description || description.length <= 150
+              {!description || description.length <= 110
                 ? description || "No description available for this event. Check out the original post for more details."
-                : `${description.slice(0, 150)}... `}
+                : `${description.slice(0, 110)}... `}
               
-              {description && description.length > 150 && (
+              {description && description.length > 110 && (
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="text-zinc-400 hover:text-white font-medium ml-1 transition-colors underline-offset-4 hover:underline focus:outline-none"
@@ -140,14 +140,16 @@ export default function EventCard({ event }) {
           </div>
 
           {/* meta */}
-          <div className="mt-auto flex flex-col gap-3 pt-5 border-t border-white/5">
-            <div className="flex items-center gap-2.5 text-[13px] text-gray-400">
-              <Calendar className="w-4 h-4 text-gray-600" />
-              <span>{formatDate(date)}</span>
-            </div>
-            <div className="flex items-center gap-2.5 text-[13px] text-gray-400">
-              <Clock className="w-4 h-4 text-gray-600" />
-              <span>{time || 'TBD'}</span>
+          <div className="mt-auto flex flex-col gap-2 pt-4 border-t border-white/5">
+            <div className="flex items-center gap-5 text-[13px] text-gray-400">
+              <div className="flex items-center gap-2.5">
+                <Calendar className="w-4 h-4 text-gray-600" />
+                <span>{formatDate(date)}</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Clock className="w-4 h-4 text-gray-600" />
+                <span>{time || 'TBD'}</span>
+              </div>
             </div>
             <div className="flex items-center gap-2.5 text-[13px] text-gray-400">
               <MapPin className="w-4 h-4 text-gray-600" />

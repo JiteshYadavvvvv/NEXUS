@@ -10,7 +10,7 @@ import { useAuth } from "@/context/AuthContext";
  * modify this array to add or remove links from the sidebar.
  */
 const NAV_ITEMS = [
-  { name: "Home", path: "/", isLink: false },
+  { name: "Home", path: "/", isLink: true },
   { name: "Events", path: "/events", isLink: false },
   { name: "Clubs", path: "/clubs", isLink: false },
   { name: "Team", path: "https://www.gdgaitpune.me/", isLink: true, external: true },

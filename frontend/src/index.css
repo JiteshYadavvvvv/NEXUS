@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Jersey+20&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Oi&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Foldit:wght@100..900&family=Jersey+10&family=Oi&family=Rubik+Distressed&family=Rubik+Glitch+Pop&family=Rubik+Storm&family=Tiny5&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 
 .foldit-regular {
   font-family: "Foldit", sans-serif;
@@ -13,6 +14,12 @@
 .oi-regular {
   font-family: "Jersey 20";
   font-weight: 800;
+  font-style: normal;
+}
+
+.black-ops-one-regular {
+  font-family: "Black Ops One", system-ui;
+  font-weight: 400;
   font-style: normal;
 }
 @plugin 'tailwindcss-animate';
