@@ -11,7 +11,7 @@ import { useAuth } from "@/context/AuthContext";
  */
 const NAV_ITEMS = [
   { name: "Home", path: "/", isLink: false },
-  { name: "Events", path: "/#events", isLink: true },
+  { name: "Events", path: "/events", isLink: false },
   { name: "Clubs", path: "/clubs", isLink: false },
   { name: "Team", path: "https://www.gdgaitpune.me/", isLink: true, external: true },
   { name: "Developers", path: "/developers", isLink: false },

@@ -17,7 +17,7 @@ export function Navbar({ onOpenSidebar, isSidebarOpen }) {
 
     const navItems = React.useMemo(() => [
         { label: 'Home', href: '/', isActive: () => isActive("/") && !location.hash },
-        { label: 'Events', href: '/#events', isHash: true, isActive: () => isActiveHash("#events") },
+        { label: 'Events', href: '/events', isActive: () => isActive("/events") },
         { label: 'Clubs', href: '/clubs', isActive: () => isActive("/clubs") },
         { label: 'Developers', href: '/developers', isActive: () => isActive("/developers") },
     ], [location.pathname, location.hash]);
