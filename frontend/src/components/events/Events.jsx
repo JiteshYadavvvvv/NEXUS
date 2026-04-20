@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import EventCard from './EventCard';
-import { Loader2, CalendarX, AlertCircle, ArrowLeft } from 'lucide-react';
+// Added ChevronLeft and ChevronRight for pagination buttons
+import { Loader2, CalendarX, AlertCircle, ArrowLeft, Grid, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import ElectricBorder from '../Clubs/ElectricBorder';
-
+import Calendar1 from './Calendar';
 const API = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 export default function Events() {
@@ -12,6 +13,11 @@ export default function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // View mode and pagination state
+  const [viewMode, setViewMode] = useState('cards'); // 'cards' or 'calendar'
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -43,6 +49,19 @@ export default function Events() {
 
     fetchEvents();
   }, []);
+
+  // Pagination Calculations
+  const totalPages = Math.ceil(events.length / ITEMS_PER_PAGE);
+  const indexOfLastEvent = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstEvent = indexOfLastEvent - ITEMS_PER_PAGE;
+  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
+
+  // Handle page changes and scroll to top of list smoothly
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    // Optional: scroll back to the top of the events section when page changes
+    document.getElementById('events')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   if (loading) {
     return (
@@ -82,31 +101,96 @@ export default function Events() {
           </button>
         </div>
 
-        {/* Header Section */}
-        <div className="mb-10 w-full max-w-[1200px] px-6 sm:px-8 uppercase">
-          <h2 className='text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4'>
-            Explore <span className="text-gray-400">Events.</span>
-          </h2>
-          <p className="text-gray-500 text-base md:text-lg max-w-xl leading-relaxed capitalize">
-            Discover upcoming activities, workshops, and competitions from student-led organizations.
-          </p>
+        {/* Header & View Toggle Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end w-full max-w-[1200px] px-6 sm:px-8 mb-10 gap-6">
+          <div className="uppercase">
+            <h2 className='text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4'>
+              Explore <span className="text-gray-400">Events.</span>
+            </h2>
+            <p className="text-gray-500 text-base md:text-lg max-w-xl leading-relaxed capitalize">
+              Discover upcoming activities, workshops, and competitions from student-led organizations.
+            </p>
+          </div>
+
+          {/* View Toggle */}
+          <div className="flex bg-white/5 p-1 rounded-lg border border-white/10 shrink-0">
+            <button
+              onClick={() => {
+                setViewMode('cards');
+                setCurrentPage(1); // Reset to page 1 when switching back
+              }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                viewMode === 'cards' 
+                  ? 'bg-white/10 text-white shadow-sm' 
+                  : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+              }`}
+            >
+              <Grid className="w-4 h-4" /> Cards
+            </button>
+            <button
+              onClick={() => setViewMode('calendar')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                viewMode === 'calendar' 
+                  ? 'bg-white/10 text-white shadow-sm' 
+                  : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+              }`}
+            >
+              <Calendar className="w-4 h-4" /> Calendar
+            </button>
+          </div>
         </div>
 
-        {/* Grid Section */}
-        {events.length === 0 ? (
+        {/* Content Section */}
+        {viewMode === 'calendar' ? (
+          /* Calendar View */
           <div className="flex flex-col items-center justify-center py-24 bg-white/2 border border-dashed border-white/10 rounded-2xl w-full max-w-[1200px] mx-6">
-            <CalendarX className="w-16 h-16 text-gray-600 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-300 mb-2">No Events Found</h3>
-            <p className="text-gray-500">Check back later for upcoming club activities.</p>
+            <Calendar1 />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 w-full max-w-[1200px] px-6 sm:px-8">
-            {events.map((event) => (
-              <ElectricBorder key={event._id} color="#555555" speed={0.3} chaos={0.08} borderRadius={12} className="h-full">
-                <EventCard event={event} />
-              </ElectricBorder>
-            ))}
-          </div>
+          /* Cards Grid View */
+          events.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 bg-white/2 border border-dashed border-white/10 rounded-2xl w-full max-w-[1200px] mx-6">
+              <CalendarX className="w-16 h-16 text-gray-600 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-300 mb-2">No Events Found</h3>
+              <p className="text-gray-500">Check back later for upcoming club activities.</p>
+            </div>
+          ) : (
+            <div className="w-full max-w-[1200px] px-6 sm:px-8 flex flex-col items-center">
+              {/* Grid mapping over currentEvents instead of events */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 w-full">
+                {currentEvents.map((event) => (
+                  <ElectricBorder key={event._id} color="#555555" speed={0.3} chaos={0.08} borderRadius={12} className="h-full w-full">
+                    <EventCard event={event} />
+                  </ElectricBorder>
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-4 mt-12 mb-4">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-gray-300 hover:text-white rounded-lg border border-white/10 transition-all active:scale-95 duration-200"
+                  >
+                    <ChevronLeft className="w-4 h-4" /> Prev
+                  </button>
+                  
+                  <div className="text-gray-400 text-sm font-medium px-4">
+                    Page <span className="text-white">{currentPage}</span> of {totalPages}
+                  </div>
+                  
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-gray-300 hover:text-white rounded-lg border border-white/10 transition-all active:scale-95 duration-200"
+                  >
+                    Next <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
+          )
         )}
       </section>
     </main>
