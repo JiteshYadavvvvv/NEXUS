@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
 import EventTag from './EventTag'
 import { Loader2, AlertCircle, X, CalendarDays, Clock, MapPin, User, Tag } from 'lucide-react'
-import ElectricBorder from '/home/nishant/LOCAL_DISK_D/4/NEXUS/frontend/src/components/Clubs/ElectricBorder.jsx'
+import ElectricBorder from '../Clubs/ElectricBorder'
 
 const API = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 

@@ -28,7 +28,7 @@ The NEXUS infrastructure is split into discrete, highly-optimized components to 
 
 ## 🚀 Getting Started
 
-Initialize the frontend environment to experience NEXUS locally.
+Initialize the frontend environment to experience NEXUS locally..
 
 First, clone and install dependencies:
 
