@@ -147,7 +147,7 @@ const DevGrid = () => {
         ref={revealImgRef}
         src="/clubprofiles/reveal.jpeg"
         alt="Reveal effect"
-        className="absolute inset-0 -top-[320px] z-[5] mix-blend-lighten pointer-events-none opacity-30 object-cover"
+        className="fixed inset-0 -top-[220px] z-10 mix-blend-lighten pointer-events-none opacity-30 object-cover"
         style={{
           '--mx': '-9999px',
           '--my': '-9999px',
@@ -161,7 +161,7 @@ const DevGrid = () => {
       
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 mt-[80px] flex justify-center">
  
-        <div className="w-fit mx-auto bg-zinc-900 rounded-[24px] border border-[#f4f4f5]/60 shadow-[0_-10px_60px_rgba(255,255,255,0.02)] relative overflow-hidden px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6">
+        <div className="w-fit mx-auto bg-zinc-900 rounded-[24px] border border-[#f4f4f5] shadow-[0_-10px_60px_rgba(255,255,255,0.02)] relative overflow-hidden px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6">
            
            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[2px] bg-linear-to-r from-transparent via-[#f4f4f5] to-transparent shadow-[0_0_15px_rgba(244,244,245,0.4)] z-[2]" />
 
