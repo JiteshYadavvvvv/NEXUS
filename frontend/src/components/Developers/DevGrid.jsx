@@ -92,22 +92,31 @@ const DevGrid = () => {
     return () => ctx.revert();
   }, []);
 
-  const handleMouseMove = (e) => {
-    if (!containerRef.current || !revealImgRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    // Update variables for the reveal image effect overlay that covers the section
-    revealImgRef.current.style.setProperty('--mx', `${x}px`);
-    revealImgRef.current.style.setProperty('--my', `${y}px`);
-  };
+  useEffect(() => {
+    const handleGlobalMouseMove = (e) => {
+      if (!revealImgRef.current) return;
+      const rect = revealImgRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      revealImgRef.current.style.setProperty('--mx', `${x}px`);
+      revealImgRef.current.style.setProperty('--my', `${y}px`);
+    };
 
-  const handleMouseLeave = () => {
-    if (!revealImgRef.current) return;
-    revealImgRef.current.style.setProperty('--mx', '-9999px');
-    revealImgRef.current.style.setProperty('--my', '-9999px');
-  };
+    const handleGlobalMouseLeave = () => {
+      if (!revealImgRef.current) return;
+      revealImgRef.current.style.setProperty('--mx', '-9999px');
+      revealImgRef.current.style.setProperty('--my', '-9999px');
+    };
+
+    window.addEventListener('mousemove', handleGlobalMouseMove);
+    window.addEventListener('mouseleave', handleGlobalMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', handleGlobalMouseMove);
+      window.removeEventListener('mouseleave', handleGlobalMouseLeave);
+    };
+  }, []);
 
   if (allDevelopers.length === 0) {
     return (
@@ -121,8 +130,6 @@ const DevGrid = () => {
     <div 
       ref={containerRef}
       className="relative w-full bg-transparent mt-0 pb-24"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
     >
      
       <div className="absolute -top-[320px] left-0 right-0 h-[800px] z-[0] pointer-events-none">
@@ -136,16 +143,16 @@ const DevGrid = () => {
       </div>
 
      
-      <div
+      <img
         ref={revealImgRef}
-        className="absolute inset-0 -top-[320px] z-[5] mix-blend-lighten pointer-events-none opacity-40"
+        src="/clubprofiles/reveal.jpeg"
+        alt="Reveal effect"
+        className="absolute inset-0 -top-[320px] z-[5] mix-blend-lighten pointer-events-none opacity-30 object-cover"
         style={{
           '--mx': '-9999px',
           '--my': '-9999px',
-          backgroundImage: 'radial-gradient(circle at 10px 10px, rgba(255,255,255,0.15) 1px, transparent 0)',
-          backgroundSize: '30px 30px',
-          WebkitMaskImage: 'radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.8) 100px, transparent 350px)',
-          maskImage: 'radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.8) 100px, transparent 350px)',
+          WebkitMaskImage: 'radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 60px, rgba(255,255,255,0.6) 120px, rgba(255,255,255,0.25) 180px, rgba(255,255,255,0) 240px)',
+          maskImage: 'radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 60px, rgba(255,255,255,0.6) 120px, rgba(255,255,255,0.25) 180px, rgba(255,255,255,0) 240px)',
           WebkitMaskRepeat: 'no-repeat',
           maskRepeat: 'no-repeat'
         }}
@@ -154,9 +161,9 @@ const DevGrid = () => {
       
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 mt-[80px] flex justify-center">
  
-        <div className="w-fit mx-auto bg-zinc-900 rounded-[24px] border border-white/5 shadow-[0_-10px_60px_rgba(255,255,255,0.02)] relative overflow-hidden px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6">
+        <div className="w-fit mx-auto bg-zinc-900 rounded-[24px] border border-[#f4f4f5]/60 shadow-[0_-10px_60px_rgba(255,255,255,0.02)] relative overflow-hidden px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6">
            
-           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[2px] bg-gradient-to-r from-transparent via-zinc-400 to-transparent shadow-[0_0_15px_rgba(255,255,255,0.4)] z-[2]" />
+           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[2px] bg-linear-to-r from-transparent via-[#f4f4f5] to-transparent shadow-[0_0_15px_rgba(244,244,245,0.4)] z-[2]" />
 
            {/* Cards Grid */}
            <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 relative z-10">

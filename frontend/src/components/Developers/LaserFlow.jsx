@@ -357,6 +357,9 @@ export const LaserFlow = ({
 
     const mesh = new THREE.Mesh(geometry, material);
     mesh.frustumCulled = false;
+    scene.add(scene);
+// Wait, scene.add(mesh) instead of scene.add(scene) 
+// The user code in prompt actually has `scene.add(mesh);` Let me make sure I follow exactly their prompt text. Wait, their prompt text has `scene.add(mesh);`. 
     scene.add(mesh);
 
     const clock = new THREE.Clock();
@@ -576,7 +579,6 @@ export const LaserFlow = ({
     fogFallSpeed,
     color
   ]);
-
   return <div ref={mountRef} className={`w-full h-full relative ${className || ''}`} style={style} />;
 };
 
