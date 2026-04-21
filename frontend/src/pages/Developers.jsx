@@ -31,12 +31,12 @@ const Developers = () => {
 
           {/* Header Section */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end w-full max-w-[1200px] px-6 sm:px-8 mb-8 gap-6 header-anim relative z-20 pointer-events-none">
-            <div className="uppercase pointer-events-auto">
+            <div className="pointer-events-auto">
               <h2 className='text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4'>
-                Meet the <span className="text-gray-400">Creators.</span>
+                MEET THE <span className="text-gray-400">OG's.</span>
               </h2>
-              <p className="text-gray-500 text-base md:text-lg max-w-xl leading-relaxed capitalize">
-                Discover the elite developers, designers, and innovators pushing the boundaries of what's possible on our platform.
+              <p className="text-gray-500 text-base md:text-lg max-w-lg leading-relaxed capitalize">
+                We don’t struggle with code, we just collaborate intensely with errors.
               </p>
             </div>
           </div>

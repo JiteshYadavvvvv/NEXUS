@@ -38,7 +38,7 @@ export default function Home() {
             duration={1.2}
             speed={0.5}
             scrambleChars=".:"
-            className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl leading-[1.1] font-bold text-white black-ops-one-regular whitespace-nowrap text-center mx-auto flex flex-col items-center justify-center w-full"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-[1.1] font-bold text-white black-ops-one-regular whitespace-nowrap text-center mx-auto flex flex-col items-center justify-center w-full"
           >
             Your Campus<br />Just Got Smarter
           </ScrambledText>
