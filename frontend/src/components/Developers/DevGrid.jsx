@@ -147,7 +147,7 @@ const DevGrid = () => {
         ref={revealImgRef}
         src="/clubprofiles/reveal.jpeg"
         alt="Reveal effect"
-        className="fixed inset-0 -top-[220px] z-10 mix-blend-lighten pointer-events-none opacity-30 object-cover"
+        className="fixed inset-0 -top-[200px] z-10 mix-blend-lighten pointer-events-none opacity-30 object-cover"
         style={{
           '--mx': '-9999px',
           '--my': '-9999px',
