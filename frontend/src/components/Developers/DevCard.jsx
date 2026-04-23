@@ -46,7 +46,7 @@ const DevCard = ({ dev }) => {
               src={dev.image}
               alt={dev.name}
               className={cn(
-                "absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 filter grayscale contrast-125 group-hover:grayscale-0 group-hover:contrast-100"
+                "absolute inset-0 w-full h-full object-cover object-top transition-all duration-700 ease-out group-hover:scale-105 filter grayscale contrast-125 group-hover:grayscale-0 group-hover:contrast-100"
               )}
             />
             <div className="absolute inset-0 bg-linear-to-t from-zinc-950 via-zinc-900/40 to-transparent opacity-90 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none" />
