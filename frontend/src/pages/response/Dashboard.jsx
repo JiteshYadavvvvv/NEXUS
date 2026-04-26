@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+﻿import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useProfile } from '@/pages/Profile/Shared/ProfileContext';
@@ -556,7 +556,25 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                             </div>
                          </div>
 
-                         {/* Middle Info Stats using generic shadcn styling */}
+                         
+                          {/* Bio & Reg No from user profile */}
+                          {(selectedApplicant.userId?.bio || selectedApplicant.userId?.regnNo) && (
+                             <div className="flex flex-wrap gap-3 pb-4 border-b border-slate-200">
+                                {selectedApplicant.userId?.regnNo && (
+                                   <div className="flex items-center gap-1.5 rounded-md bg-slate-50 border border-slate-200 px-3 py-1.5">
+                                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Reg No</span>
+                                      <span className="text-xs font-semibold text-slate-700">{selectedApplicant.userId.regnNo}</span>
+                                   </div>
+                                )}
+                                {selectedApplicant.userId?.bio && (
+                                   <div className="flex items-center gap-1.5 rounded-md bg-slate-50 border border-slate-200 px-3 py-1.5 max-w-sm">
+                                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 shrink-0">Bio</span>
+                                      <span className="text-xs text-slate-600 truncate">{selectedApplicant.userId.bio}</span>
+                                   </div>
+                                )}
+                             </div>
+                          )}
+{/* Middle Info Stats using generic shadcn styling */}
                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="rounded border border-slate-200 bg-white text-slate-950 shadow-sm p-4 flex flex-row items-center justify-between space-y-0">
                                <div className="flex flex-col space-y-1">
@@ -589,25 +607,32 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
 
                          {/* Form Answers Section */}
                          <div>
-                            <h3 className="text-base font-semibold tracking-tight mb-3">Application Details</h3>                            
-                             <div className="flex flex-wrap gap-6 rounded-lg border border-slate-200 bg-white shadow-sm p-6">
-                            {textAnswers.map(([key, val]) => {
-                                  const isPriorityField = key.toLowerCase().includes('priority');
-                                  let actualVal = val;
-                                  if (isPriorityField && !val && displayPriority) {
-                                      actualVal = displayPriority;
-                                  }
-
-                                  const answerStr = String(actualVal || '-');
-                                  const isLongText = answerStr.length > 50;
-
-                                  return (
-                                     <div key={key} className={`space-y-1.5 ${isLongText ? 'w-full' : 'flex-1 min-w-[150px]'}`}>
-                                        <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">{key}</div>
-                                        <div className="text-[13px] font-medium text-slate-900 wrap-break-word leading-relaxed whitespace-pre-wrap">{answerStr}</div>
-                                     </div>
-                                  );
-                               })}
+                            <h3 className="text-base font-semibold tracking-tight mb-3">Application Details</h3>
+                            <div className="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden">
+                               <table className="w-full text-sm">
+                                  <thead>
+                                     <tr className="border-b border-slate-200 bg-slate-50">
+                                        <th className="px-4 py-2.5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider w-2/5">Field</th>
+                                        <th className="px-4 py-2.5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Answer</th>
+                                     </tr>
+                                  </thead>
+                                  <tbody>
+                                     {textAnswers.map(([key, val], i) => {
+                                        const isPriorityField = key.toLowerCase().includes('priority');
+                                        let actualVal = val;
+                                        if (isPriorityField && !val && displayPriority) {
+                                           actualVal = displayPriority;
+                                        }
+                                        const answerStr = String(actualVal || '-');
+                                        return (
+                                           <tr key={key} className={`border-b border-slate-100 last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+                                              <td className="px-4 py-3 font-semibold text-slate-600 uppercase text-[11px] tracking-wider align-top">{key}</td>
+                                              <td className="px-4 py-3 text-[13px] font-medium text-slate-900 whitespace-pre-wrap leading-relaxed align-top">{answerStr}</td>
+                                           </tr>
+                                        );
+                                     })}
+                                  </tbody>
+                               </table>
                             </div>
                          </div>
 

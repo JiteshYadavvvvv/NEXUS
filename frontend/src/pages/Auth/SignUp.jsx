@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -176,6 +176,14 @@ const SignUp = () => {
 
   const navigate = useNavigate();
   const { signUp, updateUserInfo } = useAuth();
+
+  // When arriving from Login page with an incomplete Google account,
+  // skip the form and go straight to profile setup.
+  useEffect(() => {
+    if (location.state?.fromLogin) {
+      setStep("profile-setup");
+    }
+  }, [location.state?.fromLogin]);
 
   // ── Normal sign-up ──
   const handleSubmit = async (e) => {

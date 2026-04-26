@@ -8,7 +8,7 @@ import SharedMyClubs from './SharedMyClubs';
 import AvailableForms from './AvailableForms';
 import MyForms from '@/pages/Forms/MyForms';
 import Dashboard from '@/pages/response/Dashboard';
-import { LayoutDashboard, Users, LogOut, Menu, FileText, ChevronLeft, ChevronRight, Building, ClipboardList } from 'lucide-react';
+import { LayoutDashboard, Users, LogOut, Menu, FileText, X, ChevronRight, Building, ClipboardList } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import axios from 'axios';
@@ -135,11 +135,11 @@ export default function SharedDashboardLayout({ children }) {
                             </div>
                         </div>
                         <button 
-                            onClick={() => setIsDesktopCollapsed(true)} 
-                            className="hidden md:flex p-1.5 text-gray-400 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-colors"
-                            title="Collapse Sidebar"
+                            onClick={() => { setIsDesktopCollapsed(true); setIsSidebarOpen(false); }} 
+                            className="flex p-1.5 text-gray-400 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-colors"
+                            title="Close Sidebar"
                         >
-                            <ChevronLeft className="w-4 h-4" />
+                            <X className="w-4 h-4" />
                         </button>
                     </div>
 
