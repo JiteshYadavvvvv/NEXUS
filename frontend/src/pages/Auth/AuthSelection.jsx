@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Building, User, ChevronRight, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Building, User, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -17,9 +17,23 @@ const AuthSelection = () => {
   const [showClubSelect, setShowClubSelect] = useState(false);
   const [role, setRole] = useState("admin"); // "admin" | "member"
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // OTP State
+  const [step, setStep] = useState(1);
+  const [otp, setOtp] = useState("");
+  const [resendTimer, setResendTimer] = useState(0);
+
+  // Resend Timer Effect
+  useEffect(() => {
+    let interval;
+    if (resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [resendTimer]);
 
   // Auto-redirect if already authenticated
   useEffect(() => {
@@ -44,8 +58,7 @@ const AuthSelection = () => {
     navigate("/login", { state: { role: "Applicant" } });
   };
 
-  const handleClubSubmit = async (e) => {
-    e.preventDefault();
+  const handleSendOtp = async () => {
     if (!selectedClub) {
       toast.error("Please select an organisation.");
       return;
@@ -54,58 +67,86 @@ const AuthSelection = () => {
       toast.error("Please enter your email.");
       return;
     }
-    if (!password) {
-      toast.error("Please enter your password.");
-      return;
-    }
 
     setLoading(true);
     try {
-      await toast.promise(
-        axios.post(
-          `${API}/api/admin/login`,
-          { club: selectedClub?.name || selectedClub, email, password },
-          { withCredentials: true }
-        ).then(async (res) => {
-          if (res.data?.success === false) {
-            throw Object.assign(new Error(res.data?.message || "Login failed"), { response: res });
-          }
-          
-          const adminInfo = await checkAdminAuth();
-          if (adminInfo) {
-            setUser(adminInfo);
-          }
-          
-          return res;
-        }),
+      const res = await axios.post(
+        `${API}/api/admin/send-otp`,
         {
-          pending: "Logging in...",
-          success: {
-            render({ data }) {
-              if (selectedClub && typeof selectedClub === 'object') {
-                localStorage.setItem("enteredClub", JSON.stringify(selectedClub));
-              }
-              setTimeout(() => navigate("/profile/Admin"), 1500);
-              return data?.data?.message || "Logged in successfully! 👌";
-            },
-          },
-          error: {
-            render({ data }) {
-              return (
-                data?.response?.data?.message ||
-                data?.message ||
-                "Login failed 🤯"
-              );
-            },
-          },
-        }
+          email,
+          club: selectedClub?.name || selectedClub,
+        },
+        { withCredentials: true }
+      );
+
+      if (res.data?.success) {
+        toast.success(res.data.message || "OTP sent");
+        setStep(2);
+        setResendTimer(60);
+      } else {
+        toast.error(res.data?.message || "Failed to send OTP");
+      }
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || err.message || "Failed to send OTP"
       );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleSuccess = async (result) => {
+  const handleVerifyOtp = async () => {
+    if (!otp || otp.length !== 6) {
+      toast.error("Please enter a valid 6-digit OTP.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        `${API}/api/admin/verify-otp`,
+        {
+          email,
+          club: selectedClub?.name || selectedClub,
+          otp,
+        },
+        { withCredentials: true }
+      );
+
+      if (res.data?.success) {
+        toast.success(res.data.message || "Login successful! 👌");
+
+        const adminInfo = await checkAdminAuth();
+        if (adminInfo) {
+          setUser(adminInfo);
+        }
+
+        if (selectedClub && typeof selectedClub === "object") {
+          localStorage.setItem("enteredClub", JSON.stringify(selectedClub));
+        }
+        setTimeout(() => navigate("/profile/Admin"), 1500);
+      } else {
+        toast.error(res.data?.message || "Invalid OTP");
+      }
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || err.message || "Invalid OTP"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAdminSubmit = (e) => {
+    e.preventDefault();
+    if (step === 1) {
+      handleSendOtp();
+    } else {
+      handleVerifyOtp();
+    }
+  };
+
+  const handleGoogleSuccess = async () => {
     if (!selectedClub) {
       toast.error("Please select an organisation first.");
       return;
@@ -216,7 +257,7 @@ const AuthSelection = () => {
           </div>
         ) : (
           <div className="animate-in slide-in-from-right-4 duration-300">
-            <form onSubmit={handleClubSubmit} className="space-y-5">
+            <form onSubmit={handleAdminSubmit} className="space-y-5">
               {/* Club Dropdown */}
               <div className="space-y-2 relative z-50">
                 <label className="text-sm font-medium text-slate-300 ml-1">
@@ -262,65 +303,88 @@ const AuthSelection = () => {
               {/* Submit / Auth */}
               {role === "admin" ? (
                 <>
-                  {/* Email */}
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="org-email"
-                      className="text-sm font-medium text-slate-300 ml-1"
-                    >
-                      Email
-                    </label>
-                    <input
-                      id="org-email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@organisation.com"
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
-                    />
-                  </div>
+                  {step === 1 ? (
+                    <>
+                      {/* Email */}
+                      <div className="space-y-2">
+                        <label
+                          htmlFor="org-email"
+                          className="text-sm font-medium text-slate-300 ml-1"
+                        >
+                          Email
+                        </label>
+                        <input
+                          id="org-email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="you@organisation.com"
+                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
+                        />
+                      </div>
 
-                  {/* Password */}
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="org-password"
-                      className="text-sm font-medium text-slate-300 ml-1"
-                    >
-                      Password
-                    </label>
-                    <div className="relative">
-                      <input
-                        id="org-password"
-                        type={showPassword ? "text" : "password"}
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full px-4 py-3 pr-11 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="pt-1">
-                    <button
-                      type="submit"
-                      disabled={loading || !selectedClub}
-                      className="w-full py-3 rounded-xl bg-white text-black text-sm font-semibold hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      Continue
-                    </button>
-                  </div>
+                      <div className="pt-1">
+                        <button
+                          type="submit"
+                          disabled={loading || !selectedClub}
+                          className="w-full py-3 rounded-xl bg-white text-black text-sm font-semibold hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                          Send OTP
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* OTP */}
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center mb-1">
+                          <label
+                            htmlFor="org-otp"
+                            className="text-sm font-medium text-slate-300 ml-1"
+                          >
+                            Enter OTP
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => setStep(1)}
+                            className="text-xs text-slate-400 hover:text-white transition-colors"
+                          >
+                            Change Email
+                          </button>
+                        </div>
+                        <input
+                          id="org-otp"
+                          required
+                          value={otp}
+                          onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                          placeholder="6-digit OTP"
+                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all tracking-widest text-center"
+                        />
+                      </div>
+                      
+                      <div className="pt-1 space-y-3">
+                        <button
+                          type="submit"
+                          disabled={loading || otp.length !== 6}
+                          className="w-full py-3 rounded-xl bg-white text-black text-sm font-semibold hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                          Verify & Login
+                        </button>
+                        
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSendOtp();
+                          }}
+                          disabled={resendTimer > 0 || loading}
+                          className="w-full py-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm font-medium hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        >
+                          {resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend OTP"}
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </>
               ) : (
                 <div className="pt-4 space-y-4">
