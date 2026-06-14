@@ -10,7 +10,7 @@ const DevCard = ({ dev }) => {
   return (
     <div
       className={cn(
-        "dev-card-element relative flex flex-col transition-all duration-500 ease-out h-[420px] mt-8 lg:mt-0 z-10 w-full sm:w-[360px]"
+        "dev-card-element relative flex flex-col transition-all duration-500 ease-out h-[420px] mt-8 lg:mt-0 z-10 w-full"
       )}
     >
       <div

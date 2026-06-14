@@ -23,7 +23,14 @@ const allDevelopers = [
     github: "https://github.com/NishantSinghhhhh",
     linkedin: "https://www.linkedin.com/in/nishant-singh-8a5a00282/",
   },
-  
+  {
+    name: "Aryan Singh",
+    role: "Web Facilitator",
+    image: "/clubprofiles/aryan-singh.webp",
+    username: "@aryancheers",
+    github: "https://github.com/masamasaowl",
+    linkedin: "https://www.linkedin.com/in/aryancheers/",
+  },
   {
     name: "Jitesh Yadav",
     role: "Dev X UI/UX",
@@ -122,7 +129,7 @@ const DevGrid = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full bg-transparent mt-0 pb-24"
+      className="relative w-full bg-transparent mt-0 pb-24 overflow-x-hidden"
     >
      
       <div className="absolute -top-[320px] left-0 right-0 h-[800px] z-[0] pointer-events-none">
@@ -154,7 +161,7 @@ const DevGrid = () => {
       
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 mt-[80px] flex justify-center">
  
-        <div className="w-fit mx-auto bg-zinc-900 rounded-[24px] border border-[#f4f4f5] shadow-[0_-10px_60px_rgba(255,255,255,0.02)] relative overflow-hidden px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6">
+        <div className="w-full max-w-[1200px] mx-auto bg-zinc-900 rounded-[24px] border border-[#f4f4f5] shadow-[0_-10px_60px_rgba(255,255,255,0.02)] relative overflow-hidden px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6">
            
            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[2px] bg-linear-to-r from-transparent via-[#f4f4f5] to-transparent shadow-[0_0_15px_rgba(244,244,245,0.4)] z-[2]" />
 

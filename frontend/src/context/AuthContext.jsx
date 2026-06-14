@@ -213,6 +213,7 @@ export const AuthProvider = ({ children }) => {
         setUser,
         authLoading,
         isAdmin,
+        setIsAdmin,
         isAuthenticated: !!user,
         checkAuth,
         checkAdminAuth,

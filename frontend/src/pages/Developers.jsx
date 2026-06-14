@@ -16,7 +16,7 @@ const Developers = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-black overflow-hidden font-sans text-white">
+    <div className="relative min-h-screen bg-black font-sans text-white" style={{ overflowX: 'clip' }}>
       <main className="relative flex w-full min-h-screen pt-5 pb-12 font-mono flex-col items-center z-10">
         <section className="w-full flex justify-center flex-col items-center">
           {/* Back Button Section */}

@@ -3,7 +3,7 @@ import Events from '../components/events/Events';
 
 export default function EventsPage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black" style={{ overflowX: 'clip' }}>
       <Events />
     </div>
   );

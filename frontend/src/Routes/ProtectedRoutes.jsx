@@ -3,6 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import AdminPanel from "@/pages/Profile/organisations/Admin/adminpanel";
 import ApplicantPanel from "@/pages/Profile/Applicant/applicantpanel";
 import MemberPanel from "@/pages/Profile/organisations/Member/memberPanel";
+import SuperAdminPanel from "@/pages/Profile/SuperAdmin/SuperAdminPanel";
 import MyForms from "@/pages/Forms/MyForms";
 import FillForm from "@/pages/Forms/FillForm";
 import ResponseDashboard from "@/pages/response/Dashboard";
@@ -68,6 +69,7 @@ export const protectedRoutes = [
   { path: "/profile/Admin", element: <AdminPanel /> },
   { path: "/profile/Member", element: <MemberPanel /> },
   { path: "/profile/Applicant", element: <ApplicantPanel /> },
+  { path: "/profile/SuperAdmin", element: <SuperAdminPanel /> },
 
   { path: "/my-forms", element: <AdminRoute><MyForms /></AdminRoute> },
   { path: "/response", element: <ResponseRedirect /> },

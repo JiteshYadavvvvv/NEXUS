@@ -92,7 +92,7 @@ export default function Events() {
     <main className="relative flex w-full min-h-screen pt-5 pb-12 font-mono flex-col items-center">
       <section className="w-full flex justify-center flex-col items-center" id="events" aria-label="Events list">
         {/* Back Button Section */}
-        <div className="w-full max-w-[1200px] flex items-center justify-start mt-6 mb-4 px-6 sm:px-8">
+        <div className="w-full max-w-screen flex items-center justify-start mt-6 mb-4 px-6 sm:px-8">
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all hover:-translate-y-0.5 active:scale-95 duration-300 rounded-lg"
@@ -143,16 +143,20 @@ export default function Events() {
         {/* Content Section */}
         {viewMode === 'calendar' ? (
           /* Calendar View */
-          <div className="flex flex-col items-center justify-center py-24 bg-white/2 border border-dashed border-white/10 rounded-2xl w-full max-w-[1200px] mx-6">
-            <Calendar1 />
+          <div className="w-full max-w-[1200px] px-6 sm:px-8">
+            <div className="flex flex-col items-center justify-center py-24 bg-white/2 border border-dashed border-white/10 rounded-2xl w-full">
+              <Calendar1 />
+            </div>
           </div>
         ) : (
           /* Cards Grid View */
           events.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-24 bg-white/2 border border-dashed border-white/10 rounded-2xl w-full max-w-[1200px] mx-6">
-              <CalendarX className="w-16 h-16 text-gray-600 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-300 mb-2">No Events Found</h3>
-              <p className="text-gray-500">Check back later for upcoming club activities.</p>
+            <div className="w-full max-w-[1200px] px-6 sm:px-8">
+              <div className="flex flex-col items-center justify-center py-24 bg-white/2 border border-dashed border-white/10 rounded-2xl w-full">
+                <CalendarX className="w-16 h-16 text-gray-600 mb-4" />
+                <h3 className="text-xl font-semibold text-gray-300 mb-2">No Events Found</h3>
+                <p className="text-gray-500">Check back later for upcoming club activities.</p>
+              </div>
             </div>
           ) : (
             <div className="w-full max-w-[1200px] px-6 sm:px-8 flex flex-col items-center">

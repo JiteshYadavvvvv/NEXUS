@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check controllers/superAdminController.js)",
+      "Bash(node --check routes/superAdminRoutes.js)",
+      "Bash(npx vite *)"
+    ],
+    "additionalDirectories": [
+      "D:\\code\\project\\sync-backend"
+    ]
+  }
+}
