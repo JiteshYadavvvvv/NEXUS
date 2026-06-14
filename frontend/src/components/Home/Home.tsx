@@ -52,7 +52,7 @@ export default function Home() {
             className="mx-auto max-w-4xl text-2xl mt-[-12px] text-muted-foreground md:text-2xl font-light leading-relaxed"
           >
             <TextType
-              text={["where every club finds home", "where every student community connects"]}
+              text={["centralised club platform", "unified events calendar", "easy interview management"]}
               typingSpeed={75}
               pauseDuration={1500}
               showCursor

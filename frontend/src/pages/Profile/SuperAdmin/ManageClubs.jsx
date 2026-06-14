@@ -117,7 +117,7 @@ export default function ManageClubs() {
         try {
             const res = await axios.post(
                 `${API}/api/superadmin/add-faculty`,
-                { clubId, name, email },
+                { clubId, name, facultyEmail: email },
                 { withCredentials: true }
             );
             if (res.data?.success) {
@@ -163,7 +163,7 @@ export default function ManageClubs() {
         setRemovingEmail(email);
         try {
             const res = await axios.delete(`${API}/api/superadmin/remove-faculty`, {
-                data: { clubId: facultyModal.club._id, email },
+                data: { clubId: facultyModal.club._id, facultyEmail: email },
                 withCredentials: true,
             });
             if (res.data?.success) {

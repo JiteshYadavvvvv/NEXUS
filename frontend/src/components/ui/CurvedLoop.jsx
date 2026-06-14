@@ -109,7 +109,7 @@ const CurvedLoop = ({
       onPointerLeave={endDrag}
     >
       <svg
-        className="select-none w-[150%] max-w-[150%] -translate-x-[-8%] overflow-visible block aspect-[100/12] text-4xl sm:text-5xl md:text-[6rem] font-bold uppercase leading-none"
+        className="select-none w-[150%] max-w-[150%] -translate-x-[-8%] overflow-visible block aspect-[100/12] text-[5.5rem] sm:text-[6rem] md:text-[6rem] font-bold uppercase leading-none"
         viewBox="0 0 1440 120"
       >
         <text ref={measureRef} xmlSpace="preserve" style={{ visibility: 'hidden', opacity: 0, pointerEvents: 'none' }}>

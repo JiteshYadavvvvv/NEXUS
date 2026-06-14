@@ -1,23 +1,76 @@
 [
   {
-    "abbr": "OSS",
-    "name": "OSS Club",
-    "fullForm": "Open Source Software Club",
-    "img": "/clublogos/oss.svg",
-    "desc": "Encouraging students to contribute to open source projects and learn collaborative software development.",
+    "abbr": "CP",
+    "name": "CP Club",
+    "fullForm": "Competitive Programming",
+    "img": "/clublogos/cp.svg",
+    "desc": "Focused training and practice for programming contests and technical interviews.",
     "focusAreas": [
-      "Open source contribution workflows",
-      "Contribution (Git/Github)"
+      "Data structures & algorithms",
+      "Problem-solving strategies",
+      "Contest practice and timing"
     ],
     "media": [
-      "https://images.unsplash.com/photo-1607569490015-7101095605ed?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1531297461136-82lw9b44d940?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=800&q=80"
     ],
     "activities": [
-      "INNERVE",
-      "FSOC",
-      "Graphica"
+      "CODEFT 4.0",
+      "CRACK 5.1",
+      "CRACK 5.2"
+    ],
+    "who": "FE,SE"
+  },
+  {
+    "abbr": "CUL",
+    "name": "Cultural Board",
+    "img": "/clublogos/oss.svg",
+    "desc": "Oversees cultural clubs and promotes art, creativity, and cultural expression through events and performances.",
+    "focusAreas": [
+      "Literary & creative arts",
+      "Performing arts (dance, music, drama)",
+      "Cultural festivals & talent showcases"
+    ],
+    "activities": [
+      "Annual Cultural Fest",
+      "Talent Nights",
+      "Inter-College Cultural Events"
+    ],
+    "who": "FE,SE"
+  },
+  {
+    "abbr": "CYCLE",
+    "name": "Cycling Club",
+    "img": "/clublogos/cycling.svg",
+    "desc": "Promotes fitness and community through regular cycling meetups and long rides.",
+    "focusAreas": [
+      "Fitness & endurance",
+      "Group riding skills",
+      "Safe cycling practices"
+    ],
+    "activities": [
+      "Weekend Rides",
+      "Long-Distance Trails",
+      "Cycling Awareness Events"
+    ],
+    "who": "FE,SE"
+  },
+  {
+    "abbr": "ECELL",
+    "name": "E-Cell",
+    "fullForm": "Entrepreneurship Cell",
+    "img": "/clublogos/ecell.svg",
+    "desc": "Promotes entrepreneurship, innovation, and startup culture among students.",
+    "focusAreas": [
+      "Startup fundamentals",
+      "Ideation & innovation",
+      "Business models & pitching"
+    ],
+    "activities": [
+      "Startup Bootcamp",
+      "Pitch Deck Workshop",
+      "Incubation support"
     ],
     "who": "FE,SE"
   },
@@ -45,68 +98,6 @@
     "who": "FE,SE"
   },
   {
-    "abbr": "CP",
-    "name": "CP Club",
-    "fullForm": "Competitive Programming",
-    "img": "/clublogos/cp.svg",
-    "desc": "Focused training and practice for programming contests and technical interviews.",
-    "focusAreas": [
-      "Data structures & algorithms",
-      "Problem-solving strategies",
-      "Contest practice and timing"
-    ],
-    "media": [
-      "https://images.unsplash.com/photo-1531297461136-82lw9b44d940?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=800&q=80"
-    ],
-    "activities": [
-      "CODEFT 4.0",
-      "CRACK 5.1",
-      "CRACK 5.2"
-    ],
-    "who": "FE,SE"
-  },
-
-  {
-    "abbr": "PR",
-    "name": "PR Cell",
-    "fullForm": "Public Relations Cell",
-    "img": "/clublogos/pr.svg",
-    "desc": "Handles campus branding, outreach, media communication, and event promotions.",
-    "focusAreas": [
-      "Branding & communication",
-      "Social media management",
-      "Event marketing"
-    ],
-    "activities": [
-      "Campus outreach",
-      "Event promotions",
-      "Media coordination"
-    ],
-    "who": "FE,SE"
-  },
-
-  {
-    "abbr": "ECELL",
-    "name": "E-Cell",
-    "fullForm": "Entrepreneurship Cell",
-    "img": "/clublogos/ecell.svg",
-    "desc": "Promotes entrepreneurship, innovation, and startup culture among students.",
-    "focusAreas": [
-      "Startup fundamentals",
-      "Ideation & innovation",
-      "Business models & pitching"
-    ],
-    "activities": [
-      "Startup Bootcamp",
-      "Pitch Deck Workshop",
-      "Incubation support"
-    ],
-    "who": "FE,SE"
-  },
-
-  {
     "abbr": "GDXR",
     "name": "GDXR",
     "fullForm": "Game Dev & Extended Reality Club",
@@ -124,7 +115,6 @@
     ],
     "who": "FE,SE"
   },
-
   {
     "abbr": "ISDF",
     "name": "ISDF",
@@ -143,81 +133,6 @@
     ],
     "who": "FE,SE"
   },
-
-  {
-    "abbr": "RND",
-    "name": "RnD Cell",
-    "fullForm": "Research & Development Cell",
-    "img": "/clublogos/rnd.svg",
-    "desc": "Encourages research-thinking, publications, and innovation-driven projects.",
-    "focusAreas": [
-      "Research methodology",
-      "Academic writing",
-      "Innovation projects"
-    ],
-    "activities": [
-      "Research Paper Workshops",
-      "Project Mentorship",
-      "Publication Guidance"
-    ],
-    "who": "FE,SE"
-  },
-
-  {
-    "abbr": "CYCLE",
-    "name": "Cycling Club",
-    "img": "/clublogos/cycling.svg",
-    "desc": "Promotes fitness and community through regular cycling meetups and long rides.",
-    "focusAreas": [
-      "Fitness & endurance",
-      "Group riding skills",
-      "Safe cycling practices"
-    ],
-    "activities": [
-      "Weekend Rides",
-      "Long-Distance Trails",
-      "Cycling Awareness Events"
-    ],
-    "who": "FE,SE"
-  },
-
-  {
-    "abbr": "NSS",
-    "name": "NSS",
-    "fullForm": "National Service Scheme",
-    "img": "/clublogos/oss.svg",
-    "desc": "A volunteer organisation dedicated to social service and community development.",
-    "focusAreas": [
-      "Community service",
-      "Social awareness",
-      "Rural development"
-    ],
-    "activities": [
-      "Blood Donation Camps",
-      "Cleanliness Drives",
-      "Social Outreach Programs"
-    ],
-    "who": "FE,SE"
-  },
-
-  {
-    "abbr": "NATURE",
-    "name": "Nature’s Club",
-    "img": "/clublogos/oss.svg",
-    "desc": "Encourages environmental conservation, sustainability, and nature awareness.",
-    "focusAreas": [
-      "Environmental protection",
-      "Sustainability projects",
-      "Wildlife awareness"
-    ],
-    "activities": [
-      "Plantation Drives",
-      "Nature Walks",
-      "Eco-Awareness Campaigns"
-    ],
-    "who": "FE,SE"
-  },
-
   {
     "abbr": "MAG",
     "name": "Magboard",
@@ -237,6 +152,99 @@
     "who": "FE,SE"
   },
   {
+    "abbr": "NATURE",
+    "name": "Nature’s Club",
+    "img": "/clublogos/oss.svg",
+    "desc": "Encourages environmental conservation, sustainability, and nature awareness.",
+    "focusAreas": [
+      "Environmental protection",
+      "Sustainability projects",
+      "Wildlife awareness"
+    ],
+    "activities": [
+      "Plantation Drives",
+      "Nature Walks",
+      "Eco-Awareness Campaigns"
+    ],
+    "who": "FE,SE"
+  },
+  {
+    "abbr": "NSS",
+    "name": "NSS",
+    "fullForm": "National Service Scheme",
+    "img": "/clublogos/oss.svg",
+    "desc": "A volunteer organisation dedicated to social service and community development.",
+    "focusAreas": [
+      "Community service",
+      "Social awareness",
+      "Rural development"
+    ],
+    "activities": [
+      "Blood Donation Camps",
+      "Cleanliness Drives",
+      "Social Outreach Programs"
+    ],
+    "who": "FE,SE"
+  },
+  {
+    "abbr": "OSS",
+    "name": "OSS Club",
+    "fullForm": "Open Source Software Club",
+    "img": "/clublogos/oss.svg",
+    "desc": "Encouraging students to contribute to open source projects and learn collaborative software development.",
+    "focusAreas": [
+      "Open source contribution workflows",
+      "Contribution (Git/Github)"
+    ],
+    "media": [
+      "https://images.unsplash.com/photo-1607569490015-7101095605ed?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=800&q=80"
+    ],
+    "activities": [
+      "INNERVE",
+      "FSOC",
+      "Graphica"
+    ],
+    "who": "FE,SE"
+  },
+  {
+    "abbr": "PR",
+    "name": "PR Cell",
+    "fullForm": "Public Relations Cell",
+    "img": "/clublogos/pr.svg",
+    "desc": "Handles campus branding, outreach, media communication, and event promotions.",
+    "focusAreas": [
+      "Branding & communication",
+      "Social media management",
+      "Event marketing"
+    ],
+    "activities": [
+      "Campus outreach",
+      "Event promotions",
+      "Media coordination"
+    ],
+    "who": "FE,SE"
+  },
+  {
+    "abbr": "RND",
+    "name": "RnD Cell",
+    "fullForm": "Research & Development Cell",
+    "img": "/clublogos/rnd.svg",
+    "desc": "Encourages research-thinking, publications, and innovation-driven projects.",
+    "focusAreas": [
+      "Research methodology",
+      "Academic writing",
+      "Innovation projects"
+    ],
+    "activities": [
+      "Research Paper Workshops",
+      "Project Mentorship",
+      "Publication Guidance"
+    ],
+    "who": "FE,SE"
+  },
+  {
     "abbr": "TECH",
     "name": "Technical Board",
     "img": "/clublogos/oss.svg",
@@ -250,24 +258,6 @@
       "Institute Tech Fest",
       "Inter-Club Hackathons",
       "Technical Workshops & Seminars"
-    ],
-    "who": "FE,SE"
-  },
-
-  {
-    "abbr": "CUL",
-    "name": "Cultural Board",
-    "img": "/clublogos/oss.svg",
-    "desc": "Oversees cultural clubs and promotes art, creativity, and cultural expression through events and performances.",
-    "focusAreas": [
-      "Literary & creative arts",
-      "Performing arts (dance, music, drama)",
-      "Cultural festivals & talent showcases"
-    ],
-    "activities": [
-      "Annual Cultural Fest",
-      "Talent Nights",
-      "Inter-College Cultural Events"
     ],
     "who": "FE,SE"
   }
