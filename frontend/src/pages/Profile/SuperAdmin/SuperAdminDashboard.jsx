@@ -145,7 +145,7 @@ export default function SuperAdminDashboard({ admin }) {
                 {isDesktopCollapsed && (
                     <button
                         onClick={() => setIsDesktopCollapsed(false)}
-                        className="hidden md:flex absolute top-3 left-4 z-40 items-center justify-center w-8 h-8 bg-white border border-slate-200 rounded-md shadow-sm hover:bg-slate-100 hover:text-slate-900 text-slate-600 transition-colors"
+                        className="hidden md:flex fixed top-3 left-4 z-[60] items-center justify-center w-8 h-8 bg-white border border-slate-200 rounded-md shadow-sm hover:bg-slate-100 hover:text-slate-900 text-slate-600 transition-colors"
                         title="Expand Sidebar"
                     >
                         <ChevronRight className="w-4 h-4" />
