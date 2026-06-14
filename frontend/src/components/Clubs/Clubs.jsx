@@ -75,7 +75,7 @@ export default function MainContent() {
   // }
 
   return (
-    <main className="relative flex w-full min-h-screen pt-5 pb-12 font-mono flex-col items-center">
+    <main className="relative flex w-full min-h-screen pt-5 pb-12 font-mono flex-col items-center" style={{ overflowX: 'clip' }}>
       <section className="w-full flex justify-center flex-col items-center" id="clubs" aria-label="Clubs list">
         <div className="w-full max-w-[1200px] flex items-center justify-start mt-6 mb-4 px-6 sm:px-8">
           <button
@@ -95,7 +95,7 @@ export default function MainContent() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 w-full max-w-[1200px] px-6 sm:px-8">
           {clubs.map(c => (
-            <ElectricBorder key={c.name} color="#555555" speed={0.3} chaos={0.08} borderRadius={12} className="h-full">
+            <ElectricBorder key={c.name} color="#555555" speed={0.3} chaos={0.08} borderRadius={12} className="h-full w-full">
               <ClubCard {...c} img={c.logo || c.img} abbr={c.abbr || c.name} onApply={handleApply} />
             </ElectricBorder>
           ))}
