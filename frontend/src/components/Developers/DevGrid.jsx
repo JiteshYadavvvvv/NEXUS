@@ -7,14 +7,14 @@ import LaserFlow from "./LaserFlow";
 gsap.registerPlugin(ScrollTrigger);
 
 const allDevelopers = [
-  {
-    name: "Aryan Singh",
-    role: "WEB DEV Facilitator",
-    image: "/clubprofiles/aryan-singh.webp",
-    username: "@aryancheers",
-    github: "https://github.com/masamasaowl",
-    linkedin: "https://www.linkedin.com/in/aryan-singh-ait/",
-  },
+  // {
+  //   name: "Aryan Singh",
+  //   role: "WEB DEV Facilitator",
+  //   image: "/clubprofiles/aryan-singh.webp",
+  //   username: "@aryancheers",
+  //   github: "https://github.com/masamasaowl",
+  //   linkedin: "https://www.linkedin.com/in/aryan-singh-ait/",
+  // },
   {
     name: "Nishant Singh",
     role: "GDG Secretary",
@@ -31,15 +31,7 @@ const allDevelopers = [
     username: "londa sakht",
     github: "https://github.com/JiteshYadavvvvv",
     linkedin: "https://www.linkedin.com/in/jitesh-yadav01/",
-  },
-  {
-    name: "Sajal Rawat",
-    role: "Web Developer",
-    image: "/clubprofiles/ns.png",
-    username: "@sajalrwt",
-    github: "https://github.com/SajalRawat",
-    linkedin: "https://www.linkedin.com/in/sajal-rawat/",
-  },
+  }, 
   {
     name: "Vishal Goswami",
     role: "Web Developer",
@@ -49,13 +41,14 @@ const allDevelopers = [
     linkedin: "https://www.linkedin.com/in/vishal-goswami19/",
   },
   {
-    name: "xxxxx",
-    role: "xxxxx",
+    name: "Sajal Rawat",
+    role: "Web Developer",
     image: "/clubprofiles/ns.png",
-    username: "@xxxxx",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
-  }
+    username: "@sajalrwt",
+    github: "https://github.com/SajalRawat",
+    linkedin: "https://www.linkedin.com/in/sajal-rawat/",
+  },
+ 
 ];
 
 const DevGrid = () => {
