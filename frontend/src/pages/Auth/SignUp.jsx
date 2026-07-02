@@ -62,7 +62,7 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
           type="text"
           required
           disabled={loading}
-          placeholder="John Doe"
+          placeholder="Nishant Singh"
           value={setupName}
           onChange={(e) => setSetupName(e.target.value)}
           className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
@@ -77,7 +77,7 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
         <input
           type="text"
           disabled={loading}
-          placeholder="Tell us about yourself..."
+          placeholder="Tell us tum kitne chod ho..."
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
@@ -92,7 +92,7 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
         <input
           type="text"
           disabled={loading}
-          placeholder="Reading, Coding, etc."
+          placeholder="Run , run n run ..."
           value={hobbies}
           onChange={(e) => setHobbies(e.target.value)}
           className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
@@ -122,7 +122,7 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
         <input
           type="text"
           disabled={loading}
-          placeholder="e.g. CSE, IT, ENTC"
+          placeholder="e.g. COMP, IT, ENTC"
           value={branch}
           onChange={(e) => setBranch(e.target.value)}
           className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
@@ -141,7 +141,7 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
           type="number"
           required
           disabled={loading}
-          placeholder="e.g. 12345"
+          placeholder="e.g. 260001"
           value={regnNo}
           onChange={(e) => setRegnNo(e.target.value)}
           className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"

@@ -132,7 +132,7 @@ const Login = () => {
               id="email"
               required
               className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
-              placeholder="you@college.com"
+              placeholder="jittu@aitpune.edu.in"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

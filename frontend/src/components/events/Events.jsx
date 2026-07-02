@@ -104,7 +104,7 @@ export default function Events() {
     <main className="relative flex w-full min-h-screen pt-5 pb-12 font-mono flex-col items-center">
       <section className="w-full flex justify-center flex-col items-center" id="events" aria-label="Events list">
         {/* Back Button Section */}
-        <div className="w-full max-w-screen flex items-center justify-start mt-6 mb-4 px-6 sm:px-8">
+        <div className="w-full max-w-[1200px] flex items-center justify-start mt-6 mb-4 px-6 sm:px-8">
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all hover:-translate-y-0.5 active:scale-95 duration-300 rounded-lg"
@@ -115,6 +115,7 @@ export default function Events() {
 
         {/* Header & View Toggle Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end w-full max-w-[1200px] px-6 sm:px-8 mb-10 gap-6">
+
           <div className="uppercase">
             <h2 className='text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4'>
               Explore <span className="text-gray-400">Events.</span>
@@ -128,21 +129,19 @@ export default function Events() {
           <div className="flex bg-white/5 p-1 rounded-lg border border-white/10 shrink-0">
             <button
               onClick={() => setViewMode('cards')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                viewMode === 'cards'
-                  ? 'bg-white/10 text-white shadow-sm'
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
-              }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${viewMode === 'cards'
+                ? 'bg-white/10 text-white shadow-sm'
+                : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+                }`}
             >
               <Grid className="w-4 h-4" /> Cards
             </button>
             <button
               onClick={() => setViewMode('calendar')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                viewMode === 'calendar'
-                  ? 'bg-white/10 text-white shadow-sm'
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
-              }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${viewMode === 'calendar'
+                ? 'bg-white/10 text-white shadow-sm'
+                : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+                }`}
             >
               <Calendar className="w-4 h-4" /> Calendar
             </button>

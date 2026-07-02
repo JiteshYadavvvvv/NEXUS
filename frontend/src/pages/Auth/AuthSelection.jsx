@@ -406,7 +406,22 @@ const AuthSelection = () => {
             </form>
           </div>
         ) : !showClubSelect ? (
-          <div className="space-y-4">
+          <div className="space-y-4"> 
+          <button
+              onClick={handleSuperAdminSelect}
+              className="w-full group relative flex items-center gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-left mt-4"
+            >
+              <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:scale-105 transition-transform">
+                <ShieldCheck className="h-5 w-5 text-slate-300" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg font-medium text-white">
+                  SuperAdmin
+                </h3>
+                <p className="text-sm text-slate-400">Director, JD &amp; Principal</p>
+              </div>
+              <ChevronRight className="h-5 w-5 text-slate-500 group-hover:text-white transition-colors" />
+            </button>
             <button
               onClick={handleOrganisationSelect}
               className="w-full group relative flex items-center gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-left"
@@ -439,21 +454,7 @@ const AuthSelection = () => {
               <ChevronRight className="h-5 w-5 text-slate-500 group-hover:text-white transition-colors" />
             </button>
 
-            <button
-              onClick={handleSuperAdminSelect}
-              className="w-full group relative flex items-center gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-left mt-4"
-            >
-              <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:scale-105 transition-transform">
-                <ShieldCheck className="h-5 w-5 text-slate-300" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-medium text-white">
-                  SuperAdmin
-                </h3>
-                <p className="text-sm text-slate-400">Director, JD &amp; Principal</p>
-              </div>
-              <ChevronRight className="h-5 w-5 text-slate-500 group-hover:text-white transition-colors" />
-            </button>
+           
           </div>
         ) : (
           <div className="animate-in slide-in-from-right-4 duration-300">
@@ -518,7 +519,7 @@ const AuthSelection = () => {
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          placeholder="you@organisation.com"
+                          placeholder="gdg@aitpune.edu.in"
                           className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
                         />
                       </div>
