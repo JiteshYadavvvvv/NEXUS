@@ -49,7 +49,6 @@ const VerifyAccount = () => {
   };
 
   const email = location.state?.email || "your email";
-  const year = location.state?.year || "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +65,7 @@ const VerifyAccount = () => {
         pending: "Verifying account...",
         success: {
           render({ data }) {
-            setTimeout(() => navigate(`/profile/${year}`), 2000);
+            setTimeout(() => navigate('/profile/Applicant'), 2000);
             return data.message || "Account verified successfully! 👌";
           },
         },

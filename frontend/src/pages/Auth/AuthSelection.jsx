@@ -47,7 +47,7 @@ const AuthSelection = () => {
       navigate('/profile/Admin', { replace: true });
       return;
     }
-    if (user?.year) { navigate(`/profile/${user.year}`, { replace: true }); return; }
+    if (user?.year) { navigate(user.role === 'member' ? '/profile/Member' : '/profile/Applicant', { replace: true }); return; }
   }, [authLoading, user, isAdmin]);
 
   if (authLoading) {

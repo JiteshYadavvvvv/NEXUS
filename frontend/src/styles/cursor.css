@@ -36,3 +36,26 @@ body.no-custom-cursor [class*="target-cursor"] {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* Sleek thin scrollbar (used by modals) */
+.sleek-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+.sleek-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sleek-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sleek-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 9999px;
+}
+
+.sleek-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}

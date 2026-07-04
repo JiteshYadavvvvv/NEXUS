@@ -18,7 +18,7 @@ const Login = () => {
   useEffect(() => {
     if (authLoading) return;
     if (isAdmin) { navigate('/profile/Admin', { replace: true }); return; }
-    if (user?.year) { navigate(`/profile/${user.year}`, { replace: true }); return; }
+    if (user?.year) { navigate(user.role === 'member' ? '/profile/Member' : '/profile/Applicant', { replace: true }); return; }
   }, [authLoading, user, isAdmin]);
 
   if (authLoading) {
@@ -53,7 +53,7 @@ const Login = () => {
               setTimeout(() => navigate("/signup", { state: { ...location.state, fromLogin: true } }), 2000);
               return "Almost there! Please complete your profile to continue. 📝";
             }
-            setTimeout(() => navigate(`/profile/${data.user.year}`, { state: { club: selectedClub } }), 2000);
+            setTimeout(() => navigate(data.user.role === 'member' ? '/profile/Member' : '/profile/Applicant', { state: { club: selectedClub } }), 2000);
             return data.message || "Login successfully! 👌";
           },
         },
@@ -76,7 +76,7 @@ const Login = () => {
     if (user?.year) {
       // Existing user with complete profile → go to dashboard
       toast.success("Logged in with Google! 👌");
-      setTimeout(() => navigate(`/profile/${user.year}`, { state: { club: selectedClub } }), 1500);
+      setTimeout(() => navigate(user.role === 'member' ? '/profile/Member' : '/profile/Applicant', { state: { club: selectedClub } }), 1500);
     } else {
       // New or incomplete Google user → redirect to signup to complete profile
       toast.info("Almost there! Please complete your profile to continue. 📝");

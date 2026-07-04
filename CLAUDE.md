@@ -4,7 +4,7 @@
 > entire file. The design system defined here is the single source of truth.
 > Do not introduce new colors, fonts, layouts, or component patterns that
 > contradict anything in this document.
-> **CRITICAL**: For accessing backend code refer to D:\code\project\sync-backend. You have full permission to make changes in backend. but be carefull to not break existing code.
+> **CRITICAL**: For accessing backend code refer to .\sync-backend. You have full permission to make changes in backend. but be carefull to not break existing code.
 
 ---
 

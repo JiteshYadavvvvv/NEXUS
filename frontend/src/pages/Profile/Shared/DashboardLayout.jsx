@@ -128,10 +128,10 @@ export default function SharedDashboardLayout({ children }) {
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-lg bg-gray-900 flex items-center justify-center shadow-sm">
-                                <span className="font-bold text-white text-lg">{role === 'Admin' ? 'A' : role === 'Member' ? 'M' : user?.year?.[0]}</span>
+                                <span className="font-bold text-white text-lg">{role?.[0]}</span>
                             </div>
                             <div>
-                                <h1 className="font-bold text-lg tracking-tight text-gray-900">{role === 'Admin' ? 'Admin' : role === 'Member' ? 'Member' : user?.year} Panel</h1>
+                                <h1 className="font-bold text-lg tracking-tight text-gray-900">{role} Panel</h1>
                             </div>
                         </div>
                         <button
@@ -326,10 +326,10 @@ export default function SharedDashboardLayout({ children }) {
                 <header className="md:hidden flex items-center justify-between p-4 border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">
                     <div className="flex items-center gap-2">
                         <div className="h-8 w-8 rounded-lg bg-gray-900 flex items-center justify-center shadow-sm">
-                            <span className="font-bold text-white text-xs">{role === 'Admin' ? 'A' : role === 'Member' ? 'M' : user?.year?.[0]}</span>
+                            <span className="font-bold text-white text-xs">{role?.[0]}</span>
                         </div>
                         <div>
-                            <h1 className="font-bold text-lg tracking-tight text-gray-900">{role === 'Admin' ? 'Admin' : role === 'Member' ? 'Member' : user?.year} Panel</h1>
+                            <h1 className="font-bold text-lg tracking-tight text-gray-900">{role} Panel</h1>
                         </div>
                     </div>
                     <button onClick={() => setIsSidebarOpen(true)} className="p-2 text-gray-500 hover:text-gray-900">

@@ -501,7 +501,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                                   <div className="flex items-center gap-3 text-xs text-muted-foreground text-slate-500 mt-1">
                                      <span>{selectedApplicant.userId?.email || getAnswerValue(answers, 'Email')}</span>
                                      <span className="text-slate-300">•</span>
-                                     <span>{getAnswerValue(answers, 'Phone')}</span>
+                                     <span>{selectedApplicant.userId?.number || getAnswerValue(answers, 'Phone')}</span>
                                   </div>
                                   {displayPriority && (
                                    <div className="flex items-center gap-2 mt-2">
@@ -556,25 +556,7 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                             </div>
                          </div>
 
-                         
-                          {/* Bio & Reg No from user profile */}
-                          {(selectedApplicant.userId?.bio || selectedApplicant.userId?.regnNo) && (
-                             <div className="flex flex-wrap gap-3 pb-4 border-b border-slate-200">
-                                {selectedApplicant.userId?.regnNo && (
-                                   <div className="flex items-center gap-1.5 rounded-md bg-slate-50 border border-slate-200 px-3 py-1.5">
-                                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Reg No</span>
-                                      <span className="text-xs font-semibold text-slate-700">{selectedApplicant.userId.regnNo}</span>
-                                   </div>
-                                )}
-                                {selectedApplicant.userId?.bio && (
-                                   <div className="flex items-center gap-1.5 rounded-md bg-slate-50 border border-slate-200 px-3 py-1.5 max-w-sm">
-                                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 shrink-0">Bio</span>
-                                      <span className="text-xs text-slate-600 truncate">{selectedApplicant.userId.bio}</span>
-                                   </div>
-                                )}
-                             </div>
-                          )}
-{/* Middle Info Stats using generic shadcn styling */}
+                         {/* Middle Info Stats using generic shadcn styling */}
                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="rounded border border-slate-200 bg-white text-slate-950 shadow-sm p-4 flex flex-row items-center justify-between space-y-0">
                                <div className="flex flex-col space-y-1">
@@ -635,6 +617,41 @@ const Dashboard = ({ viewerRole = 'admin', isEmbedded = false }) => {
                                </table>
                             </div>
                          </div>
+
+                         {/* User Details Section */}
+                         {selectedApplicant.userId && (
+                            <div>
+                               <h3 className="text-base font-semibold tracking-tight mb-3">User Details</h3>
+                               <div className="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden">
+                                  <table className="w-full table-fixed text-sm">
+                                     <thead>
+                                        <tr className="border-b border-slate-200 bg-slate-50">
+                                           <th className="px-4 py-2.5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider w-2/5">Field</th>
+                                           <th className="px-4 py-2.5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Answer</th>
+                                        </tr>
+                                     </thead>
+                                     <tbody>
+                                        {[
+                                           ['Name', selectedApplicant.userId?.name],
+                                           ['Email', selectedApplicant.userId?.email],
+                                           ['Phone', selectedApplicant.userId?.number],
+                                           ['Reg No', selectedApplicant.userId?.regnNo],
+                                           ['Year', selectedApplicant.userId?.year],
+                                           ['Branch', selectedApplicant.userId?.branch],
+                                           ['Role', selectedApplicant.userId?.role],
+                                           ['Hobbies', selectedApplicant.userId?.hobbies],
+                                           ['Bio', selectedApplicant.userId?.bio],
+                                        ].map(([key, val], i) => (
+                                           <tr key={key} className={`border-b border-slate-100 last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+                                              <td className="px-4 py-3 font-semibold text-slate-600 uppercase text-[11px] tracking-wider align-top break-words">{key}</td>
+                                              <td className="px-4 py-3 text-[13px] font-medium text-slate-900 whitespace-pre-wrap break-words leading-relaxed align-top">{String(val ?? '') || '-'}</td>
+                                           </tr>
+                                        ))}
+                                     </tbody>
+                                  </table>
+                               </div>
+                            </div>
+                         )}
 
                                      {uploadedAnswers.length > 0 && (
                                         <div>

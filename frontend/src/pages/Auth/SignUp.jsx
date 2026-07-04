@@ -6,41 +6,30 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
 
-const YEARS = [
-  { label: "Applicant"},
-  { label: "Member" },
-  { label: "Admin" },
-];
+const YEAR_OPTIONS = ["FE", "SE", "TE", "BE"];
+const BRANCH_OPTIONS = ["COMP", "IT", "ENTC", "MECH", "ARE"];
 
 // ─── Google Profile Setup Step ───────────────────────────────────
-const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
+const GoogleProfileSetup = ({ onSubmit, loading }) => {
   const [setupName, setSetupName] = useState("");
   const [bio, setBio] = useState("");
   const [hobbies, setHobbies] = useState("");
   const [number, setNumber] = useState("");
   const [branch, setBranch] = useState("");
   const [regnNo, setRegnNo] = useState("");
-
-  let availableYears = [
-    { label: "Applicant" },
-    { label: "Member" },
-    { label: "Admin" },
-  ];
-
-  if (signupRole === "Applicant") availableYears = [{ label: "Applicant" }];
-  if (signupRole === "Organisation") availableYears = [{ label: "Member" }, { label: "Admin" }];
+  const [year, setYear] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!setupName.trim() || !regnNo) return;
-    onSubmit({ 
-      name: setupName.trim(), 
+    if (!setupName.trim() || !regnNo || !year) return;
+    onSubmit({
+      name: setupName.trim(),
       bio: bio.trim(),
       hobbies: hobbies.trim(),
       number: Number(number),
       branch: branch.trim(),
       regnNo: Number(regnNo),
-      year: "Applicant" 
+      year
     });
   };
 
@@ -119,14 +108,20 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
         <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
           Branch
         </label>
-        <input
-          type="text"
+        <select
           disabled={loading}
           placeholder="e.g. COMP, IT, ENTC"
           value={branch}
           onChange={(e) => setBranch(e.target.value)}
-          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50"
-        />
+          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50 [&>option]:text-black"
+        >
+          <option value="" disabled>
+            Select branch
+          </option>
+          {BRANCH_OPTIONS.map((b) => (
+            <option key={b} value={b}>{b}</option>
+          ))}
+        </select>
       </div>
 
       {/* Registration Number */}
@@ -148,9 +143,33 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
         />
       </div>
 
+      {/* Year */}
+      <div className="space-y-1">
+        <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
+          Year
+          <span className="ml-2 text-[11px] font-normal text-slate-500">
+            — Required
+          </span>
+        </label>
+        <select
+          required
+          disabled={loading}
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all disabled:opacity-50 [&>option]:text-black"
+        >
+          <option value="" disabled>
+            Select year
+          </option>
+          {YEAR_OPTIONS.map((y) => (
+            <option key={y} value={y}>{y}</option>
+          ))}
+        </select>
+      </div>
+
       <button
         type="submit"
-        disabled={loading || !setupName.trim() || !regnNo}
+        disabled={loading || !setupName.trim() || !regnNo || !year}
         className="w-full mt-4 py-3 rounded-xl bg-[#D4AF37]/90 hover:bg-[#D4AF37] text-slate-950 text-sm font-semibold shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all transform hover:-translate-y-0.5 disabled:bg-white/5 disabled:text-gray-500 disabled:shadow-none disabled:transform-none disabled:pointer-events-none border border-[#D4AF37]/20 disabled:border-transparent"
       >
         {loading ? "Saving..." : "Finish Setup"}
@@ -162,12 +181,11 @@ const GoogleProfileSetup = ({ onSubmit, loading ,signupRole }) => {
 // ─── Main SignUp Component ───────────────────────────────────────
 const SignUp = () => {
   const location = useLocation();
-  const signupRole = location.state?.role || "";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [year, setYear] = useState(signupRole === "Applicant" ? "Applicant" : "");
+  const [year, setYear] = useState("");
 
   // For the Google → profile setup flow
   const [step, setStep] = useState("form"); // "form" | "profile-setup"
@@ -200,7 +218,7 @@ const SignUp = () => {
         pending: "Registering...",
         success: {
           render({ data }) {
-            setTimeout(() => navigate("/verify-account", { state: { email, year } }), 2000);
+            setTimeout(() => navigate("/verify-account", { state: { email } }), 2000);
             return data.message || "Registered successfully! 👌";
           },
         },
@@ -217,9 +235,9 @@ const SignUp = () => {
   const handleGoogleSuccess = (result) => {
     const user = result.user;
     if (user?.year) {
-      // Already has a year → go straight to profile
+      // Profile already complete → go straight to the right panel
       toast.success("Signed up with Google! 👌");
-      setTimeout(() => navigate(`/profile/${user.year}`), 1500);
+      setTimeout(() => navigate(user.role === "member" ? "/profile/Member" : "/profile/Applicant"), 1500);
     } else {
       // New Google user → show profile setup screen
       setGoogleUser(user);
@@ -238,7 +256,7 @@ const SignUp = () => {
       const result = await updateUserInfo({ name, regnNo, bio, hobbies, number, branch, year });
       if (result.success) {
         toast.success(`Welcome aboard, ${name}! 🎉`);
-        setTimeout(() => navigate(`/profile/${year}`), 1500);
+        setTimeout(() => navigate(result.user?.role === "member" ? "/profile/Member" : "/profile/Applicant"), 1500);
       } else {
         toast.error(result.message || "Failed to save profile");
       }
@@ -277,7 +295,7 @@ const SignUp = () => {
         {step === "profile-setup" ? (
           // ── Google Profile Setup Screen ──
           <div className="pt-2">
-            <GoogleProfileSetup onSubmit={handleProfileSetup} loading={saving} signupRole={signupRole} />
+            <GoogleProfileSetup onSubmit={handleProfileSetup} loading={saving} />
           </div>
         ) : (
           // ── Sign-up Form ──
@@ -365,18 +383,13 @@ const SignUp = () => {
                   className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all [&>option]:text-black"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
-                  disabled={signupRole === "Applicant"}
                 >
                   <option value="" disabled>
                     Select year
                   </option>
-                  {signupRole !== "Organisation" && <option value="Applicant">Applicant</option>}
-                  {signupRole !== "Applicant" && (
-                    <>
-                      <option value="Member">Member</option>
-                      <option value="Admin">Admin</option>
-                    </>
-                  )}
+                  {YEAR_OPTIONS.map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
                 </select>
               </div> */}
 

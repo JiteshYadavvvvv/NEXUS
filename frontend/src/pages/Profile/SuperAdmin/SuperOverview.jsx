@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Building2, Users, FileText, ClipboardList, CalendarDays, RefreshCw, Loader2, Code2, Terminal, GitBranch } from 'lucide-react';
+import { Building2, Users, FileText, ClipboardList, CalendarDays, RefreshCw, Code2, Terminal, GitBranch } from 'lucide-react';
+import AdminCalendar from './AdminCalendar';
+import UserSearchBar from './UserSearchBar';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
@@ -10,9 +12,6 @@ function getGreeting() {
     if (h < 17) return 'Good afternoon';
     return 'Good evening';
 }
-
-const formatDate = (d) =>
-    new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 
 export default function SuperOverview({ admin, onNavigate }) {
     const [data, setData] = useState(null);
@@ -134,6 +133,8 @@ export default function SuperOverview({ admin, onNavigate }) {
                     {error}
                 </div>
             )}
+            
+            <UserSearchBar />
 
             {/* Stats bar */}
             <div style={{ marginTop: '8px', borderRadius: '16px', background: '#f3f4f6', border: '1px solid #e5e7eb', padding: '20px 24px', display: 'flex', flexWrap: 'wrap', gap: '0' }}>
@@ -150,37 +151,14 @@ export default function SuperOverview({ admin, onNavigate }) {
                 ))}
             </div>
 
-            {/* Timeline */}
-            <div className="mt-8 mb-12 rounded-2xl border border-gray-200 bg-white p-6">
+            {/* Full-year event calendar */}
+            <div className="mt-8 mb-12">
                 <div className="flex items-center justify-between mb-5">
                     <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                        <CalendarDays className="h-5 w-5 text-blue-600" /> Activity Timeline
+                        <CalendarDays className="h-5 w-5 text-blue-600" /> Event Calendar
                     </h2>
-                    <span className="text-xs text-gray-500 uppercase tracking-wider">±5 days</span>
                 </div>
-
-                {loading ? (
-                    <div className="flex items-center justify-center py-12 text-gray-400">
-                        <Loader2 className="h-6 w-6 animate-spin" />
-                    </div>
-                ) : (data?.timelineEvents?.length ? (
-                    <div className="space-y-3">
-                        {data.timelineEvents.map((ev) => (
-                            <div key={ev._id} className="flex items-center gap-4 rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
-                                <div className="h-10 w-10 rounded-lg bg-blue-600/10 flex items-center justify-center shrink-0">
-                                    <CalendarDays className="h-5 w-5 text-blue-600" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-semibold text-gray-900 truncate">{ev.eventName || ev.name || ev.title || 'Untitled Event'}</p>
-                                    <p className="text-xs text-gray-500 truncate">{ev.club || 'Unknown club'}{ev.venue ? ` • ${ev.venue}` : ''}</p>
-                                </div>
-                                <span className="text-xs font-medium text-gray-600 shrink-0">{formatDate(ev.date)}</span>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-12 text-gray-400 text-sm">No events in this window.</div>
-                ))}
+                <AdminCalendar />
             </div>
         </div>
     );

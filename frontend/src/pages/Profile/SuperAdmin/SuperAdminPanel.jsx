@@ -1,31 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import useSuperAdminAccess from '@/hooks/useSuperAdminAccess';
 import SuperAdminDashboard from './SuperAdminDashboard';
 
-const SUPER_ROLES = ['director', 'principal', 'jd'];
-
 export default function SuperAdminPanel() {
-    const { checkAdminAuth, setUser, setIsAdmin } = useAuth();
-    const [status, setStatus] = useState('loading'); // loading | ok | denied
-    const [admin, setAdmin] = useState(null);
-
-    useEffect(() => {
-        let active = true;
-        (async () => {
-            const info = await checkAdminAuth();
-            if (!active) return;
-            if (info && SUPER_ROLES.includes(info.role)) {
-                setAdmin(info);
-                setUser(info);
-                setIsAdmin(true);
-                setStatus('ok');
-            } else {
-                setStatus('denied');
-            }
-        })();
-        return () => { active = false; };
-    }, []);
+    const { status, admin } = useSuperAdminAccess();
 
     if (status === 'loading') {
         return (

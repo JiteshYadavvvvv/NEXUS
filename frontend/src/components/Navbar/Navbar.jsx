@@ -13,7 +13,11 @@ export function Navbar({ onOpenSidebar, isSidebarOpen }) {
     const isActiveHash = (hash) => location.hash === hash;
 
     // Determine dashboard link based on auth state
-    const dashboardHref = isAdmin ? '/profile/Admin' : user?.year ? `/profile/${user.year}` : null;
+    const dashboardHref = isAdmin
+        ? '/profile/Admin'
+        : user?.year
+            ? (user.role === 'member' ? '/profile/Member' : '/profile/Applicant')
+            : null;
 
     const navItems = React.useMemo(() => [
         { label: 'Home', href: '/', isReload: true, isActive: () => isActive("/") && !location.hash },

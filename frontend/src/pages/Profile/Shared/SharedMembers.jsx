@@ -131,6 +131,118 @@ export default function SharedMembers() {
 
     return (
         <div className="space-y-6">
+            {role === 'Admin' && (
+                <div className="bg-white border border-gray-200 rounded-xl shadow-sm">
+                    <div className="p-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                            <ShieldCheck className="h-5 w-5 text-blue-600" />
+                            <h3 className="font-semibold text-gray-900">Secretaries</h3>
+                        </div>
+                        {isFaculty && (
+                            <button
+                                onClick={() => setShowAddSec((v) => !v)}
+                                className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors text-sm self-start sm:self-auto"
+                            >
+                                <Plus className="h-4 w-4" /> {showAddSec ? 'Close' : 'Add Secretary'}
+                            </button>
+                        )}
+                    </div>
+
+                    {isFaculty && showAddSec && (
+                        <form onSubmit={handleAddSecretary} className="p-4 border-b border-gray-200 space-y-4 bg-gray-50/50 animate-in fade-in slide-in-from-top-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input
+                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Secretary name"
+                                    value={newSec.name}
+                                    onChange={(e) => setNewSec({ ...newSec, name: e.target.value })}
+                                    required
+                                />
+                                <input
+                                    type="email"
+                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Secretary email"
+                                    value={newSec.email}
+                                    onChange={(e) => setNewSec({ ...newSec, email: e.target.value })}
+                                    required
+                                />
+                            </div>
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => { setShowAddSec(false); setNewSec({ name: '', email: '' }); }}
+                                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors text-sm"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={addingSec}
+                                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm inline-flex items-center gap-2 disabled:opacity-60"
+                                >
+                                    {addingSec && <Loader2 className="h-4 w-4 animate-spin" />} Save Secretary
+                                </button>
+                            </div>
+                        </form>
+                    )}
+
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left text-sm text-gray-500">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3 font-semibold">Name</th>
+                                    <th scope="col" className="px-6 py-3 font-semibold">Email</th>
+                                    {isFaculty && <th scope="col" className="px-6 py-3 text-right font-semibold">Actions</th>}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {secretaries.map((s) => (
+                                    <tr key={s.email} className="bg-white border-b hover:bg-gray-50 transition-colors">
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                            <div className="flex items-center gap-3">
+                                                <div className="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-medium border border-blue-100 shrink-0">
+                                                    {s.name?.charAt(0) || '?'}
+                                                </div>
+                                                {s.name}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 text-gray-500">{s.email}</td>
+                                        {isFaculty && (
+                                            <td className="px-6 py-4 text-right">
+                                                <button
+                                                    onClick={() => handleRemoveSecretary(s.email)}
+                                                    disabled={removingSecEmail === s.email}
+                                                    className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors inline-flex items-center gap-1.5 border border-red-100 disabled:opacity-50"
+                                                >
+                                                    {removingSecEmail === s.email
+                                                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                                        : <Trash2 className="h-3.5 w-3.5" />}
+                                                    Remove
+                                                </button>
+                                            </td>
+                                        )}
+                                    </tr>
+                                ))}
+                                {secLoading && (
+                                    <tr>
+                                        <td colSpan={isFaculty ? 3 : 2} className="px-6 py-12 text-center text-gray-400 bg-gray-50/50">
+                                            Loading secretaries…
+                                        </td>
+                                    </tr>
+                                )}
+                                {!secLoading && secretaries.length === 0 && (
+                                    <tr>
+                                        <td colSpan={isFaculty ? 3 : 2} className="px-6 py-12 text-center text-gray-500 bg-gray-50/50">
+                                            No secretaries yet.{isFaculty ? ' Add one above.' : ''}
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
             <div>
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900">Team Members</h2>
@@ -256,118 +368,6 @@ export default function SharedMembers() {
                     </table>
                 </div>
             </div>
-
-            {role === 'Admin' && (
-                <div className="bg-white border border-gray-200 rounded-xl shadow-sm">
-                    <div className="p-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                        <div className="flex items-center gap-2">
-                            <ShieldCheck className="h-5 w-5 text-blue-600" />
-                            <h3 className="font-semibold text-gray-900">Secretaries</h3>
-                        </div>
-                        {isFaculty && (
-                            <button
-                                onClick={() => setShowAddSec((v) => !v)}
-                                className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors text-sm self-start sm:self-auto"
-                            >
-                                <Plus className="h-4 w-4" /> {showAddSec ? 'Close' : 'Add Secretary'}
-                            </button>
-                        )}
-                    </div>
-
-                    {isFaculty && showAddSec && (
-                        <form onSubmit={handleAddSecretary} className="p-4 border-b border-gray-200 space-y-4 bg-gray-50/50 animate-in fade-in slide-in-from-top-2">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input
-                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Secretary name"
-                                    value={newSec.name}
-                                    onChange={(e) => setNewSec({ ...newSec, name: e.target.value })}
-                                    required
-                                />
-                                <input
-                                    type="email"
-                                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Secretary email"
-                                    value={newSec.email}
-                                    onChange={(e) => setNewSec({ ...newSec, email: e.target.value })}
-                                    required
-                                />
-                            </div>
-                            <div className="flex justify-end gap-2">
-                                <button
-                                    type="button"
-                                    onClick={() => { setShowAddSec(false); setNewSec({ name: '', email: '' }); }}
-                                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors text-sm"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={addingSec}
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm inline-flex items-center gap-2 disabled:opacity-60"
-                                >
-                                    {addingSec && <Loader2 className="h-4 w-4 animate-spin" />} Save Secretary
-                                </button>
-                            </div>
-                        </form>
-                    )}
-
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm text-gray-500">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
-                                <tr>
-                                    <th scope="col" className="px-6 py-3 font-semibold">Name</th>
-                                    <th scope="col" className="px-6 py-3 font-semibold">Email</th>
-                                    {isFaculty && <th scope="col" className="px-6 py-3 text-right font-semibold">Actions</th>}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {secretaries.map((s) => (
-                                    <tr key={s.email} className="bg-white border-b hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            <div className="flex items-center gap-3">
-                                                <div className="h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-medium border border-blue-100 shrink-0">
-                                                    {s.name?.charAt(0) || '?'}
-                                                </div>
-                                                {s.name}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-gray-500">{s.email}</td>
-                                        {isFaculty && (
-                                            <td className="px-6 py-4 text-right">
-                                                <button
-                                                    onClick={() => handleRemoveSecretary(s.email)}
-                                                    disabled={removingSecEmail === s.email}
-                                                    className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors inline-flex items-center gap-1.5 border border-red-100 disabled:opacity-50"
-                                                >
-                                                    {removingSecEmail === s.email
-                                                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                                                        : <Trash2 className="h-3.5 w-3.5" />}
-                                                    Remove
-                                                </button>
-                                            </td>
-                                        )}
-                                    </tr>
-                                ))}
-                                {secLoading && (
-                                    <tr>
-                                        <td colSpan={isFaculty ? 3 : 2} className="px-6 py-12 text-center text-gray-400 bg-gray-50/50">
-                                            Loading secretaries…
-                                        </td>
-                                    </tr>
-                                )}
-                                {!secLoading && secretaries.length === 0 && (
-                                    <tr>
-                                        <td colSpan={isFaculty ? 3 : 2} className="px-6 py-12 text-center text-gray-500 bg-gray-50/50">
-                                            No secretaries yet.{isFaculty ? ' Add one above.' : ''}
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
