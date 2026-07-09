@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Oi&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Foldit:wght@100..900&family=Jersey+10&family=Oi&family=Rubik+Distressed&family=Rubik+Glitch+Pop&family=Rubik+Storm&family=Tiny5&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 .foldit-regular {
   font-family: "Foldit", sans-serif;
@@ -101,6 +102,17 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.section-title,
+.title {
+  font-family: "Playfair Display", Georgia, serif;
 }
 
 .app {

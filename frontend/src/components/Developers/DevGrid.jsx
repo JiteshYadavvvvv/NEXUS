@@ -35,7 +35,7 @@ const allDevelopers = [
     name: "Jitesh Yadav",
     role: "Dev X UI/UX",
     image: "/clubprofiles/jittu.jpeg",
-    username: "londa sakht",
+    username: "@jittu.raox",
     github: "https://github.com/JiteshYadavvvvv",
     linkedin: "https://www.linkedin.com/in/jitesh-yadav01/",
   }, 
@@ -50,7 +50,8 @@ const allDevelopers = [
   {
     name: "Sajal Rawat",
     role: "Web Developer",
-    image: "/clubprofiles/ns.png",
+    image: "/clubprofiles/SajalRawat.jpeg",
+    imgContain: true,
     username: "@sajalrwt",
     github: "https://github.com/SajalRawat",
     linkedin: "https://www.linkedin.com/in/sajal-rawat/",

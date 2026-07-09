@@ -45,8 +45,10 @@ const DevCard = ({ dev }) => {
             <img
               src={dev.image}
               alt={dev.name}
+              style={dev.imgPosition ? { objectPosition: dev.imgPosition } : undefined}
               className={cn(
-                "absolute inset-0 w-full h-full object-cover object-top transition-all duration-700 ease-out group-hover:scale-105 filter grayscale contrast-125 group-hover:grayscale-0 group-hover:contrast-100"
+                "absolute inset-0 w-full h-full object-cover object-top transition-all duration-700 ease-out group-hover:scale-105 filter grayscale contrast-125 group-hover:grayscale-0 group-hover:contrast-100",
+                dev.imgContain && "object-contain object-center bg-zinc-900"
               )}
             />
             <div className="absolute inset-0 bg-linear-to-t from-zinc-950 via-zinc-900/40 to-transparent opacity-90 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none" />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRoutes } from "react-router-dom";
+import { useRoutes, useLocation } from "react-router-dom";
 import ClickSpark from "./styles/ClickSpark";
 import TargetCursor from "./styles/TargetCursor";
 import { ToastContainer } from "react-toastify";
@@ -36,6 +36,10 @@ function AppContent({ isSidebarOpen, setIsSidebarOpen }) {
 
 export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+  // The landing page ("/") uses its own spacebears CustomCursor, so the
+  // global TargetCursor is disabled there to avoid two cursors at once.
+  const isLanding = location.pathname === "/";
 
   return (
     <ClickSpark
@@ -46,13 +50,15 @@ export default function App() {
       duration={400}
     >
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop />
-      <TargetCursor
-        targetSelector="button, a, .cursor-target, .hover-circle, input, label"
-        spinDuration={2}
-        hideDefaultCursor
-        parallaxOn
-        hoverDuration={0.2}
-      />
+      {!isLanding && (
+        <TargetCursor
+          targetSelector="button, a, .cursor-target, .hover-circle, input, label"
+          spinDuration={2}
+          hideDefaultCursor
+          parallaxOn
+          hoverDuration={0.2}
+        />
+      )}
       <div className={`app ${isSidebarOpen ? 'overflow-hidden' : ''}`}>
         <AppContent isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       </div>

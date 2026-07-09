@@ -1,0 +1,100 @@
+{
+  "hash": "c970ee88",
+  "configHash": "1a0d11ed",
+  "lockfileHash": "173e236a",
+  "browserHash": "66af822d",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "07fdcc0a",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "79e86e61",
+      "needsInterop": true
+    },
+    "gsap": {
+      "src": "../../node_modules/gsap/index.js",
+      "file": "gsap.js",
+      "fileHash": "3f96d49e",
+      "needsInterop": false
+    },
+    "gsap/ScrollTrigger": {
+      "src": "../../node_modules/gsap/ScrollTrigger.js",
+      "file": "gsap_ScrollTrigger.js",
+      "fileHash": "f147522a",
+      "needsInterop": false
+    },
+    "@studio-freight/lenis": {
+      "src": "../../node_modules/@studio-freight/lenis/dist/lenis.mjs",
+      "file": "@studio-freight_lenis.js",
+      "fileHash": "9d60d4b4",
+      "needsInterop": false
+    },
+    "lucide-react": {
+      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "6e98f4b4",
+      "needsInterop": false
+    },
+    "@gsap/react": {
+      "src": "../../node_modules/@gsap/react/src/index.js",
+      "file": "@gsap_react.js",
+      "fileHash": "64f4e0cb",
+      "needsInterop": false
+    },
+    "framer-motion": {
+      "src": "../../node_modules/framer-motion/dist/es/index.mjs",
+      "file": "framer-motion.js",
+      "fileHash": "d1d92631",
+      "needsInterop": false
+    },
+    "@splinetool/react-spline": {
+      "src": "../../node_modules/@splinetool/react-spline/dist/react-spline.js",
+      "file": "@splinetool_react-spline.js",
+      "fileHash": "1284fca8",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "gaussian-splat-compression-QFCUBMCE": {
+      "file": "gaussian-splat-compression-QFCUBMCE.js"
+    },
+    "navmesh-PLPHXRJM": {
+      "file": "navmesh-PLPHXRJM.js"
+    },
+    "physics-U7E4KWHA": {
+      "file": "physics-U7E4KWHA.js"
+    },
+    "process-EVOBQGWO": {
+      "file": "process-EVOBQGWO.js"
+    },
+    "boolean-CRIEMSF6": {
+      "file": "boolean-CRIEMSF6.js"
+    },
+    "howler-VGPDSPO6": {
+      "file": "howler-VGPDSPO6.js"
+    },
+    "opentype-2YECOTX5": {
+      "file": "opentype-2YECOTX5.js"
+    },
+    "ui-SWOGCOS7": {
+      "file": "ui-SWOGCOS7.js"
+    },
+    "chunk-HNDSS4NX": {
+      "file": "chunk-HNDSS4NX.js"
+    },
+    "chunk-6JJF5OQY": {
+      "file": "chunk-6JJF5OQY.js"
+    },
+    "chunk-GDINV6T2": {
+      "file": "chunk-GDINV6T2.js"
+    },
+    "chunk-PR4QN5HX": {
+      "file": "chunk-PR4QN5HX.js"
+    }
+  }
+}
