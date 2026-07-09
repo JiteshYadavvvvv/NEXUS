@@ -30,7 +30,9 @@
       "Bash(node -e \"const d=require\\('./public/api/clubs.json'\\); console.log\\('OK -', d.length, 'clubs, with secretaries:', d.filter\\(c=>c.secretaries?.length\\).length\\)\")",
       "Bash(node -e \"const d=require\\('./public/api/clubs.json'\\); console.log\\('OK -', d.length, 'clubs; all have secretaries:', d.every\\(c=>c.secretaries?.length>0\\)\\); const missing=d.filter\\(c=>!require\\('fs'\\).existsSync\\('./public'+c.img\\)\\); console.log\\('clubs whose logo file is missing:', missing.map\\(c=>c.abbr+' -> '+c.img\\).join\\(', '\\)||'none'\\)\")",
       "Bash(node -e ' *)",
-      "Bash(node -e \"const d=require\\('./public/api/clubs.json'\\); console.log\\('clubs:', d.length, '| all have club insta field:', d.every\\(c=>'insta' in c\\), '| any secretary still has insta:', d.some\\(c=>c.secretaries.some\\(s=>'insta' in s\\)\\)\\)\")"
+      "Bash(node -e \"const d=require\\('./public/api/clubs.json'\\); console.log\\('clubs:', d.length, '| all have club insta field:', d.every\\(c=>'insta' in c\\), '| any secretary still has insta:', d.some\\(c=>c.secretaries.some\\(s=>'insta' in s\\)\\)\\)\")",
+      "Bash(ls -la public/assets/images/banner.png)",
+      "Bash(find public *)"
     ],
     "additionalDirectories": [
       "D:\\code\\project\\sync-backend"

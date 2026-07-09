@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { Github } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -14,6 +15,8 @@ const NAV_ITEMS = [
   { label: "Clubs", to: "/clubs" },
   { label: "Developers", to: "/developers" },
 ];
+
+const GITHUB_URL = "https://github.com/JiteshYadavvvvv/NEXUS";
 
 export default function NavBar({ entered }) {
   const navRef = useRef(null);
@@ -88,6 +91,17 @@ export default function NavBar({ entered }) {
 
           {/* Right actions */}
           <div className="relative z-20 flex items-center gap-2 flex-shrink-0">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              link-cursor="true"
+              aria-label="GitHub repository"
+              className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 transition-all hover:-translate-y-0.5 active:scale-95 duration-300"
+            >
+              <Github size={16} strokeWidth={2} />
+            </a>
+
             <Link
               to="/get-started"
               link-cursor="true"

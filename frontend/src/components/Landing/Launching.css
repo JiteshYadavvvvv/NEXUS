@@ -32,8 +32,10 @@
 
 .c-launching_button {
     border: 1px solid var(--primary);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
     font-variation-settings: "wght" 700;
-    border-radius: 31.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     padding: .625rem 1.125rem;
     font-size: .875em;
     line-height: 1.3em;
@@ -42,7 +44,7 @@
     color: var(--dark);
     text-transform: uppercase;
     border-style: none;
-    border-radius: .5rem;
+    border-radius: 31.25rem;
 }
 
 .c-launching_title-wrapper {

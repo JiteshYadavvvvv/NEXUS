@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import LineWaves from "../LineWaves/LineWaves";
 
 const SPLINE_OVERLAY_1 =
   "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 100%)";
@@ -259,6 +260,28 @@ export default function Hero({ entered }) {
                 opacity: 0,
               }}
             >
+              {/* Animated wave field — the hero background canvas. Sits below all
+                  gradient overlays (z 10/20/30) and the NEXUS tagline (z 40). */}
+              <div
+                className="absolute inset-0 bg-black md:rounded-[24px] overflow-hidden"
+                style={{ zIndex: 0 }}
+              >
+                <LineWaves
+                  speed={0.3}
+                  innerLineCount={32}
+                  outerLineCount={36}
+                  warpIntensity={1.0}
+                  rotation={-45}
+                  brightness={0.2}
+                  colorCycleSpeed={1.0}
+                  color1="#ffffff"
+                  color2="#ffffff"
+                  color3="#ffffff"
+                  enableMouseInteraction={true}
+                  mouseInfluence={2.0}
+                />
+              </div>
+
               <div
                 className="absolute inset-0 pointer-events-none rounded-[15px] md:rounded-[24px] box-border"
                 style={{
@@ -293,7 +316,7 @@ export default function Hero({ entered }) {
                     fontSize: "clamp(3rem, 12vw, 8rem)",
                     fontWeight: 700,
                     letterSpacing: "0.12em",
-                    color: "#9ca3af",
+                    color: "#ffffff",
                     textShadow: "0 2px 40px rgba(0,0,0,0.6)",
                   }}
                 >
