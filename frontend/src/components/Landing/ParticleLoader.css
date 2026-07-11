@@ -1,0 +1,166 @@
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  transition: background 1.6s ease-in-out;
+}
+
+.is-exiting {
+  background: transparent;
+  pointer-events: none;
+}
+
+.loader-canvas {
+  position: absolute;
+  inset: 0;
+  /* Glow Aura Filter */
+  filter: blur(0.7px) contrast(1.4) brightness(1.2);
+}
+
+.loader-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content-out {
+  opacity: 0;
+  transform: scale(1.1);
+  filter: blur(20px);
+  letter-spacing: 2rem;
+}
+
+.loader-title {
+  font-size: clamp(1rem, 5vw, 2rem);
+  letter-spacing: 1.2rem;
+  font-weight: 200;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+}
+
+.loader-subtitle {
+  font-size: 0.7rem;
+  letter-spacing: 0.6rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 4rem;
+}
+
+.loader-button {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 14px 60px;
+  letter-spacing: 0.6rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.loader-button:hover {
+  background: white;
+  color: black;
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.4);
+}
+
+.loader-button.waiting {
+  opacity: 0.5;
+  cursor: wait;
+  letter-spacing: 0.3rem;
+}
+
+/* ... existing styles ... */
+
+.loader-button.loading {
+  width: 200px;
+  border-color: rgba(255, 255, 255, 0.5);
+  cursor: wait;
+  letter-spacing: 0.2rem;
+}
+
+.is-waiting {
+  opacity: 0.8;
+  transition: opacity 0.5s ease;
+}
+
+/* Ensure the button doesn't disappear too fast */
+.loader-button:disabled {
+  pointer-events: none;
+}
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* EXACT BACKGROUND FROM REFERENCE: Deep radial vignette */
+  background: radial-gradient(circle at center, #111111 0%, #000000 70%);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.8s ease;
+}
+
+/* When exiting, we fade the whole overlay out to reveal the site */
+.is-exiting {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-canvas {
+  position: absolute;
+  inset: 0;
+  /* Glow/Mist filter to match the "dusty" energy in the image */
+  filter: blur(0.6px) contrast(1.2) brightness(1.3);
+  mix-blend-mode: screen;
+}
+
+.loader-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: #ffffff;
+  /* Match the elegant typography in the image */
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loader-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  letter-spacing: 0.5rem;
+  font-weight: 200;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.loader-subtitle {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 3rem;
+  letter-spacing: 0.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.loader-button {
+  font-family: 'Chakra Petch', sans-serif;
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 55px;
+  letter-spacing: 0.8rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  backdrop-filter: blur(5px);
+}
+
+.loader-button:hover {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}

@@ -34,7 +34,7 @@ export function ClubStackSection() {
    * - [x] Verify hover text matches logos
    */
   return (
-    <section className="pt-12 pb-4 px-6 sm:px-8 max-w-[1200px] mx-auto w-full relative z-10 font-mono">
+    <section className="my-20 md:my-32 pt-12 pb-4 px-6 sm:px-8 max-w-[1200px] mx-auto w-full relative z-10 font-mono">
       <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
         
         {/* Left Side: Dynamic Heading */}

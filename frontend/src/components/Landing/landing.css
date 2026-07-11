@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
+
+/*
+ * Scoped design tokens for the cloned landing page.
+ * Everything the landing renders lives inside `.spacebears-landing`, so these
+ * custom properties (and the grid-pattern helpers below) never leak into the
+ * rest of the NEXUS app, which uses its own token set (--bg, --panel, etc.).
+ */
+.spacebears-landing {
+  --dark: #161618;
+  --light: white;
+  --primary: #888891;
+  --secondary: #8cfa90;
+  --black: #161618;
+  --white: white;
+  --black-2: black;
+
+  background-color: #000;
+  color: var(--light);
+  font-family: 'Satoshi Variable', 'Chakra Petch', system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.2em;
+  overflow-x: hidden;
+  /* Establish a stacking context so the Hero's `fixed; z-index:-10` Spline
+     background layer is contained here and paints above this black background,
+     instead of escaping to the app's `.app` context and being covered by it. */
+  position: relative;
+  z-index: 0;
+}
+
+/* The landing renders its own CustomCursor, so hide the native cursor here. */
+.spacebears-landing,
+.spacebears-landing * {
+  cursor: none !important;
+}
+
+/* The landing has its own CustomScrollbar, so hide the native (outermost)
+   browser scrollbar while it's mounted. The `landing-active` class is toggled
+   on <html> by Landing.jsx. */
+html.landing-active,
+html.landing-active body {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/old Edge */
+}
+html.landing-active::-webkit-scrollbar,
+html.landing-active body::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari/Edge */
+  width: 0;
+  height: 0;
+}
+
+.spacebears-landing .main-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.spacebears-landing .bg-grid-pattern {
+  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, rgba(156, 163, 175, 0.26) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(156, 163, 175, 0.26) 1px, transparent 1px);
+}
+
+@keyframes landing-grid-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
+}
+
+.spacebears-landing .animate-grid-scroll {
+  animation: landing-grid-scroll 4s linear infinite;
+}

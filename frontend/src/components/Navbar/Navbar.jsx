@@ -31,13 +31,8 @@ export function Navbar({ onOpenSidebar, isSidebarOpen }) {
             <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 max-w-[1200px]">
                 <div className="flex items-center justify-between h-[72px]">
 
-                    {/* Left Section: Logo + Navigation Links */}
+                    {/* Left Section: Navigation Links */}
                     <div className="flex items-center gap-6 lg:gap-10">
-                        {/* Logo */}
-                        <a href="/" className="flex items-center flex-shrink-0 group">
-                            <img src="/nexus.svg" alt="NEXUS Logo" className="h-6 w-10 sm:w-16 object-contain group-hover:scale-110 group-hover:-translate-y-0.5 transition-all duration-300 ease-in-out rounded-full" />
-                        </a>
-
                         {/* Desktop Navigation Links */}
                         <div className="hidden md:flex items-center gap-4 lg:gap-6">
                             {navItems.map((item, idx) => (

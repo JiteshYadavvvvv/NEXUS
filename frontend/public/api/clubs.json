@@ -20,12 +20,24 @@
       "CRACK 5.1",
       "CRACK 5.2"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Sahil Kumar",
+        "branch": "Comp A"
+      },
+      {
+        "name": "Radhika Dodain",
+        "branch": "E&TC B"
+      }
+    ],
+    "insta": "coding_cell_ait"
   },
   {
     "abbr": "CUL",
     "name": "Cultural Board",
-    "img": "/clublogos/oss.svg",
+    "fullForm": "Cultural & Musical Board",
+    "img": "/nexus.svg",
     "desc": "Oversees cultural clubs and promotes art, creativity, and cultural expression through events and performances.",
     "focusAreas": [
       "Literary & creative arts",
@@ -37,7 +49,18 @@
       "Talent Nights",
       "Inter-College Cultural Events"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Abhay Singh",
+        "branch": "E&TC A"
+      },
+      {
+        "name": "Himanshi Pathak",
+        "branch": "Comp A"
+      }
+    ],
+    "insta": "culturalboard_ait"
   },
   {
     "abbr": "CYCLE",
@@ -54,12 +77,23 @@
       "Long-Distance Trails",
       "Cycling Awareness Events"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Kshitij Kumar",
+        "branch": "ARE"
+      },
+      {
+        "name": "Anshika Yadav",
+        "branch": "ARE"
+      }
+    ],
+    "insta": "ait_cycling_club"
   },
   {
     "abbr": "ECELL",
     "name": "E-Cell",
-    "fullForm": "Entrepreneurship Cell",
+    "fullForm": "Innovation & Entrepreneurship Cell",
     "img": "/clublogos/ecell.svg",
     "desc": "Promotes entrepreneurship, innovation, and startup culture among students.",
     "focusAreas": [
@@ -72,7 +106,14 @@
       "Pitch Deck Workshop",
       "Incubation support"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Samiksha Sharma",
+        "branch": "Comp A"
+      }
+    ],
+    "insta": "ecell_ait"
   },
   {
     "abbr": "GDG",
@@ -95,7 +136,18 @@
       "Backend Jams",
       "FSOC"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Peush Yadav",
+        "branch": "E&TC B"
+      },
+      {
+        "name": "Palak Kumara",
+        "branch": "IT B"
+      }
+    ],
+    "insta": "gdsc_aitpune"
   },
   {
     "abbr": "GDXR",
@@ -113,7 +165,18 @@
       "XR Workshop",
       "Dev Sprints"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Apoorva",
+        "branch": "ARE"
+      },
+      {
+        "name": "Anjali",
+        "branch": "ARE"
+      }
+    ],
+    "insta": "gdxr_ait"
   },
   {
     "abbr": "ISDF",
@@ -131,7 +194,18 @@
       "Cybersecurity Workshops",
       "Forensics Lab Training"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Kumari Priyanshu",
+        "branch": "Comp B"
+      },
+      {
+        "name": "Gaurav Chand",
+        "branch": "ARE"
+      }
+    ],
+    "insta": "isdf_ait"
   },
   {
     "abbr": "MAG",
@@ -149,12 +223,23 @@
       "Newsletter Editing",
       "Writing Competitions"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Adarsh Rana",
+        "branch": "Comp A"
+      },
+      {
+        "name": "Srinidhi Shettigar",
+        "branch": "ARE"
+      }
+    ],
+    "insta": "magboard"
   },
   {
     "abbr": "NATURE",
     "name": "Nature’s Club",
-    "img": "/clublogos/oss.svg",
+    "img": "/nexus.svg",
     "desc": "Encourages environmental conservation, sustainability, and nature awareness.",
     "focusAreas": [
       "Environmental protection",
@@ -166,13 +251,24 @@
       "Nature Walks",
       "Eco-Awareness Campaigns"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Mohit Sharma",
+        "branch": "IT B"
+      },
+      {
+        "name": "Rashika",
+        "branch": "TE ARE"
+      }
+    ],
+    "insta": "ait_nature_club"
   },
   {
     "abbr": "NSS",
     "name": "NSS",
     "fullForm": "National Service Scheme",
-    "img": "/clublogos/oss.svg",
+    "img": "/nexus.svg",
     "desc": "A volunteer organisation dedicated to social service and community development.",
     "focusAreas": [
       "Community service",
@@ -184,7 +280,18 @@
       "Cleanliness Drives",
       "Social Outreach Programs"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Sahil Yadav",
+        "branch": "IT A"
+      },
+      {
+        "name": "Pooja Kumari",
+        "branch": "Comp B"
+      }
+    ],
+    "insta": "ait_nss_rotaract_club"
   },
   {
     "abbr": "OSS",
@@ -206,7 +313,18 @@
       "FSOC",
       "Graphica"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Anmol Singh",
+        "branch": "IT B"
+      },
+      {
+        "name": "Yashika Yadav",
+        "branch": "ARE"
+      }
+    ],
+    "insta": "ossclub.ait"
   },
   {
     "abbr": "PR",
@@ -224,7 +342,18 @@
       "Event promotions",
       "Media coordination"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Lucky Dhami",
+        "branch": "IT B"
+      },
+      {
+        "name": "Faiza Fatima",
+        "branch": "Comp B"
+      }
+    ],
+    "insta": "ait_pr_cell"
   },
   {
     "abbr": "RND",
@@ -242,12 +371,24 @@
       "Project Mentorship",
       "Publication Guidance"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Sumeet Attri",
+        "branch": "E&TC A"
+      },
+      {
+        "name": "Dishti Pal",
+        "branch": "E&TC A"
+      }
+    ],
+    "insta": "research_and_development_cell"
   },
   {
     "abbr": "TECH",
     "name": "Technical Board",
-    "img": "/clublogos/oss.svg",
+    "fullForm": "Technical & Maths Board",
+    "img": "/nexus.svg",
     "desc": "Central body managing all technical clubs and driving innovation, tech events, and project-based learning across the institute.",
     "focusAreas": [
       "Coordination of technical clubs",
@@ -259,6 +400,365 @@
       "Inter-Club Hackathons",
       "Technical Workshops & Seminars"
     ],
-    "who": "FE,SE"
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Ajay Singh Tomar",
+        "branch": "IT A"
+      },
+      {
+        "name": "Simran",
+        "branch": "IT B"
+      }
+    ],
+    "insta": "aittechnicalboard"
+  },
+  {
+    "abbr": "SPORTS",
+    "name": "Sports Club",
+    "img": "/nexus.svg",
+    "desc": "Drives fitness and sportsmanship through campus sports activities and inter-college tournaments.",
+    "focusAreas": [
+      "Team & individual sports",
+      "Fitness & training",
+      "Inter-college tournaments"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Himanshu Ranjan",
+        "branch": "ARE"
+      },
+      {
+        "name": "Ayesha Bisht",
+        "branch": "IT B"
+      }
+    ],
+    "insta": "aitsportsclub"
+  },
+  {
+    "abbr": "CEAR",
+    "name": "Centre of Excellence for AI & Robotics",
+    "fullForm": "Centre of Excellence for AI & Robotics",
+    "img": "/clublogos/cear.svg",
+    "desc": "Hands-on exploration of artificial intelligence, machine learning, and robotics through projects and workshops.",
+    "focusAreas": [
+      "Artificial intelligence & ML",
+      "Robotics & automation",
+      "Applied project building"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Tejas Jape",
+        "branch": "Mech"
+      },
+      {
+        "name": "Pragati",
+        "branch": "E&TC B"
+      }
+    ],
+    "insta": "robotics.club_ait"
+  },
+  {
+    "abbr": "SPIRITUAL",
+    "name": "Spiritual Club",
+    "img": "/nexus.svg",
+    "desc": "Encourages mindfulness, inner well-being, and holistic personal growth on campus.",
+    "focusAreas": [
+      "Mindfulness & meditation",
+      "Well-being sessions",
+      "Value-based living"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Gaurav",
+        "branch": "E&TC B"
+      },
+      {
+        "name": "Komal Devi",
+        "branch": "Comp B"
+      }
+    ],
+    "insta": "ait_spiritual_club"
+  },
+  {
+    "abbr": "FINEARTS",
+    "name": "Fine Arts Club",
+    "img": "/nexus.svg",
+    "desc": "A creative space for painting, sketching, and visual arts across the campus community.",
+    "focusAreas": [
+      "Painting & sketching",
+      "Visual & craft arts",
+      "Art exhibitions"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Nishant Nehra",
+        "branch": "E&TC B"
+      },
+      {
+        "name": "Pooja C V",
+        "branch": "Mech"
+      }
+    ],
+    "insta": "fine._.arts._.ait"
+  },
+  {
+    "abbr": "DDQ",
+    "name": "Debate, Quiz & Dramatics Club",
+    "fullForm": "Debate, Quiz & Dramatics",
+    "img": "/clublogos/ddq.svg",
+    "desc": "Builds public speaking, critical thinking, and stage presence through debates, quizzes, and theatre.",
+    "focusAreas": [
+      "Debate & public speaking",
+      "Quizzing",
+      "Dramatics & theatre"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Harshika Tyagi",
+        "branch": "Mech"
+      }
+    ],
+    "insta": "ddqclub"
+  },
+  {
+    "abbr": "RADIO",
+    "name": "Radio Club",
+    "img": "/clublogos/radio.svg",
+    "desc": "Runs campus radio, podcasts, and audio storytelling for the student community.",
+    "focusAreas": [
+      "Campus radio & RJing",
+      "Podcasts & audio content",
+      "Sound production"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Satyam Tripathi",
+        "branch": "Mech"
+      },
+      {
+        "name": "Sweta Dalal",
+        "branch": "ARE"
+      }
+    ],
+    "insta": "radioraaga"
+  },
+  {
+    "abbr": "EV",
+    "name": "EV Cell",
+    "fullForm": "Electric Vehicle Cell",
+    "img": "/nexus.svg",
+    "desc": "Explores electric vehicle technology, sustainable mobility, and hands-on EV projects.",
+    "focusAreas": [
+      "EV technology",
+      "Sustainable mobility",
+      "Design & prototyping"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Anshu Yadav",
+        "branch": "Mech"
+      }
+    ],
+    "insta": "evclub_ait"
+  },
+  {
+    "abbr": "FILM",
+    "name": "Film Club",
+    "img": "/nexus.svg",
+    "desc": "For filmmaking enthusiasts — cinematography, editing, and short-film storytelling.",
+    "focusAreas": [
+      "Filmmaking & direction",
+      "Cinematography",
+      "Editing & post-production"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Ayush Chahar",
+        "branch": "IT A"
+      },
+      {
+        "name": "Neha Biswas",
+        "branch": "Comp A"
+      }
+    ],
+    "insta": "filmclub_ait"
+  },
+  {
+    "abbr": "PRESS",
+    "name": "Press News Cell",
+    "fullForm": "Press & News Cell",
+    "img": "/nexus.svg",
+    "desc": "Covers campus happenings through student journalism, reporting, and news coverage.",
+    "focusAreas": [
+      "Campus journalism",
+      "Reporting & coverage",
+      "Editorial writing"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Lakkireddy Yagneswar Reddy",
+        "branch": "Comp B"
+      },
+      {
+        "name": "Debdutta Roy",
+        "branch": "IT B"
+      }
+    ],
+    "insta": ""
+  },
+  {
+    "abbr": "SMC",
+    "name": "Social Media Cell",
+    "fullForm": "Social Media Cell",
+    "img": "/nexus.svg",
+    "desc": "Manages the institute's social presence with content, campaigns, and community engagement.",
+    "focusAreas": [
+      "Content creation",
+      "Social media strategy",
+      "Community engagement"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Manasi",
+        "branch": "Comp B"
+      },
+      {
+        "name": "Deepanshu Singh Shekhawat",
+        "branch": "E&TC B"
+      }
+    ],
+    "insta": "ait_social_media_cell"
+  },
+  {
+    "abbr": "SAE",
+    "name": "SAE – AIT Collegiate Club",
+    "fullForm": "SAE – AIT Collegiate Club",
+    "img": "/nexus.svg",
+    "desc": "Automotive and mechanical engineering club participating in SAE design and build competitions.",
+    "focusAreas": [
+      "Automotive engineering",
+      "Vehicle design & build",
+      "SAE competitions"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Ramswaroop Swami",
+        "branch": "Mech"
+      }
+    ],
+    "insta": ""
+  },
+  {
+    "abbr": "CIDC",
+    "name": "College Innovation Development Club",
+    "fullForm": "College Innovation Development Club",
+    "img": "/nexus.svg",
+    "desc": "Nurtures innovation and problem-solving through student-led projects and prototyping.",
+    "focusAreas": [
+      "Innovation & ideation",
+      "Prototyping",
+      "Project development"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Abhay Singh",
+        "branch": "IT B"
+      }
+    ],
+    "insta": "cidc.ait"
+  },
+  {
+    "abbr": "ASTRO",
+    "name": "Astronomy Club",
+    "img": "/nexus.svg",
+    "desc": "For sky-gazers and space enthusiasts — observation sessions, astrophysics, and cosmic curiosity.",
+    "focusAreas": [
+      "Stargazing & observation",
+      "Astrophysics",
+      "Space science outreach"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Ishaan M",
+        "branch": "ARE"
+      },
+      {
+        "name": "Manisha",
+        "branch": "IT B"
+      }
+    ],
+    "insta": "astro.club_ait"
+  },
+  {
+    "abbr": "DRONE",
+    "name": "Drone Club",
+    "img": "/nexus.svg",
+    "desc": "Hands-on drone building, aerial technology, and UAV applications.",
+    "focusAreas": [
+      "Drone building",
+      "Flight & controls",
+      "Aerial imaging"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Mantu Dutta",
+        "branch": "E&TC"
+      },
+      {
+        "name": "Swasti Yadav",
+        "branch": "TE Mech"
+      }
+    ],
+    "insta": ""
+  },
+  {
+    "abbr": "MUSIC",
+    "name": "Music and Dance Club",
+    "fullForm": "Music & Dance Club",
+    "img": "/nexus.svg",
+    "desc": "Brings music and dance to campus through performances, jams, and cultural showcases.",
+    "focusAreas": [
+      "Music & instruments",
+      "Dance & choreography",
+      "Stage performances"
+    ],
+    "activities": [],
+    "who": "FE,SE",
+    "secretaries": [
+      {
+        "name": "Mysaraa Acharya",
+        "branch": "E&TC B"
+      }
+    ],
+    "insta": ""
   }
 ]
