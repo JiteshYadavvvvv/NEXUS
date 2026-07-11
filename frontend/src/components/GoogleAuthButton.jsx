@@ -36,6 +36,7 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
         client_id: clientId,
         callback: handleCredentialResponse,
         ux_mode: "popup",
+        use_fedcm_for_prompt: true,
       });
     };
 
@@ -60,7 +61,7 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
       return;
     }
     window.google.accounts.id.prompt((notification) => {
-      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      if (notification.isNotDisplayed() || notification.isDismissedMoment()) {
         // Fallback: render the button programmatically
         if (btnRef.current) {
           window.google.accounts.id.renderButton(btnRef.current, {
