@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 
-const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }) => {
+const GoogleAuthButton = ({ onSuccess, onError }) => {
   const { googleAuth } = useAuth();
-  const googleBtnRef = useRef(null);
-  const [ready, setReady] = useState(false);
+  const btnRef = useRef(null);
 
   const handleCredentialResponse = async (response) => {
     const result = await googleAuth(response.credential);
@@ -23,18 +22,21 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
     }
 
     const init = () => {
-      if (!window.google?.accounts?.id || !googleBtnRef.current) return;
+      if (!window.google?.accounts?.id || !btnRef.current) return;
       window.google.accounts.id.initialize({
         client_id: clientId,
         callback: handleCredentialResponse,
         ux_mode: "popup",
       });
-      window.google.accounts.id.renderButton(googleBtnRef.current, {
+      window.google.accounts.id.renderButton(btnRef.current, {
         type: "standard",
+        theme: "filled_black",
         size: "large",
+        text: "continue_with",
+        shape: "rectangular",
+        logo_alignment: "left",
         width: 400,
       });
-      setReady(true);
     };
 
     if (window.google?.accounts?.id) {
@@ -54,54 +56,9 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
     return () => script.removeEventListener("load", init);
   }, []);
 
-  const handleClick = () => {
-    const inner = googleBtnRef.current?.querySelector("div[role='button']");
-    if (inner) {
-      inner.click();
-    } else {
-      onError?.("Google sign-in is still loading. Please wait a moment.");
-    }
-  };
-
   return (
-    <div className="relative w-full">
-      {/* Google's real button — layered underneath, invisible, but clickable via JS */}
-      <div
-        ref={googleBtnRef}
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0,
-          pointerEvents: "none",
-          overflow: "hidden",
-        }}
-      />
-      <button
-        type="button"
-        onClick={handleClick}
-        disabled={!ready}
-        className="
-          relative w-full flex items-center justify-center gap-3
-          py-2.5 px-4 rounded-xl
-          bg-white dark:bg-slate-800
-          border border-slate-300 dark:border-slate-600
-          text-slate-700 dark:text-slate-200
-          text-sm font-medium
-          shadow-sm hover:shadow-md
-          hover:bg-slate-50 dark:hover:bg-slate-700
-          active:scale-[0.98]
-          disabled:opacity-60 disabled:cursor-wait
-          transition-all duration-150
-        "
-      >
-        <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#4285F4" d="M47.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h13.2c-.6 3-2.3 5.5-4.8 7.2v6h7.7c4.5-4.2 7.4-10.3 7.4-17.2z"/>
-          <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8L32.2 36c-2.2 1.5-5 2.3-8.2 2.3-6.3 0-11.6-4.2-13.5-9.9H2.6v6.2C6.5 42.8 14.7 48 24 48z"/>
-          <path fill="#FBBC05" d="M10.5 28.4c-.5-1.5-.8-3.1-.8-4.7s.3-3.2.8-4.7v-6.2H2.6C.9 16.3 0 20 0 24s.9 7.7 2.6 11.2l7.9-6.8z"/>
-          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.9 2.1 30.5 0 24 0 14.7 0 6.5 5.2 2.6 12.8l7.9 6.8C12.4 13.7 17.7 9.5 24 9.5z"/>
-        </svg>
-        {ready ? label : "Loading..."}
-      </button>
+    <div className="w-full flex justify-center">
+      <div ref={btnRef} />
     </div>
   );
 };
