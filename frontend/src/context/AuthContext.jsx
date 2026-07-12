@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, createContext, useContext } from "react";
+import { setAuthToken } from "@/lib/authSetup";
 
 
 const AuthContext = createContext();
@@ -76,6 +77,7 @@ export const AuthProvider = ({ children }) => {
       );
 
       if (res.data.success) {
+        if (res.data.token) setAuthToken(res.data.token);
         const userInfo = await checkAuth();
         return { success: true, message: "Successfully Login", user: userInfo };
       }
@@ -102,6 +104,7 @@ export const AuthProvider = ({ children }) => {
         { withCredentials: true },
       );
       if (res.data.success) {
+        if (res.data.token) setAuthToken(res.data.token);
         const userInfo = await checkAuth();
         return { success: true, message: "Signup Successful", user: userInfo };
       }
@@ -125,6 +128,7 @@ export const AuthProvider = ({ children }) => {
       });
       const data = await res.json();
       if (data.success) {
+        if (data.token) setAuthToken(data.token);
         const userInfo = await checkAuth();
         return { success: true, message: data.message || "Google login successful", user: userInfo };
       }
@@ -166,6 +170,7 @@ export const AuthProvider = ({ children }) => {
       },
     );
 
+    setAuthToken(null);
     setUser(null);
     setIsAdmin(false);
   };
