@@ -36,7 +36,6 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
         client_id: clientId,
         callback: handleCredentialResponse,
         ux_mode: "popup",
-        use_fedcm_for_prompt: true,
       });
     };
 
