@@ -39,13 +39,19 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
 
     if (window.google?.accounts?.id) {
       init();
-    } else {
-      const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
-      if (script) {
-        script.addEventListener("load", init);
-        return () => script.removeEventListener("load", init);
-      }
+      return;
     }
+
+    let script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+    if (!script) {
+      script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener("load", init);
+    return () => script.removeEventListener("load", init);
   }, []);
 
   const handleClick = () => {
