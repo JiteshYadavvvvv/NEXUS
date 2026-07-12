@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 
 const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }) => {
   const { googleAuth } = useAuth();
   const googleBtnRef = useRef(null);
+  const [ready, setReady] = useState(false);
 
   const handleCredentialResponse = async (response) => {
     const result = await googleAuth(response.credential);
@@ -22,19 +23,18 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
     }
 
     const init = () => {
-      if (!window.google?.accounts?.id) return;
+      if (!window.google?.accounts?.id || !googleBtnRef.current) return;
       window.google.accounts.id.initialize({
         client_id: clientId,
         callback: handleCredentialResponse,
         ux_mode: "popup",
       });
-      if (googleBtnRef.current) {
-        window.google.accounts.id.renderButton(googleBtnRef.current, {
-          type: "standard",
-          size: "large",
-          width: 400,
-        });
-      }
+      window.google.accounts.id.renderButton(googleBtnRef.current, {
+        type: "standard",
+        size: "large",
+        width: 400,
+      });
+      setReady(true);
     };
 
     if (window.google?.accounts?.id) {
@@ -59,19 +59,29 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
     if (inner) {
       inner.click();
     } else {
-      onError?.("Google sign-in is not available. Please refresh.");
+      onError?.("Google sign-in is still loading. Please wait a moment.");
     }
   };
 
   return (
-    <div className="w-full">
-      {/* Google's button rendered off-screen — provides the real click target */}
-      <div ref={googleBtnRef} style={{ position: "fixed", top: "-9999px", left: "-9999px" }} />
+    <div className="relative w-full">
+      {/* Google's real button — layered underneath, invisible, but clickable via JS */}
+      <div
+        ref={googleBtnRef}
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0,
+          pointerEvents: "none",
+          overflow: "hidden",
+        }}
+      />
       <button
         type="button"
         onClick={handleClick}
+        disabled={!ready}
         className="
-          w-full flex items-center justify-center gap-3
+          relative w-full flex items-center justify-center gap-3
           py-2.5 px-4 rounded-xl
           bg-white dark:bg-slate-800
           border border-slate-300 dark:border-slate-600
@@ -80,6 +90,7 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
           shadow-sm hover:shadow-md
           hover:bg-slate-50 dark:hover:bg-slate-700
           active:scale-[0.98]
+          disabled:opacity-60 disabled:cursor-wait
           transition-all duration-150
         "
       >
@@ -89,7 +100,7 @@ const GoogleAuthButton = ({ onSuccess, onError, label = "Continue with Google" }
           <path fill="#FBBC05" d="M10.5 28.4c-.5-1.5-.8-3.1-.8-4.7s.3-3.2.8-4.7v-6.2H2.6C.9 16.3 0 20 0 24s.9 7.7 2.6 11.2l7.9-6.8z"/>
           <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.9 2.1 30.5 0 24 0 14.7 0 6.5 5.2 2.6 12.8l7.9 6.8C12.4 13.7 17.7 9.5 24 9.5z"/>
         </svg>
-        {label}
+        {ready ? label : "Loading..."}
       </button>
     </div>
   );
