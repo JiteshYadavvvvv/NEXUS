@@ -7,9 +7,12 @@ import { toast } from "react-toastify";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { login, user, authLoading, isAdmin } = useAuth();
+  // [EMAIL/PASSWORD AUTH — INTENTIONALLY DISABLED]
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+
+  // login removed from destructure — email/password auth is disabled
+  const { user, authLoading, isAdmin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const selectedClub = location.state?.club || null;
@@ -29,42 +32,37 @@ const Login = () => {
     );
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await toast.promise(
-      async () => {
-        const res = await login(email, password);
-        if (!res.success) {
-          throw new Error(res.message || "Login failed");
-        }
-        return res;
-      },
-      {
-        pending: "Requesting...",
-        success: {
-          render({ data }) {
-            if (selectedClub) {
-              localStorage.setItem("enteredClub", JSON.stringify(selectedClub));
-            } else {
-              localStorage.removeItem("enteredClub");
-            }
-            if (!data.user || !data.user.year) {
-              // User exists (Google-created) but hasn't completed profile setup yet
-              setTimeout(() => navigate("/signup", { state: { ...location.state, fromLogin: true } }), 2000);
-              return "Almost there! Please complete your profile to continue. 📝";
-            }
-            setTimeout(() => navigate(data.user.role === 'member' ? '/profile/Member' : '/profile/Applicant', { state: { club: selectedClub } }), 2000);
-            return data.message || "Login successfully! 👌";
-          },
-        },
-        error: {
-          render({ data }) {
-            return data.message || "Login failed 🤯";
-          },
-        },
-      },
-    );
-  };
+  // [EMAIL/PASSWORD AUTH — INTENTIONALLY DISABLED]
+  // handleSubmit called login(email, password) → POST /api/auth/login
+  // To re-enable: restore email/password state, login from useAuth,
+  // handleSubmit, and the <form> JSX below.
+  //
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   await toast.promise(
+  //     async () => {
+  //       const res = await login(email, password);
+  //       if (!res.success) throw new Error(res.message || "Login failed");
+  //       return res;
+  //     },
+  //     {
+  //       pending: "Requesting...",
+  //       success: {
+  //         render({ data }) {
+  //           if (selectedClub) localStorage.setItem("enteredClub", JSON.stringify(selectedClub));
+  //           else localStorage.removeItem("enteredClub");
+  //           if (!data.user || !data.user.year) {
+  //             setTimeout(() => navigate("/signup", { state: { ...location.state, fromLogin: true } }), 2000);
+  //             return "Almost there! Please complete your profile to continue. 📝";
+  //           }
+  //           setTimeout(() => navigate(data.user.role === 'member' ? '/profile/Member' : '/profile/Applicant', { state: { club: selectedClub } }), 2000);
+  //           return data.message || "Login successfully! 👌";
+  //         },
+  //       },
+  //       error: { render({ data }) { return data.message || "Login failed 🤯"; } },
+  //     },
+  //   );
+  // };
 
   const handleGoogleSuccess = (result) => {
     const user = result.user;
@@ -74,11 +72,9 @@ const Login = () => {
       localStorage.removeItem("enteredClub");
     }
     if (user?.year) {
-      // Existing user with complete profile → go to dashboard
       toast.success("Logged in with Google! 👌");
       setTimeout(() => navigate(user.role === 'member' ? '/profile/Member' : '/profile/Applicant', { state: { club: selectedClub } }), 1500);
     } else {
-      // New or incomplete Google user → redirect to signup to complete profile
       toast.info("Almost there! Please complete your profile to continue. 📝");
       setTimeout(() => navigate("/signup", { state: { ...location.state, fromLogin: true } }), 1500);
     }
@@ -115,64 +111,52 @@ const Login = () => {
             Welcome back
           </h1>
           <p className="mt-2 text-sm text-slate-400">
-            Login with your college credentials
+            Sign in with your Google account
           </p>
         </div>
 
-        {/* Form */}
-        <form className="space-y-5" onSubmit={(e) => handleSubmit(e)}>
-          {/* Email */}
-          <div className="space-y-1">
-            <label  
-              className="block text-sm font-medium text-slate-900 dark:text-gray-200"
-            >
-              Email address
-            </label>
-            <input
-              id="email"
-              required
-              className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
-              placeholder="jittu@aitpune.edu.in"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        {/*
+          [EMAIL/PASSWORD AUTH — INTENTIONALLY DISABLED]
+          The email + password form (email input, password input, Login button)
+          has been removed. Applicants must sign in via Google.
+          To re-enable: restore handleSubmit, email/password state, login from
+          useAuth, and add the form JSX back here (above the Google button).
+
+          <form className="space-y-5" onSubmit={(e) => handleSubmit(e)}>
+            <div className="space-y-1">
+              <label className="block text-sm font-medium text-slate-900 dark:text-gray-200">
+                Email address
+              </label>
+              <input
+                id="email" required
+                className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
+                placeholder="jittu@aitpune.edu.in"
+                value={email} onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-900 dark:text-gray-200">
+                Password
+              </label>
+              <input
+                id="password" type="password" required
+                className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
+                placeholder="••••••••"
+                value={password} onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button type="submit"
+              className="w-full mt-4 py-3 rounded-xl bg-white hover:bg-gray-100 text-black text-sm font-semibold shadow-lg shadow-white/10 transition-transform transform hover:-translate-y-0.5">
+              Login
+            </button>
+          </form>
+
+          <div className="flex items-center gap-3 my-5">
+            <div className="flex-1 h-px bg-slate-700/60" />
+            <span className="text-xs text-slate-500 select-none">or</span>
+            <div className="flex-1 h-px bg-slate-700/60" />
           </div>
-
-          {/* Password */}
-          <div className="space-y-1">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-slate-900 dark:text-gray-200"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full mt-4 py-3 rounded-xl bg-white hover:bg-gray-100 text-black text-sm font-semibold shadow-lg shadow-white/10 transition-transform transform hover:-translate-y-0.5"
-          >
-            Login
-          </button>
-        </form>
-
-
-        {/* Divider */}
-        <div className="flex items-center gap-3 my-5">
-          <div className="flex-1 h-px bg-slate-700/60" />
-          <span className="text-xs text-slate-500 select-none">or</span>
-          <div className="flex-1 h-px bg-slate-700/60" />
-        </div>
+        */}
 
         {/* Google Auth */}
         <GoogleAuthButton
@@ -193,7 +177,6 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Extra */}
         <p className="mt-6 text-[11px] text-center text-slate-500 dark:text-slate-400">
           By continuing, you agree to our{" "}
           <span className="text-slate-900 dark:text-white underline underline-offset-2 cursor-pointer">

@@ -16,6 +16,7 @@ const AuthSelection = () => {
   const [selectedClub, setSelectedClub] = useState("");
   const [showClubSelect, setShowClubSelect] = useState(false);
   const [showSuperAdmin, setShowSuperAdmin] = useState(false);
+  const [showApplicantGoogle, setShowApplicantGoogle] = useState(false);
   const [role, setRole] = useState("admin"); // "admin" | "member"
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -63,7 +64,22 @@ const AuthSelection = () => {
   };
 
   const handleApplicantSelect = () => {
-    navigate("/login", { state: { role: "Applicant" } });
+    setShowApplicantGoogle(true);
+  };
+
+  const handleApplicantGoogleSuccess = (result) => {
+    const u = result.user;
+    if (u?.year) {
+      toast.success("Logged in with Google! 👌");
+      setTimeout(() => navigate(u.role === 'member' ? '/profile/Member' : '/profile/Applicant'), 1500);
+    } else {
+      toast.info("Almost there! Please complete your profile. 📝");
+      setTimeout(() => navigate("/signup", { state: { fromLogin: true } }), 1500);
+    }
+  };
+
+  const handleApplicantGoogleError = (msg) => {
+    toast.error(msg || "Google login failed 🤯");
   };
 
   const handleSuperAdminSelect = () => {
@@ -294,6 +310,8 @@ const AuthSelection = () => {
               setOtp("");
             } else if (showClubSelect) {
               setShowClubSelect(false);
+            } else if (showApplicantGoogle) {
+              setShowApplicantGoogle(false);
             } else {
               navigate("/");
             }
@@ -306,16 +324,20 @@ const AuthSelection = () => {
           <h1 className="text-3xl font-bold tracking-tight text-white mb-3">
             {showSuperAdmin
               ? "SuperAdmin Login"
-              : showClubSelect
-                ? "Organisation Login"
-                : "Choose Your Path"}
+              : showApplicantGoogle
+                ? "Become Applicant"
+                : showClubSelect
+                  ? "Organisation Login"
+                  : "Choose Your Path"}
           </h1>
           <p className="text-sm text-slate-400 max-w-[280px] mx-auto leading-relaxed">
             {showSuperAdmin
               ? "Director, Joint Director & Principal access"
-              : showClubSelect
-                ? "Select your organisation and sign in"
-                : "Tell us how you want to interact with the Community"}
+              : showApplicantGoogle
+                ? "Sign in with your Google account to continue"
+                : showClubSelect
+                  ? "Select your organisation and sign in"
+                  : "Tell us how you want to interact with the Community"}
           </p>
         </div>
 
@@ -405,8 +427,16 @@ const AuthSelection = () => {
               )}
             </form>
           </div>
+        ) : showApplicantGoogle ? (
+          <div className="animate-in slide-in-from-right-4 duration-300 pt-2">
+            <GoogleAuthButton
+              autoPrompt
+              onSuccess={handleApplicantGoogleSuccess}
+              onError={handleApplicantGoogleError}
+            />
+          </div>
         ) : !showClubSelect ? (
-          <div className="space-y-4"> 
+          <div className="space-y-4">
           <button
               onClick={handleSuperAdminSelect}
               className="w-full group relative flex items-center gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-left mt-4"

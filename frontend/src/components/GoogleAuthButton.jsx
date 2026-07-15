@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 
-const GoogleAuthButton = ({ onSuccess, onError }) => {
+const GoogleAuthButton = ({ onSuccess, onError, autoPrompt = false }) => {
   const { googleAuth } = useAuth();
   const btnRef = useRef(null);
 
@@ -37,6 +37,9 @@ const GoogleAuthButton = ({ onSuccess, onError }) => {
         logo_alignment: "left",
         width: 400,
       });
+      if (autoPrompt) {
+        window.google.accounts.id.prompt();
+      }
     };
 
     if (window.google?.accounts?.id) {
