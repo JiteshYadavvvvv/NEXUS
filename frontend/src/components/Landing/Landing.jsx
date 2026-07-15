@@ -5,7 +5,6 @@ import Lenis from "lenis";
 import NavBar from "./NavBar.jsx";
 import Hero from "./Hero.jsx";
 import Section from "./Section.jsx";
-import ParticleLoader from "./ParticleLoader.jsx";
 import CustomScrollbar from "./CustomScrollbar.jsx";
 import CustomCursor from "./CustomCursor.jsx";
 import "./landing.css";
@@ -13,22 +12,8 @@ import "./landing.css";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Landing() {
-  const [isSplineLoaded, setIsSplineLoaded] = useState(false);
-  const [entered, setEntered] = useState(false);
+  const [entered, setEntered] = useState(true);
   const lenisRef = useRef(null);
-
-  // Listen for the Spline scene (or mobile fallback image) reporting ready.
-  useEffect(() => {
-    const handleSplineLoaded = () => setIsSplineLoaded(true);
-    window.addEventListener("splineLoaded", handleSplineLoaded);
-    // No external 3D scene to wait on anymore — mark ready almost immediately
-    // so the loader just plays its brief entrance animation instead of stalling.
-    const fallback = setTimeout(() => setIsSplineLoaded(true), 600);
-    return () => {
-      window.removeEventListener("splineLoaded", handleSplineLoaded);
-      clearTimeout(fallback);
-    };
-  }, []);
 
   // Lock scroll until the user enters, then release it — and snap to the very
   // top on enter so the page always starts at the hero after the loader.
@@ -93,12 +78,6 @@ export default function Landing() {
 
   return (
     <div className="spacebears-landing">
-      {!entered && (
-        <ParticleLoader
-          isLoaded={isSplineLoaded}
-          onEnter={() => setEntered(true)}
-        />
-      )}
       <CustomCursor />
       <CustomScrollbar />
       <NavBar entered={entered} />
