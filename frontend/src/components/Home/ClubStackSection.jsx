@@ -34,57 +34,64 @@ export function ClubStackSection() {
    * - [x] Verify hover text matches logos
    */
   return (
-    <section className="my-20 md:my-32 pt-12 pb-4 px-6 sm:px-8 max-w-[1200px] mx-auto w-full relative z-10 font-mono">
-      <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
-        
-        {/* Left Side: Dynamic Heading */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center min-h-[120px]">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-mono font-bold tracking-tight text-white leading-tight">
-            Works with <br />
-            <span className="relative inline-block min-h-[1.2em]">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={hoveredClub || 'Nexus clubs'}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="text-gray-400 block"
-                >
-                  {hoveredClub || 'all AIT Clubs'}
-                </motion.span>
-              </AnimatePresence>
-            </span>
-          </h2>
-        </div>
+    <section className="my-20 md:my-32 w-[80vw] max-w-none mx-auto relative z-10 font-mono">
+      {/* Card shell — matches the 5 feature cards above: same 16/9 rounded
+          rectangle, capped at 38.75em tall, with the identical warm-white glow. */}
+      <div
+        className="relative overflow-hidden rounded-[1.5em] border border-white/10 bg-transparent md:backdrop-blur-xl px-8 py-12 md:px-12 lg:px-16 lg:py-16 flex items-center lg:aspect-[16/9] lg:max-h-[38.75em] mx-auto"
+        style={{ boxShadow: '0 0 40px rgba(255, 250, 235, 0.75), 0 0 80px rgba(255, 250, 235, 0.5)' }}
+      >
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 w-full">
 
-        {/* Right Side: Logo Grid */}
-        <div className="w-full lg:w-1/2">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-8 md:gap-10">
-            {clubLogos.map((club, idx) => (
-              <div
-                key={idx}
-                className="group relative flex items-center justify-center p-4 transition-all duration-300"
-                onMouseEnter={() => setHoveredClub(club.name)}
-                onMouseLeave={() => setHoveredClub(null)}
-              >
-                {/* Background Glow */}
-                <div className="absolute inset-0 bg-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/10" />
-                
-                <img
-                  src={club.src}
-                  alt={club.name}
-                  className="w-full max-h-12 object-contain opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 relative z-10 grayscale brightness-200"
-                />
-              </div>
-            ))}
+          {/* Left Side: Dynamic Heading */}
+          <div className="w-full lg:w-1/2 flex flex-col justify-center min-h-[120px]">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-mono font-bold tracking-tight text-white leading-tight">
+              Works with <br />
+              <span className="relative inline-block min-h-[1.2em]">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={hoveredClub || 'Nexus clubs'}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="text-gray-400 block"
+                  >
+                    {hoveredClub || 'all AIT Clubs'}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </h2>
+          </div>
+
+          {/* Right Side: Logo Grid */}
+          <div className="w-full lg:w-1/2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-8 md:gap-10">
+              {clubLogos.map((club, idx) => (
+                <div
+                  key={idx}
+                  className="group relative flex items-center justify-center p-4 transition-all duration-300"
+                  onMouseEnter={() => setHoveredClub(club.name)}
+                  onMouseLeave={() => setHoveredClub(null)}
+                >
+                  {/* Background Glow */}
+                  <div className="absolute inset-0 bg-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/10" />
+
+                  <img
+                    src={club.src}
+                    alt={club.name}
+                    className="w-full max-h-12 object-contain opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 relative z-10 grayscale brightness-200"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      
-      {/* Background radial gradient */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 opacity-30">
-        <div className="absolute inset-0 bg-radial-gradient from-white/5 to-transparent blur-3xl" />
+
+        {/* Background radial gradient */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 opacity-30">
+          <div className="absolute inset-0 bg-radial-gradient from-white/5 to-transparent blur-3xl" />
+        </div>
       </div>
     </section>
   );

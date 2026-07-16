@@ -32,6 +32,14 @@ const allDevelopers = [
     linkedin: "https://www.linkedin.com/in/aryancheers/",
   },
   {
+    name: "Peush Yadav",
+    role: "Web Facilitator",
+    image: "/clubprofiles/peush.png",
+    username: "@peush_btw",
+    github: "https://github.com/PeushYadav",
+    linkedin: "https://www.linkedin.com/in/peush-yadav-8b4357335/",
+  },
+  {
     name: "Jitesh Yadav",
     role: "Dev X UI/UX",
     image: "/clubprofiles/jittu.jpeg",

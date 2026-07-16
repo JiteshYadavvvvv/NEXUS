@@ -21,7 +21,7 @@
     color: var(--dark);
     border-top-left-radius: 1.5em;
     border-top-right-radius: 1.5em;
-    padding-top: 1.5em;
+    padding-top: 0.75em;
     font-family: 'Satoshi Variable', sans-serif;
     box-sizing: border-box;
     line-height: 1.2em;
@@ -32,8 +32,8 @@
 }
 
 .c-footer_section h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 8px;
     font-weight: bold;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .c-footer_contact-section {
-    padding-bottom: 0.75em;
+    padding-bottom: 0.5em;
 }
 
 .c-footer_container {
@@ -90,11 +90,11 @@
 }
 
 .c-footer_contact-wrapper {
-    grid-column-gap: 4em;
-    grid-row-gap: 3em;
-    gap: 4em;
-    justify-content: space-between;
-    align-items: center;
+    grid-column-gap: 3em;
+    grid-row-gap: 1em;
+    gap: 3em;
+    justify-content: center;
+    align-items: flex-start;
     width: 100%;
     display: flex;
 }
@@ -232,8 +232,8 @@
 }
 
 .c-footer_bottom-bar {
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 
 .c-footer_bottom-link {
@@ -261,7 +261,7 @@
     letter-spacing: -.02em;
     margin-top: 0;
     margin-bottom: 0;
-    font-size: clamp(2.75rem, 6vw, 5rem);
+    font-size: clamp(2rem, 4vw, 3.25rem);
     line-height: .95em;
 }
 
@@ -341,15 +341,15 @@
     background-color: #d9d9d9;
     width: 100%;
     height: 1px;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .c-footer_description-text {
     font-variation-settings: "wght" 500;
     margin-bottom: 0;
-    font-size: 0.95rem;
-    line-height: 1.5em;
+    font-size: 0.9rem;
+    line-height: 1.4em;
     color: #4b4b52;
 }
 
@@ -384,8 +384,8 @@
     }
 
     .c-footer_contact-wrapper {
-        grid-column-gap: 40px;
-        grid-row-gap: 40px;
+        grid-column-gap: 24px;
+        grid-row-gap: 24px;
         flex-direction: column;
         padding: 0;
     }
@@ -448,8 +448,8 @@
     }
 
     .c-footer_divider-large {
-        margin-top: 40px;
-        margin-bottom: 40px;
+        margin-top: 16px;
+        margin-bottom: 16px;
     }
 
     .c-footer_heading-large {
@@ -515,8 +515,8 @@
 
 /* LogoLoop wrapper */
 .c-footer_logoloop-wrapper {
-    padding: 0.5rem 0;
-    margin-bottom: 0.25rem;
+    padding: 0.25rem 0;
+    margin-bottom: 0;
     overflow: hidden;
 }
 
@@ -524,7 +524,7 @@
 .c-footer_branding {
     width: 100%;
     text-align: center;
-    padding: 0.5rem 0 0.25rem;
+    padding: 0.5rem 0 0.75rem;
     overflow: hidden;
 }
 .c-footer_branding-text {
@@ -537,66 +537,61 @@
     line-height: 1;
     opacity: 0.15;
 }
+/* NEXUS | GDG co-branding lockup */
+.c-footer_branding-lockup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1rem, 2.5vw, 2rem);
+}
 .c-footer_branding-logo {
-    height: clamp(2.5rem, 8vw, 6rem);
+    height: clamp(2rem, 5vw, 3.5rem);
     width: auto;
-    margin: 0 auto;
     display: block;
     opacity: 0.9;
     /* nexus.svg is white; render it black on the light footer */
     filter: brightness(0);
 }
-
-/* JOIN NEXUS logo — black on the light footer */
-.c-footer_join-logo {
-    height: 44px;
+.c-footer_branding-separator {
+    width: 2px;
+    align-self: stretch;
+    background-color: var(--dark);
+    opacity: 0.25;
+}
+.c-footer_branding-gdg {
+    height: clamp(1.5rem, 3.75vw, 2.6rem);
     width: auto;
-    margin-bottom: 1rem;
-    filter: brightness(0);
+    display: block;
 }
 
-/* Big "Made with ❤️ by GDG-AIT" beside JOIN NEXUS */
+/* JOIN NEXUS — GDG mark, shown as-is on the light footer */
+.c-footer_join-logo {
+    height: 34px;
+    width: auto;
+    margin-bottom: 0.5rem;
+}
+
+/* Right column mirrors the JOIN NEXUS column: heading → divider → text.
+   Padding offsets the left column's 34px logo so both headings sit level. */
 .c-footer_contact-right {
     flex: 1 1 380px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    align-self: stretch;
-    gap: 0.75rem;
-    text-align: center;
-    padding-top: 3.5rem;
+    max-width: 34em;
+    padding-top: calc(34px + 0.5rem);
 }
-.c-footer_made-by {
-    font-family: 'Chakra Petch', sans-serif;
-    font-weight: 700;
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    color: var(--dark);
-    text-align: center;
-}
-.c-footer_made-heart {
-    display: inline-block;
-}
-.c-footer_gdg-logo {
-    width: clamp(150px, 24vw, 230px);
-    height: auto;
-}
-.c-footer_gdg-about {
-    max-width: 40ch;
-    color: #6d6d6d;
-    font-size: 0.95rem;
-    line-height: 1.55;
+
+@media screen and (max-width: 767px) {
+    .c-footer_contact-right {
+        padding-top: 0;
+    }
 }
 @media screen and (max-width: 767px) {
     .c-footer_logoloop-wrapper {
-        padding: 1.5rem 0;
-        margin-bottom: 1.5rem;
+        padding: 0.5rem 0;
+        margin-bottom: 0.5rem;
     }
 
     .c-footer_branding {
-        padding: 2rem 0 1.5rem;
+        padding: 0.75rem 0;
     }
 
     .c-footer_branding-text {

@@ -46,8 +46,8 @@ export default function Footer() {
                         logos={socialLogos}
                         speed={35}
                         direction="left"
-                        logoHeight={48}
-                        gap={60}
+                        logoHeight={32}
+                        gap={48}
                         hoverSpeed={0}
                         scaleOnHover
                         fadeOut
@@ -60,7 +60,7 @@ export default function Footer() {
                     <div className="c-footer_form-block u-form">
                         <div className="c-footer_contact-wrapper" data-scroll-animation="0">
                             <div className="c-footer_contact-left">
-                                <img src="/nexus.svg" alt="NEXUS" className="c-footer_join-logo" />
+                                <img src="/clublogos/bwLogos/GDG.svg" alt="GDG On Campus AIT" className="c-footer_join-logo" />
                                 <h3 className="c-footer_heading-large">JOIN NEXUS</h3>
                                 <div className="c-footer_divider-large"></div>
                                 <div className="c-footer_text-wrapper">
@@ -69,33 +69,23 @@ export default function Footer() {
                             </div>
 
                             <div className="c-footer_contact-right">
-                                <div className="c-footer_made-by">
-                                    Made with <span className="c-footer_made-heart">❤️</span> by GDG-AIT
+                                <h3 className="c-footer_heading-large">MADE BY GDG-AIT</h3>
+                                <div className="c-footer_divider-large"></div>
+                                <div className="c-footer_text-wrapper">
+                                    <p className="c-footer_description-text">Made with ❤️ by GDG On Campus AIT — the student developer community at AIT Pune. Developers, designers, and builders who learn, collaborate, and ship real projects like NEXUS together.</p>
                                 </div>
-                                <img src="/clublogos/bwLogos/GDG.svg" alt="GDG On Campus AIT" className="c-footer_gdg-logo" />
-                                <p className="c-footer_gdg-about">
-                                    GDG On Campus AIT is the student developer community at Army Institute of Technology, Pune — a group of developers, designers, and builders who learn, collaborate, and ship real projects like NEXUS together.
-                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <div className="c-footer_bottom-bar">
-                <div className="c-footer_container">
-                    <div className="c-footer_bottom-links-wrapper">
-                        <div className="c-footer_social-wrapper">
-                            <a href="https://github.com/Jitesh-Yadav01/SYNC-AIT" target="_blank" rel="noopener noreferrer" className="c-footer_social-link" aria-label="GitHub"><SiGithub /></a>
-                            <a href="https://in.linkedin.com/company/gdsc-aitpune" target="_blank" rel="noopener noreferrer" className="c-footer_social-link" aria-label="LinkedIn"><SiLinkedin /></a>
-                            <a href="https://www.instagram.com/gdsc_aitpune/" target="_blank" rel="noopener noreferrer" className="c-footer_social-link" aria-label="Instagram"><SiInstagram /></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div className="c-footer_branding">
-                <img src="/nexus.svg" alt="NEXUS" className="c-footer_branding-logo" />
+                <div className="c-footer_branding-lockup">
+                    <img src="/nexus.svg" alt="NEXUS" className="c-footer_branding-logo" />
+                    <div className="c-footer_branding-separator" aria-hidden="true"></div>
+                    <img src="/clublogos/google-developers.svg" alt="GDG On Campus AIT" className="c-footer_branding-gdg" />
+                </div>
             </div>
         </footer>
     );

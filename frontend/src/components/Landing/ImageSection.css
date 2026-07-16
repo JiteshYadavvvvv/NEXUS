@@ -657,9 +657,13 @@
     }
 
     .c-expanded-image-container {
-        flex: 0 0 50%;
-        min-height: 280px;
-        max-height: 400px;
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 480px;
+        aspect-ratio: 4 / 3;
+        height: auto;
+        min-height: 0;
+        max-height: none;
     }
 
     .c-expanded-title {
@@ -682,9 +686,13 @@
     }
 
     .c-expanded-image-container {
-        flex: 0 0 55%;
-        min-height: 250px;
-        max-height: 350px;
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 4 / 3;
+        height: auto;
+        min-height: 0;
+        max-height: none;
     }
 
     .c-expanded-text-content {
@@ -733,8 +741,10 @@
     }
 
     .c-expanded-image-container {
-        flex: 0 0 25%;
-        min-height: 100px;
+        flex: 0 0 auto;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        min-height: 0;
     }
 
     .c-expanded-title {
