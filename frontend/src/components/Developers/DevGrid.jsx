@@ -169,11 +169,18 @@ const DevGrid = () => {
         >
           <LaserFlow
             color="#f4f4f5"
-            wispDensity={1.2}
-            wispIntensity={8}
-            wispSpeed={15}
-            flowStrength={0.4}
-            horizontalBeamOffset={0}
+              horizontalSizing={1.34}
+  verticalSizing={3.1}
+  wispDensity={5}
+  wispSpeed={31}
+  wispIntensity={7.6}
+  flowSpeed={0.35}
+  flowStrength={0.82}
+  fogIntensity={0.61}
+  fogScale={0.29}
+  fogFallSpeed={0.91}
+  decay={0.84}
+  falloffStart={1.41}
             verticalBeamOffset={laser.beamY}
           />
         </div>
