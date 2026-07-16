@@ -64,18 +64,23 @@ export const AuthProvider = ({ children }) => {
     init();
   }, []);
 
-  // Login
+  // [EMAIL/PASSWORD AUTH — INTENTIONALLY DISABLED]
+  // login and signUp are kept as stubs so existing destructures don't crash.
+  // The routes POST /api/auth/login and POST /api/auth/register are also
+  // commented out on the backend. To re-enable, restore the implementations
+  // below and uncomment the matching backend routes in authRoutes.js.
+
+  const login = async (_email, _password) => {
+    return { success: false, message: 'Email/password login is disabled — please use Google login.' };
+  };
+  /* --- original login implementation ---
   const login = async (email, password) => {
     try {
       const res = await axios.post(
         `${API}/api/auth/login`,
-        {
-          email: email,
-          password: password,
-        },
+        { email: email, password: password },
         { withCredentials: true },
       );
-
       if (res.data.success) {
         if (res.data.token) setAuthToken(res.data.token);
         const userInfo = await checkAuth();
@@ -83,24 +88,20 @@ export const AuthProvider = ({ children }) => {
       }
       return { success: false, message: res.data.message };
     } catch (err) {
-      return {
-        success: false,
-        message: err.response?.data?.message || "Login failed",
-      };
+      return { success: false, message: err.response?.data?.message || "Login failed" };
     }
   };
+  */
 
-  // Sign Up
+  const signUp = async (_name, _email, _password, _year) => {
+    return { success: false, message: 'Email/password registration is disabled — please use Google login.' };
+  };
+  /* --- original signUp implementation ---
   const signUp = async (name, email, password, year) => {
     try {
       const res = await axios.post(
         `${API}/api/auth/register`,
-        {
-          name: name,
-          email: email,
-          password: password,
-          year: year,
-        },
+        { name: name, email: email, password: password, year: year },
         { withCredentials: true },
       );
       if (res.data.success) {
@@ -110,12 +111,10 @@ export const AuthProvider = ({ children }) => {
       }
       return { success: false, message: res.data.message };
     } catch (err) {
-      return {
-        success: false,
-        message: err.response?.data?.message || "Login failed",
-      };
+      return { success: false, message: err.response?.data?.message || "Login failed" };
     }
   };
+  */
 
   // Google Auth
   const googleAuth = async (token) => {
@@ -175,41 +174,46 @@ export const AuthProvider = ({ children }) => {
     setIsAdmin(false);
   };
 
-  // send verify account otp:
+  // [EMAIL/PASSWORD AUTH — INTENTIONALLY DISABLED]
+  // sendVerifyOtp and verifyAccount are kept as stubs. The routes
+  // POST /api/auth/verify-otp and POST /api/auth/verify-account are
+  // commented out on the backend. The /verify-account page is also
+  // removed from the router. To re-enable, restore the implementations
+  // below and uncomment the matching backend routes in authRoutes.js.
+
+  const sendVerifyOtp = async (_email) => {
+    return { success: false, message: 'Email verification is disabled — accounts are verified via Google.' };
+  };
+  /* --- original sendVerifyOtp implementation ---
   const sendVerifyOtp = async (email) => {
     try {
-      const res = await axios.post(`${API}/api/auth/verify-otp`, { email }, {
-        withCredentials: true
-      })
+      const res = await axios.post(`${API}/api/auth/verify-otp`, { email }, { withCredentials: true })
       if (res.data.success) {
         return { success: true, message: res.data.message || 'OTP sent on given Account' }
       }
       return { success: false, message: res.data.message || 'Error sending otp' }
     } catch (err) {
-      return {
-        success: false,
-        message: err.response?.data?.message || "Cannot send otp",
-      };
+      return { success: false, message: err.response?.data?.message || "Cannot send otp" };
     }
-  }
+  };
+  */
 
-  // verify account:
+  const verifyAccount = async (_otp) => {
+    return { success: false, message: 'Email verification is disabled — accounts are verified via Google.' };
+  };
+  /* --- original verifyAccount implementation ---
   const verifyAccount = async (otp) => {
     try {
-      const res = await axios.post(`${API}/api/auth/verify-account`, {
-        otp: otp
-      }, { withCredentials: true })
+      const res = await axios.post(`${API}/api/auth/verify-account`, { otp: otp }, { withCredentials: true })
       if (res.data.success) {
         return { success: true, message: res.data?.message || 'Account successfully verified' }
       }
       return { success: false, message: res.data?.message || "Error Verifying Account" }
     } catch (err) {
-      return {
-        success: false,
-        message: err.response?.data?.message || "Error Verifying Account",
-      };
+      return { success: false, message: err.response?.data?.message || "Error Verifying Account" };
     }
-  }
+  };
+  */
 
   return(
     <AuthContext.Provider

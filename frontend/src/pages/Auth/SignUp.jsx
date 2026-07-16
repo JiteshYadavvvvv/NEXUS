@@ -182,10 +182,15 @@ const GoogleProfileSetup = ({ onSubmit, loading }) => {
 const SignUp = () => {
   const location = useLocation();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [year, setYear] = useState("");
+  // [EMAIL/PASSWORD AUTH — INTENTIONALLY DISABLED]
+  // These state vars were used by the email/password registration form.
+  // To re-enable: uncomment these, restore handleSubmit, signUp from useAuth,
+  // and add the form JSX back in the "form" step below.
+  //
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [year, setYear] = useState("");
 
   // For the Google → profile setup flow
   const [step, setStep] = useState("form"); // "form" | "profile-setup"
@@ -193,7 +198,8 @@ const SignUp = () => {
   const [saving, setSaving] = useState(false);
 
   const navigate = useNavigate();
-  const { signUp, updateUserInfo } = useAuth();
+  // signUp removed — email/password registration is disabled
+  const { updateUserInfo } = useAuth();
 
   // When arriving from Login page with an incomplete Google account,
   // skip the form and go straight to profile setup.
@@ -203,43 +209,38 @@ const SignUp = () => {
     }
   }, [location.state?.fromLogin]);
 
-  // ── Normal sign-up ──
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await toast.promise(
-      async () => {
-        const res = await signUp(name, email, password, year);
-        if (!res.success) {
-          throw new Error(res.message || "Registration failed");
-        }
-        return res;
-      },
-      {
-        pending: "Registering...",
-        success: {
-          render({ data }) {
-            setTimeout(() => navigate("/verify-account", { state: { email } }), 2000);
-            return data.message || "Registered successfully! 👌";
-          },
-        },
-        error: {
-          render({ data }) {
-            return data.message || "Registration failed 🤯";
-          },
-        },
-      }
-    );
-  };
+  // [EMAIL/PASSWORD AUTH — INTENTIONALLY DISABLED]
+  // handleSubmit called signUp(name, email, password, year) → POST /api/auth/register
+  // then redirected to /verify-account for OTP verification.
+  //
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   await toast.promise(
+  //     async () => {
+  //       const res = await signUp(name, email, password, year);
+  //       if (!res.success) throw new Error(res.message || "Registration failed");
+  //       return res;
+  //     },
+  //     {
+  //       pending: "Registering...",
+  //       success: {
+  //         render({ data }) {
+  //           setTimeout(() => navigate("/verify-account", { state: { email } }), 2000);
+  //           return data.message || "Registered successfully! 👌";
+  //         },
+  //       },
+  //       error: { render({ data }) { return data.message || "Registration failed 🤯"; } },
+  //     }
+  //   );
+  // };
 
   // ── Google sign-up success ──
   const handleGoogleSuccess = (result) => {
     const user = result.user;
     if (user?.year) {
-      // Profile already complete → go straight to the right panel
       toast.success("Signed up with Google! 👌");
       setTimeout(() => navigate(user.role === "member" ? "/profile/Member" : "/profile/Applicant"), 1500);
     } else {
-      // New Google user → show profile setup screen
       setGoogleUser(user);
       setStep("profile-setup");
     }
@@ -278,9 +279,7 @@ const SignUp = () => {
       }}
     >
       <div className="w-full max-w-md bg-black/40 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl px-8 py-10 relative overflow-hidden">
-        {/* Subtle top glow inside the card */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-linear-to-r from-transparent via-white/30 to-transparent"></div>
-        {/* Back button — hidden on year-picker so user cannot bypass it */}
         {step === "form" && (
           <Button
             variant="ghost"
@@ -298,7 +297,7 @@ const SignUp = () => {
             <GoogleProfileSetup onSubmit={handleProfileSetup} loading={saving} />
           </div>
         ) : (
-          // ── Sign-up Form ──
+          // ── Sign-up Screen (Google only) ──
           <>
             {/* Header */}
             <div className="mb-8 text-center pt-2">
@@ -306,108 +305,43 @@ const SignUp = () => {
                 Create an account
               </h1>
               <p className="mt-2 text-sm text-slate-400">
-                Sign up with your college credentials
+                Sign up with your Google account
               </p>
             </div>
 
-            {/* Form */}
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              {/* Full Name */}
-              <div className="space-y-1">
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-slate-900 dark:text-gray-200"
-                >
-                  Full Name
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+            {/*
+              [EMAIL/PASSWORD AUTH — INTENTIONALLY DISABLED]
+              The registration form (name, email, password, year, submit) has been
+              removed. Applicants must register via Google.
+              To re-enable: restore name/email/password/year state, handleSubmit,
+              signUp from useAuth, and add the form element here:
+
+              <form className="space-y-5" onSubmit={handleSubmit}>
+                <div className="space-y-1">
+                  <label ...>Full Name</label>
+                  <input type="text" required value={name} onChange={...} />
+                </div>
+                <div className="space-y-1">
+                  <label ...>Email address</label>
+                  <input type="email" required value={email} onChange={...} />
+                </div>
+                <div className="space-y-1">
+                  <label ...>Password</label>
+                  <input type="password" required value={password} onChange={...} />
+                </div>
+                <div className="space-y-1">
+                  <label ...>Year</label>
+                  <select required value={year} onChange={...}>...</select>
+                </div>
+                <button type="submit" ...>Sign Up</button>
+              </form>
+
+              <div className="flex items-center gap-3 my-5">
+                <div className="flex-1 h-px bg-slate-700/60" />
+                <span className="text-xs text-slate-500 select-none">or</span>
+                <div className="flex-1 h-px bg-slate-700/60" />
               </div>
-
-              {/* Email */}
-              {/* <div className="space-y-1">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-slate-900 dark:text-gray-200"
-                >
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
-                  placeholder="you@college.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div> */}
-
-              {/* Password */}
-              {/* <div className="space-y-1">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-slate-900 dark:text-gray-200"
-                >
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div> */}
-
-              {/* Year dropdown */}
-              {/* <div className="space-y-1">
-                <label
-                  htmlFor="year"
-                  className="block text-sm font-medium text-slate-900 dark:text-gray-200"
-                >
-                  Year
-                </label>
-                <select
-                  id="year"
-                  required
-                  className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all [&>option]:text-black"
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select year
-                  </option>
-                  {YEAR_OPTIONS.map((y) => (
-                    <option key={y} value={y}>{y}</option>
-                  ))}
-                </select>
-              </div> */}
-
-              {/* Submit */}
-              {/* <button
-                type="submit"
-                className="w-full mt-4 py-3 rounded-xl bg-white hover:bg-gray-100 text-black text-sm font-semibold shadow-lg shadow-white/10 transition-transform transform hover:-translate-y-0.5"
-              >
-                Sign Up
-              </button> */}
-            </form>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3 my-5">
-              <div className="flex-1 h-px bg-slate-700/60" />
-              <span className="text-xs text-slate-500 select-none">or</span>
-              <div className="flex-1 h-px bg-slate-700/60" />
-            </div>
+            */}
 
             {/* Google Auth */}
             <GoogleAuthButton

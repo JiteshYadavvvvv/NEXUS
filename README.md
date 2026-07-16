@@ -53,10 +53,28 @@ npm run dev
 
 > **Note**: For the full experience, ensure the [Backend API](https://github.com/MyTricks-code/sync-backend-api) is also running simultaneously.
 
+## 🔑 Authentication
+
+Applicants (students) **must sign in via Google OAuth**. Email/password
+registration and login are intentionally disabled. The code for these flows
+is preserved as comments and can be re-enabled if needed:
+
+| File | What is commented out |
+|------|-----------------------|
+| `frontend/src/pages/Auth/Login.jsx` | Email/password form (inputs + submit) |
+| `frontend/src/pages/Auth/SignUp.jsx` | Registration form (name/email/password/year + submit) |
+| `frontend/src/pages/Auth/VerifyAccount.jsx` | Full OTP verification page (route removed) |
+| `frontend/src/context/AuthContext.jsx` | `login`, `signUp`, `sendVerifyOtp`, `verifyAccount` implementations |
+| `frontend/src/Routes/PublicRoutes.jsx` | `/verify-account` route |
+| `sync-backend/routes/authRoutes.js` | `POST /register /login /verify-otp /verify-account /forget-password /verify-forget-otp` |
+| `sync-backend/controllers/userController.js` | `createUser`, `loginUser`, `sendVerifyOtp`, `verifyAccount`, `sendForgetPasswordOtp`, `verifyForgotPasswordOtp` |
+
+---
+
 ## 🛠️ Features
 
 - ⚡️ **Hyper-Responsive Design**: Instantly adapts from ultra-wide monitors to the absolute smallest mobile devices without breaking a sweat.
-- � **Sleek, Dark Aesthetics**: A beautiful, meticulously crafted dark-mode-first UI that feels premium and immersive.
+- **Sleek, Dark Aesthetics**: A beautiful, meticulously crafted dark-mode-first UI that feels premium and immersive.
 - 👥 **Contextual Role Access**: Intelligently renders distinct dashboards depending on whether the user is a Core Member, Tech Executive, or regular attendee.
 - 🗓️ **Infinite Event Tracking**: Never miss a beat. Track past activities, upcoming hackathons, and exclusive technical sessions.
 - 🏫 **Unified Club Hub**: Deep integrations and dedicated spaces for OSS, GDG AIT Pune, CP Club, and more.
