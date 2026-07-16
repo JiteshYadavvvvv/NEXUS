@@ -46,8 +46,8 @@ export default function Footer() {
                         logos={socialLogos}
                         speed={35}
                         direction="left"
-                        logoHeight={32}
-                        gap={48}
+                        logoHeight={30}
+                        gap={56}
                         hoverSpeed={0}
                         scaleOnHover
                         fadeOut
@@ -60,7 +60,7 @@ export default function Footer() {
                     <div className="c-footer_form-block u-form">
                         <div className="c-footer_contact-wrapper" data-scroll-animation="0">
                             <div className="c-footer_contact-left">
-                                <img src="/clublogos/bwLogos/GDG.svg" alt="GDG On Campus AIT" className="c-footer_join-logo" />
+                                <span className="c-footer_eyebrow">The platform</span>
                                 <h3 className="c-footer_heading-large">JOIN NEXUS</h3>
                                 <div className="c-footer_divider-large"></div>
                                 <div className="c-footer_text-wrapper">
@@ -69,6 +69,7 @@ export default function Footer() {
                             </div>
 
                             <div className="c-footer_contact-right">
+                                <span className="c-footer_eyebrow">The builders</span>
                                 <h3 className="c-footer_heading-large">MADE BY GDG-AIT</h3>
                                 <div className="c-footer_divider-large"></div>
                                 <div className="c-footer_text-wrapper">
@@ -80,11 +81,22 @@ export default function Footer() {
                 </div>
             </section>
 
-            <div className="c-footer_branding">
+            <div className="c-footer_branding" data-scroll-animation="0.1">
                 <div className="c-footer_branding-lockup">
                     <img src="/nexus.svg" alt="NEXUS" className="c-footer_branding-logo" />
                     <div className="c-footer_branding-separator" aria-hidden="true"></div>
                     <img src="/clublogos/google-developers.svg" alt="GDG On Campus AIT" className="c-footer_branding-gdg" />
+                </div>
+            </div>
+
+            <div className="c-footer_baseline">
+                <div className="c-footer_container c-footer_baseline-row">
+                    <p className="c-footer_baseline-text">© 2026 NEXUS · Army Institute of Technology, Pune</p>
+                    <div className="c-footer_social-wrapper">
+                        <a href="https://github.com/Jitesh-Yadav01/SYNC-AIT" target="_blank" rel="noopener noreferrer" className="c-footer_social-link" aria-label="GitHub"><SiGithub /></a>
+                        <a href="https://in.linkedin.com/company/gdsc-aitpune" target="_blank" rel="noopener noreferrer" className="c-footer_social-link" aria-label="LinkedIn"><SiLinkedin /></a>
+                        <a href="https://www.instagram.com/gdsc_aitpune/" target="_blank" rel="noopener noreferrer" className="c-footer_social-link" aria-label="Instagram"><SiInstagram /></a>
+                    </div>
                 </div>
             </div>
         </footer>

@@ -141,7 +141,7 @@ const DevGrid = () => {
       className="relative w-full bg-transparent mt-0 pb-24 overflow-x-hidden"
     >
      
-      <div className="absolute -top-[320px] left-0 right-0 h-[800px] z-[0] pointer-events-none">
+      <div className="absolute -top-[320px] left-0 right-0 h-[800px] z-[5] pointer-events-none">
         <LaserFlow 
           color="#f4f4f5" 
           wispDensity={1.2}
