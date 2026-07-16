@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import DevCard from "./DevCard";
@@ -71,6 +71,27 @@ const DevGrid = () => {
   const gridRef = useRef(null);
   const containerRef = useRef(null);
   const revealImgRef = useRef(null);
+  const cardWrapRef = useRef(null);
+  const [laser, setLaser] = useState(null);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      if (!containerRef.current || !cardWrapRef.current) return;
+      const containerTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+      const cardTop = cardWrapRef.current.getBoundingClientRect().top + window.scrollY;
+      // Canvas spans from the document top (y=0) to just past the card's top
+      // edge, so the flare glow at the impact point isn't cut off.
+      const height = cardTop + 260;
+      setLaser({
+        top: -containerTop,
+        height,
+        beamY: 0.5 - cardTop / height,
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   useEffect(() => {
     ScrollTrigger.getAll().forEach(t => {
@@ -138,18 +159,25 @@ const DevGrid = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full bg-transparent mt-0 pb-24 overflow-x-hidden"
+      className="relative w-full bg-transparent mt-0 pb-24"
     >
-     
-      <div className="absolute -top-[320px] left-0 right-0 h-[800px] z-[5] pointer-events-none">
-        <LaserFlow 
-          color="#f4f4f5" 
-          wispDensity={1.2}
-          wispIntensity={8}
-          wispSpeed={15}
-          flowStrength={0.4} 
-        />
-      </div>
+
+      {laser && (
+        <div
+          className="absolute left-0 right-0 z-5 pointer-events-none"
+          style={{ top: laser.top, height: laser.height }}
+        >
+          <LaserFlow
+            color="#f4f4f5"
+            wispDensity={1.2}
+            wispIntensity={8}
+            wispSpeed={15}
+            flowStrength={0.4}
+            horizontalBeamOffset={0}
+            verticalBeamOffset={laser.beamY}
+          />
+        </div>
+      )}
 
      
       <img
@@ -170,7 +198,7 @@ const DevGrid = () => {
       
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 mt-[80px] flex justify-center">
  
-        <div className="w-full max-w-[1200px] mx-auto bg-zinc-900 rounded-[24px] border border-[#f4f4f5] shadow-[0_-10px_60px_rgba(255,255,255,0.02)] relative overflow-hidden px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6">
+        <div ref={cardWrapRef} className="w-full max-w-[1200px] mx-auto bg-zinc-900 rounded-[24px] border border-[#f4f4f5] shadow-[0_-10px_60px_rgba(255,255,255,0.02)] relative overflow-hidden px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6">
            
            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[2px] bg-linear-to-r from-transparent via-[#f4f4f5] to-transparent shadow-[0_0_15px_rgba(244,244,245,0.4)] z-[2]" />
 
