@@ -36,7 +36,7 @@ const Developers = () => {
                 MEET THE <span className="text-gray-400">OG's.</span>
               </h2>
               <p className="text-gray-500 text-base md:text-lg max-w-lg leading-relaxed capitalize">
-                We don’t struggle with code, we just collaborate intensely with errors.
+                We don’t struggle with code, we just <br/> collaborate intensely with errors.
               </p>
             </div>
           </div>

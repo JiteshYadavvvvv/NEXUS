@@ -169,7 +169,7 @@ const DevGrid = () => {
         >
           <LaserFlow
             color="#f4f4f5"
-              horizontalSizing={1.34}
+              horizontalSizing={1.01}
   verticalSizing={3.1}
   wispDensity={5}
   wispSpeed={31}
@@ -189,9 +189,9 @@ const DevGrid = () => {
      
       <img
         ref={revealImgRef}
-        src="/clubprofiles/reveal.png"
+        src="/clubprofiles/bg.jpeg"
         alt="Reveal effect"
-        className="fixed inset-0 max-w-full z-4 mix-blend-lighten pointer-events-none opacity-30 object-cover"
+        className="fixed inset-0 -top-60 max-w-full z-4 mix-blend-lighten pointer-events-none opacity-30 object-cover"
         style={{
           '--mx': '-9999px',
           '--my': '-9999px',
