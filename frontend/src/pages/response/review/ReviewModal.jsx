@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../../context/AuthContext';
+import { getAuthToken } from '@/lib/authSetup';
 
 const ReviewModal = ({ isOpen, onClose, response, onReviewAdded }) => {
   const { user } = useAuth();
@@ -49,7 +50,8 @@ const ReviewModal = ({ isOpen, onClose, response, onReviewAdded }) => {
       const res = await fetch(`${API}/api/response/add-review`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAuthToken()}`
         },
         credentials: 'include',
         body: JSON.stringify(payload)
